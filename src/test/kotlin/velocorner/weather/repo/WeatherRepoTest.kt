@@ -2,7 +2,6 @@ package velocorner.weather.repo
 
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.selectAll
@@ -24,7 +23,7 @@ internal class WeatherRepoTest {
     }
 
     private inline fun <reified T> load(resource: String): T =
-        json.decodeFromString<T>(this.javaClass.getResource(resource).readText())
+        json.decodeFromString<T>(this.javaClass.getResource(resource)?.readText() ?: "n/a")
 
     private val currentFixture = load<CurrentWeatherResponse>("/current.json")
     private val forecastFixture = load<ForecastWeatherResponse>("/forecast.json")
@@ -33,12 +32,12 @@ internal class WeatherRepoTest {
     fun setup() {
         val config = ConfigFactory.parseString(
             """
-            weather.psql.url="jdbc:postgresql://localhost:5492/integration_test"
-            psql.user="velocorner"
-            psql.password="velocorner"
+            db.url="jdbc:postgresql://localhost:5492/integration_test"
+            db.user="velocorner"
+            db.password="velocorner"
         """.trimIndent()
         )
-        DatabaseFactory.init(config)
+        DatabaseFactory.init(config = config)
         truncate()
     }
 
