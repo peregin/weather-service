@@ -59,7 +59,6 @@ internal class WeatherRepoTest {
     fun setup() {
         val config = ConfigFactory.parseString(
             """
-            db.name="$dbName"
             db.url="${postgresContainer.jdbcUrl}"
             db.user="$dbUser"
             db.password="$dbPassword"
