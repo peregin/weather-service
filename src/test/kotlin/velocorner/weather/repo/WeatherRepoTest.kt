@@ -5,7 +5,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.selectAll
+import org.junit.AfterClass
 import org.junit.Before
+import org.junit.BeforeClass
+import org.testcontainers.containers.PostgreSQLContainer
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.CurrentWeatherResponse
 import velocorner.weather.model.ForecastWeather
@@ -28,13 +31,38 @@ internal class WeatherRepoTest {
     private val currentFixture = load<CurrentWeatherResponse>("/current.json")
     private val forecastFixture = load<ForecastWeatherResponse>("/forecast.json")
 
+    companion object {
+        private val dbName = "weather_test"
+        private val dbUser = "weather"
+        private val dbPassword = "weather"
+        private lateinit var postgresContainer: PostgreSQLContainer<*>
+
+        @BeforeClass
+        @JvmStatic
+        fun setupSpec() {
+            postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
+                withDatabaseName(dbName)
+                withUsername(dbUser)
+                withPassword(dbPassword)
+                start()
+            }
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun tearDownSpec() {
+            postgresContainer.stop()
+        }
+    }
+
     @Before
     fun setup() {
         val config = ConfigFactory.parseString(
             """
-            db.url="jdbc:postgresql://localhost:5492/integration_test"
-            db.user="velocorner"
-            db.password="velocorner"
+            db.name="$dbName"
+            db.url="${postgresContainer.jdbcUrl}"
+            db.user="$dbUser"
+            db.password="$dbPassword"
         """.trimIndent()
         )
         DatabaseFactory.init(config = config)

@@ -11,10 +11,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
 
+    // if not found return null and chain it at the caller with the Elvis operator
+    private fun Config.tryString(path: String): String? = if (this.hasPath(path)) this.getString(path) else null
+
     fun init(driverClassName: String = "org.postgresql.Driver", config: Config? = null) {
-        val dbUrl = config?.getString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5492/weather"
-        val dbUser = config?.getString("db.user") ?: System.getenv("DB_USER") ?: "weather"
-        val dbPassword = config?.getString("db.password") ?: System.getenv("DB_PASSWORD")
+        val dbUrl = config?.tryString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5492/weather"
+        val dbUser = config?.tryString("db.user") ?: System.getenv("DB_USER") ?: "weather"
+        val dbPassword = config?.tryString("db.password") ?: System.getenv("DB_PASSWORD")
         val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName)
         Database.connect(dataSource)
         val flyway = Flyway.configure().locations("psql/migration").validateMigrationNaming(false).dataSource(dataSource).load()

@@ -3,6 +3,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val flyway_version: String by project
+val testcontainers_version: String by project
 
 group = "velocorner.weather"
 version = "1.0.0-SNAPSHOT"
@@ -44,6 +45,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.20")
+    testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
+    testImplementation("org.testcontainers:postgresql:$testcontainers_version")
 }
 
 ktor {
