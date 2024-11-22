@@ -2,7 +2,11 @@
 .gradle
 build
 
+# EnvFile
 *.env
+
+# iOS
+.DS_Store
 
 # Compiled class file
 *.class
