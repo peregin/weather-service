@@ -15,7 +15,7 @@ object DatabaseFactory {
     private fun Config.tryString(path: String): String? = if (this.hasPath(path)) this.getString(path) else null
 
     fun init(driverClassName: String = "org.postgresql.Driver", config: Config? = null) {
-        val dbUrl = config?.tryString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5492/weather"
+        val dbUrl = config?.tryString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5494/weather"
         val dbUser = config?.tryString("db.user") ?: System.getenv("DB_USER") ?: "weather"
         val dbPassword = config?.tryString("db.password") ?: System.getenv("DB_PASSWORD")
         val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName)
