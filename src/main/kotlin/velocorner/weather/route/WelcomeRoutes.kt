@@ -7,12 +7,17 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import io.ktor.server.html.*
 import kotlinx.html.*
+import java.util.*
 
 val javaOpts = System.getenv("JAVA_OPTS") ?: "n/a"
 
 fun Route.welcomeRoutes() {
     get("/") {
         val now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
+        // read manifest attribute with the build time
+        val buildTime = this.javaClass.classLoader.getResource("META-INF/MANIFEST.MF")?.openStream()?.use {
+            Properties().apply { load(it) }.getProperty("Build-Time")
+        } ?: "n/a"
         call.respondHtml(HttpStatusCode.OK) {
             head {
                 title("Weather Service")
@@ -27,6 +32,7 @@ fun Route.welcomeRoutes() {
                     li { a("weather/forecast/Zurich,CH") { +"5 days forecast ☀️ in 🇨🇭" } }
                 }
                 p { +"JAVA_OPTS: $javaOpts" }
+                p { +"Build-Time: $buildTime"}
             }
         }
     }

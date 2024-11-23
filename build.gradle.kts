@@ -1,3 +1,5 @@
+import java.time.OffsetDateTime
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -97,6 +99,7 @@ tasks {
         archiveBaseName.set("WeatherApp")
         manifest {
             attributes["Main-Class"] = "velocorner.weather.ServiceKt"
+            attributes["Build-Time"] = OffsetDateTime.now().toString()
         }
     }
 }
