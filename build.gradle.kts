@@ -17,12 +17,24 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-application {
-    mainClass.set("velocorner.weather.ServiceKt")
+kotlin {
+    jvmToolchain(17)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("velocorner.weather.ServiceKt")
 }
 
 dependencies {
