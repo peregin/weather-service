@@ -66,6 +66,8 @@ workflows:
     jobs:
       - build_weather-backend
       - deploy_weather-backend:
+          context:
+            - peregin
           requires:
             - build_weather-backend
           filters:
@@ -74,6 +76,8 @@ workflows:
                 - main
                 - /master.*/
       - restart_stack:
+          context:
+            - peregin
           requires:
             - deploy_weather-backend
 
