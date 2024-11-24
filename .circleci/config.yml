@@ -1,0 +1,47 @@
+version: 2.1
+
+defaults:
+  cache_key: &cache_key 'v1-{{ checksum "build.gradle.kts" }}'
+
+executors:
+  ci-min:
+    docker:
+      - image: cimg/base:2024.11
+
+jobs:
+  build_weather-backend:
+    executor: ci-min
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - restore_cache:
+          key: *cache_key
+      - run:
+          name: build weather service
+          command: |
+            ./gradlew shadowJar
+      - save_cache:
+          key: *cache_key
+          paths:
+            - ~/.gradle
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/libs
+            - Dockerfile
+
+  deploy_weather-backend:
+    executor: ci-min
+    resource_class: arm.medium
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: dockerhub login
+          command: docker login -u peregin -p $DOCKERHUB_PASSWORD docker.io
+      - run:
+          name: deploy weather service
+          command: ./deploy.sh
