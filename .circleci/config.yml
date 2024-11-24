@@ -44,6 +44,10 @@ jobs:
       - restore_cache:
           key: *cache_key
       - run:
+          name: test weather service
+          command: |
+            ./gradlew test
+      - run:
           name: build weather service
           command: |
             ./gradlew shadowJar
