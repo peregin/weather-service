@@ -1,6 +1,9 @@
 # Weather Service
 Provides 5 days forecast, current weather conditions and suggestions for locations.
 
+## TODO
+- optimize CI/CD, add test steps and deploy.sh should just copy the already built jar file
+
 ## Deploy
 ```shell
 ./gradlew shadowJar

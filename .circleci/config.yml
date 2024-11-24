@@ -51,6 +51,15 @@ jobs:
           name: deploy weather service
           command: ./deploy.sh
 
+  restart_stack:
+    executor: ci-min
+    resource_class: small
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:0JgoOo+PO4Mp19b3ZkJ7BfWmo8dzLFS+e6ryCmJ2u1s"
+      - run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$DEPLOYER_USER"@velocorner.com '/opt/velocorner/service-update.sh weather'
+
 workflows:
   version: 2
   build_and_deploy:
@@ -64,4 +73,7 @@ workflows:
               only:
                 - main
                 - /master.*/
+      - restart_stack:
+          requires:
+            - deploy_weather-backend
 
