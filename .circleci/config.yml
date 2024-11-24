@@ -45,3 +45,18 @@ jobs:
       - run:
           name: deploy weather service
           command: ./deploy.sh
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build_weather-backend
+      - deploy_weather-backend:
+          requires:
+            - build_weather-backend
+          filters:
+            branches:
+              only:
+                - main
+                - /master.*/
+
