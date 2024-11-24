@@ -9,6 +9,9 @@ BUILDER_NAME="multi-arch-builder"
 IMAGE_NAME="peregin/velocorner.weather"
 TAG="latest"
 PLATFORMS="linux/arm64"
+# read it as parameter of default it
+DOCKERFILE=${1:-"Dockerfile"}
+echo "building from $DOCKERFILE"
 
 # Color output
 RED='\033[0;31m'
@@ -66,6 +69,7 @@ build_and_push() {
         --cache-from "type=registry,ref=${IMAGE_NAME}:${TAG}" \
         --cache-to "type=inline" \
         --progress=plain \
+        --file "${DOCKERFILE}" \
         .
 }
 

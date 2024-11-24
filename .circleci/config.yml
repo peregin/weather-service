@@ -34,7 +34,8 @@ jobs:
           root: .
           paths:
             - build/libs
-            - Dockerfile
+            - Dockerfile*
+            - deploy.sh
 
   deploy_weather-backend:
     executor: ci-min
@@ -49,7 +50,7 @@ jobs:
           command: docker login -u peregin -p $DOCKERHUB_PASSWORD docker.io
       - run:
           name: deploy weather service
-          command: ./deploy.sh
+          command: ./deploy.sh Dockerfile.ci
 
   restart_stack:
     executor: ci-min
