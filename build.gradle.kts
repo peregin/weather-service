@@ -12,8 +12,8 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.0.20"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.20"
+    kotlin("jvm") version "2.0.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("name.remal.check-updates") version "1.5.0"
     id("io.ktor.plugin") version "2.3.12"
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -58,7 +58,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
 }
