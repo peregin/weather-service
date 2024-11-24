@@ -4,13 +4,18 @@ defaults:
   cache_key: &cache_key 'v1-{{ checksum "build.gradle.kts" }}'
 
 executors:
+  ci-jdk:
+    docker:
+      - image: cimg/openjdk:17.0.10
+        environment:
+          JVM_OPTS: -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
   ci-min:
     docker:
       - image: cimg/base:2024.11
 
 jobs:
   build_weather-backend:
-    executor: ci-min
+    executor: ci-jdk
     steps:
       - checkout
       - setup_remote_docker:
