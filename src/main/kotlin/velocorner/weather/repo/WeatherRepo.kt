@@ -3,6 +3,7 @@ package velocorner.weather.repo
 import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.json.json
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.ForecastWeather
@@ -10,7 +11,7 @@ import velocorner.weather.repo.DatabaseFactory.transact
 
 interface WeatherRepo {
     // weather - location is <city[,countryISO2letter]>
-    // limit for 5 day forecast broken down to 3 hours = 8 entries/day and 40 entries/5 days
+    // limit for 5 days forecast broken down to 3 hours = 8 entries/day and 40 entries/5 days
     suspend fun listForecast(location: String, limit: Int = 40): List<ForecastWeather>
 
     suspend fun storeForecast(forecast: List<ForecastWeather>)
@@ -39,7 +40,7 @@ class WeatherRepoImpl : WeatherRepo {
 
     override suspend fun listForecast(location: String, limit: Int): List<ForecastWeather> = transact {
         ForecastWeatherTable
-            .select { ForecastWeatherTable.location eq location }
+            .selectAll().where { ForecastWeatherTable.location eq location }
             .orderBy(Pair(ForecastWeatherTable.updateTime, SortOrder.DESC))
             .limit(limit)
             .map { it[ForecastWeatherTable.data] }
@@ -66,7 +67,7 @@ class WeatherRepoImpl : WeatherRepo {
 
     override suspend fun getCurrent(location: String): CurrentWeather? = transact {
         CurrentWeatherTable
-            .select { CurrentWeatherTable.location eq location }
+            .selectAll().where { CurrentWeatherTable.location eq location }
             .map { it[CurrentWeatherTable.data] }
             .singleOrNull()
     }
