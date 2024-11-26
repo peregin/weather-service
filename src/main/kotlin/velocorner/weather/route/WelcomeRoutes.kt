@@ -1,7 +1,6 @@
 package velocorner.weather.route
 
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,11 +27,12 @@ fun Route.welcomeRoutes() {
             body {
                 h1 { +"Welcome @ $now" }
                 ul {
+                    li { a("/docs") { +"OpenAPI" } }
                     li { a("weather/current/Zurich,CH") { +"current weather for Zürich, Switzerland 🇨🇭" } }
                     li { a("weather/forecast/Zurich,CH") { +"5 days forecast ☀️ in 🇨🇭" } }
                 }
                 p { +"JAVA_OPTS: $javaOpts" }
-                p { +"Build-Time: $buildTime"}
+                p { +"Build-Time: $buildTime" }
             }
         }
     }

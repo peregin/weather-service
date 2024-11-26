@@ -1,5 +1,8 @@
 package velocorner.weather
 
+import io.github.smiley4.ktorswaggerui.SwaggerUI
+import io.github.smiley4.ktorswaggerui.routing.openApiSpec
+import io.github.smiley4.ktorswaggerui.routing.swaggerUI
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -27,11 +30,27 @@ fun main() {
             json()
         }
         install(CallLogging)
+        install(SwaggerUI) {
+            info {
+                title = "Weather API"
+                version = "latest"
+                description = "Weather forecast"
+            }
+            pathFilter = { _, url: List<String> ->
+                url.any { it.contains("weather", ignoreCase = true) }
+            }
+        }
 
         routing {
             staticResources("/", "static")
             welcomeRoutes()
             weatherRoutes(service)
+            route("api.json") {
+                openApiSpec()
+            }
+            route("docs") {
+                swaggerUI("/api.json")
+            }
         }
     }.start(wait = true)
 }
