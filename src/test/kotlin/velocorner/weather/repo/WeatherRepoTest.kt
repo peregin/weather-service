@@ -20,30 +20,22 @@ import kotlin.test.Test
 
 internal class WeatherRepoTest {
 
-    val zhLocation = "Zurich,CH"
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
-
-    private inline fun <reified T> load(resource: String): T =
-        json.decodeFromString<T>(this.javaClass.getResource(resource)?.readText() ?: "n/a")
-
-    private val currentFixture = load<CurrentWeatherResponse>("/current.json")
-    private val forecastFixture = load<ForecastWeatherResponse>("/forecast.json")
-
     companion object {
-        private val dbName = "weather_test"
-        private val dbUser = "weather"
-        private val dbPassword = "weather"
+        private const val DB_NAME = "weather_test"
+        private const val DB_USER = "weather"
+        private const val DB_PASSWORD = "weather"
+        private const val ZH_LOCATION = "Zurich,CH"
+        private const val BP_LOCATION = "Budapest,HU"
+
         private lateinit var postgresContainer: PostgreSQLContainer<*>
 
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
             postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
-                withDatabaseName(dbName)
-                withUsername(dbUser)
-                withPassword(dbPassword)
+                withDatabaseName(DB_NAME)
+                withUsername(DB_USER)
+                withPassword(DB_PASSWORD)
                 start()
             }
         }
@@ -55,20 +47,29 @@ internal class WeatherRepoTest {
         }
     }
 
+    private val currentFixture by lazy { loadFixture<CurrentWeatherResponse>("/current.json") }
+    private val forecastFixture by lazy { loadFixture<ForecastWeatherResponse>("/forecast.json") }
+    private inline fun <reified T> loadFixture(resource: String): T =
+        json.decodeFromString<T>(requireNotNull(javaClass.getResource(resource)) {
+            "Resource $resource not found"
+        }.readText())
+
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Before
     fun setup() {
         val config = ConfigFactory.parseString(
             """
             db.url="${postgresContainer.jdbcUrl}"
-            db.user="$dbUser"
-            db.password="$dbPassword"
+            db.user="$DB_USER"
+            db.password="$DB_PASSWORD"
         """.trimIndent()
         )
         DatabaseFactory.init(config = config)
-        truncate()
+        truncateTables()
     }
 
-    private fun truncate() = runBlocking {
+    private fun truncateTables() = runBlocking {
         transact {
             CurrentWeatherTable.deleteAll()
             ForecastWeatherTable.deleteAll()
@@ -76,27 +77,28 @@ internal class WeatherRepoTest {
     }
 
     @Test
-    fun emptyCurrentForUnknownLocation() = runBlocking {
+    fun `should return null for unknown locations`() = runBlocking {
         val repo = WeatherRepoImpl()
-        assertEquals(null, repo.getCurrent("unknown, loc"))
-        assertEquals(null, repo.getCurrent("Budapest"))
-        assertEquals(null, repo.getCurrent("Zurich"))
+        assertNull(repo.getCurrent("unknown, loc"))
+        assertNull(repo.getCurrent("anything"))
+        assertNull(repo.getCurrent(BP_LOCATION))
+        assertNull(repo.getCurrent(ZH_LOCATION))
     }
 
     @Test
     fun upsertCurrentWeather() = runBlocking {
         val repo = WeatherRepoImpl()
         val weather = CurrentWeather(
-            location = zhLocation,
-            timestamp = currentFixture.dt!!,
-            bootstrapIcon = WeatherCodeUtil.bootstrapIcon(currentFixture.weather!!.first().id),
-            current = currentFixture.weather!!.first(),
-            info = currentFixture.main!!,
-            sunriseSunset = currentFixture.sys!!,
-            coord = currentFixture.coord!!
+            location = ZH_LOCATION,
+            timestamp = requireNotNull(currentFixture.dt),
+            bootstrapIcon = WeatherCodeUtil.bootstrapIcon(requireNotNull(currentFixture.weather).first().id),
+            current = requireNotNull(currentFixture.weather).first(),
+            info = requireNotNull(currentFixture.main),
+            sunriseSunset = requireNotNull(currentFixture.sys),
+            coord = requireNotNull(currentFixture.coord)
         )
         repo.storeCurrent(weather)
-        assertEquals(weather, repo.getCurrent(zhLocation))
+        assertEquals(weather, repo.getCurrent(ZH_LOCATION))
         // store it again, we should have only one entry
         repo.storeCurrent(weather)
         val entries = transact { CurrentWeatherTable.selectAll().count() }
@@ -111,26 +113,31 @@ internal class WeatherRepoTest {
     }
 
     // idempotent
-    @Test fun upsertForecastWeather() = runBlocking {
+    @Test
+    fun `should handle forecast weather storage idempotent`() = runBlocking {
         val repo = WeatherRepoImpl()
-        assertEquals(40, forecastFixture.list?.size!!)
-        repo.storeForecast(forecastFixture.list!!.map{ e -> ForecastWeather(
-            location = zhLocation,
-            timestamp = e.dt,
-            forecast = e) }
+        val forecastList = requireNotNull(forecastFixture.list) { "Forecast list should not be null" }
+        assertEquals(40, forecastList.size)
+        repo.storeForecast(forecastList.map { e ->
+            ForecastWeather(
+                location = ZH_LOCATION,
+                timestamp = e.dt,
+                forecast = e
+            )
+        }
         )
 
-        assertEquals(40, repo.listForecast(zhLocation).size)
-        assertEquals(0, repo.listForecast("Budapest,HU").size)
+        assertEquals(40, repo.listForecast(ZH_LOCATION).size)
+        assertEquals(0, repo.listForecast(BP_LOCATION).size)
 
         // storing entries are idempotent (upsert the same entries, we should have still 40 items in the storage)
-        val first = forecastFixture.list!!.first()
-        repo.storeForecast(listOf(ForecastWeather(zhLocation, first.dt, first)))
-        assertEquals(40, repo.listForecast(zhLocation, limit = 50).size)
+        val first = forecastList.first()
+        repo.storeForecast(listOf(ForecastWeather(ZH_LOCATION, first.dt, first)))
+        assertEquals(40, repo.listForecast(ZH_LOCATION, limit = 50).size)
 
         // different location, same timestamp
-        repo.storeForecast(listOf(ForecastWeather("Budapest,HU", first.dt, first)))
-        assertEquals(40, repo.listForecast(zhLocation, limit = 50).size)
-        assertEquals(1, repo.listForecast("Budapest,HU", limit = 50).size)
+        repo.storeForecast(listOf(ForecastWeather(BP_LOCATION, first.dt, first)))
+        assertEquals(40, repo.listForecast(ZH_LOCATION, limit = 50).size)
+        assertEquals(1, repo.listForecast(BP_LOCATION, limit = 50).size)
     }
 }
