@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeatherResponse
 import velocorner.weather.model.ForecastWeatherResponse
 
+private const val WEATHER_API_KEY = "WEATHER_API_KEY"
+
 class OpenWeatherFeed {
 
     private val baseUrl = "https://api.openweathermap.org/data/2.5"
@@ -16,9 +18,9 @@ class OpenWeatherFeed {
         ignoreUnknownKeys = true
     }
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val apiKey = System.getenv("WEATHER_API_KEY").also {
-        logger.info("OpenWeatherMap key is [${it.takeLast(4).padStart(it.length, 'X')}]")
-    }
+    private val apiKey = requireNotNull(System.getenv(WEATHER_API_KEY).also {
+        logger.info("OpenWeatherMap key is [${it?.takeLast(4)?.padStart(it.length, 'X')}]")
+    }) { "$WEATHER_API_KEY environment variable is not set" }
 
     suspend fun current(location: String): CurrentWeatherResponse? =
         get<CurrentWeatherResponse>("weather", location)
