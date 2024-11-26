@@ -1,5 +1,6 @@
 package velocorner.weather.route
 
+import io.github.smiley4.ktorswaggerui.dsl.routes.OpenApiRoute
 import io.ktor.http.*
 import io.ktor.http.ContentType.Application.Xml
 import io.ktor.server.response.*
@@ -15,17 +16,11 @@ fun Route.weatherRoutes(service: WeatherService) {
             description = "Get current weather"
             tags = listOf("weather")
             request {
-                pathParameter<String>("location") {
-                    description = "Location in format: city[,isoCountry 2-letter code]"
-                    example("Zurich") {
-                        value = "Zurich,CH"
-                    }
-                }
+                this@get.setupLocationParameter()
             }
             response {
                 HttpStatusCode.OK to { description = "Current weather" }
-                HttpStatusCode.BadRequest to { description = "Missing location" }
-                HttpStatusCode.NotFound to { description = "Unknown location" }
+                this@get.setupCommonResponses()
             }
         }) {
             val location = call.parameters["location"] ?: return@get call.respondText(
@@ -42,17 +37,11 @@ fun Route.weatherRoutes(service: WeatherService) {
             description = "Get forecast"
             tags = listOf("weather")
             request {
-                pathParameter<String>("location") {
-                    description = "Location in format: city[,isoCountry 2-letter code]"
-                    example("Zurich") {
-                        value = "Zurich,CH"
-                    }
-                }
+                this@get.setupLocationParameter()
             }
             response {
                 HttpStatusCode.OK to { description = "Forecast" }
-                HttpStatusCode.BadRequest to { description = "Missing location" }
-                HttpStatusCode.NotFound to { description = "Unknown location" }
+                this@get.setupCommonResponses()
             }
         }) {
             val location = call.parameters["location"] ?: return@get call.respondText(
@@ -66,5 +55,23 @@ fun Route.weatherRoutes(service: WeatherService) {
             )
             call.respondText(toMeteoGramXml(forecast), contentType = Xml, status = HttpStatusCode.OK)
         }
+    }
+}
+
+private fun OpenApiRoute.setupLocationParameter() {
+    request {
+        pathParameter<String>("location") {
+            description = "Location in format: city[,isoCountry 2-letter code]"
+            example("Zurich") {
+                value = "Zurich,CH"
+            }
+        }
+    }
+}
+
+private fun OpenApiRoute.setupCommonResponses() {
+    response {
+        HttpStatusCode.BadRequest to { description = "Missing location" }
+        HttpStatusCode.NotFound to { description = "Unknown location" }
     }
 }
