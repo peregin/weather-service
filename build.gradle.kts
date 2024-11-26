@@ -5,31 +5,26 @@ val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val flyway_version: String by project
+val hikari_version: String by project
 val testcontainers_version: String by project
 
 group = "velocorner.weather"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
     kotlin("jvm") version "2.0.21"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("name.remal.check-updates") version "1.5.0"
-    id("io.ktor.plugin") version "2.3.12"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.ktor.plugin") version "3.0.1"
 }
 
 kotlin {
-    jvmToolchain(17)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.toString()))
     }
 }
+
 
 repositories {
     mavenCentral()
@@ -40,6 +35,8 @@ application {
 }
 
 dependencies {
+    // Ktor dependencies
+    implementation(platform("io.ktor:ktor-bom:$ktor_version"))
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-java:$ktor_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
@@ -48,15 +45,21 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
+
+    // Database dependencies
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("org.postgresql:postgresql:42.7.4")
-    implementation("com.zaxxer:HikariCP:6.2.1")
+    implementation("com.zaxxer:HikariCP:$hikari_version")
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
+
+    // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    // Test dependencies
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
@@ -98,8 +101,13 @@ tasks {
         mergeServiceFiles()
         archiveBaseName.set("WeatherApp")
         manifest {
-            attributes["Main-Class"] = "velocorner.weather.ServiceKt"
-            attributes["Build-Time"] = OffsetDateTime.now().toString()
+            attributes(
+                mapOf(
+                    "Main-Class" to "velocorner.weather.ServiceKt",
+                    "Build-Time" to OffsetDateTime.now().toString(),
+                    "Implementation-Version" to project.version
+                )
+            )
         }
     }
 }
