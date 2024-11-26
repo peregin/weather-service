@@ -2,7 +2,6 @@ package velocorner.weather.model
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -83,9 +82,7 @@ data class WeatherInfo(
     val pressure: Float // hPa
 )
 
-@Serializer(forClass = OffsetDateTime::class)
 object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
-
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("WithCustomDefault", PrimitiveKind.LONG)
 
     override fun serialize(encoder: Encoder, value: OffsetDateTime) {

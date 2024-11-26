@@ -14,9 +14,7 @@ private const val WEATHER_API_KEY = "WEATHER_API_KEY"
 class OpenWeatherFeed {
 
     private val baseUrl = "https://api.openweathermap.org/data/2.5"
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
+    private val json = Json { ignoreUnknownKeys = true }
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val apiKey = requireNotNull(System.getenv(WEATHER_API_KEY).also {
         logger.info("OpenWeatherMap key is [${it?.takeLast(4)?.padStart(it.length, 'X')}]")
