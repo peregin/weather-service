@@ -18,7 +18,7 @@ class WeatherService(val feed: OpenWeatherFeed, val repo: WeatherRepo, val refre
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun clock(): OffsetDateTime = OffsetDateTime.now(ZoneId.of("UTC"))
+    private fun clock(): OffsetDateTime = OffsetDateTime.now(ZoneId.of("UTC"))
 
     suspend fun current(location: String): CurrentWeather? {
         val entry = repo.getCurrent(location)

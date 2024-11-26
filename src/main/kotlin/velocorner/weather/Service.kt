@@ -17,6 +17,8 @@ import velocorner.weather.route.*
 import velocorner.weather.service.OpenWeatherFeed
 import velocorner.weather.service.WeatherService
 
+private val DOC_PATHS = setOf("weather", "location")
+
 fun main() {
     embeddedServer(Netty, port = 9015, host = "0.0.0.0") {
         log.info("starting weather service...")
@@ -37,7 +39,9 @@ fun main() {
                 description = "Weather forecast"
             }
             pathFilter = { _, url: List<String> ->
-                url.any { it.contains("weather", ignoreCase = true) }
+                url.any {
+                    DOC_PATHS.any { path -> it.contains(path, ignoreCase = true) }
+                }
             }
         }
 
@@ -45,6 +49,7 @@ fun main() {
             staticResources("/", "static")
             welcomeRoutes()
             weatherRoutes(service)
+            locationRoutes()
             route("api.json") {
                 openApiSpec()
             }

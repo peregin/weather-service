@@ -189,3 +189,14 @@ data class ForecastWeather(
     val timestamp: OffsetDateTime,
     val forecast: Weather
 )
+
+
+/**
+ * The response structures from country.is.
+ * https://github.com/hakanensari/country
+ */
+@Serializable
+data class CountryResponse(
+    val ip: String,
+    val country: String
+)
