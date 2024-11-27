@@ -27,8 +27,28 @@ object CountryUtil {
                 country.name.lowercase() to country.code
             }
 
-
     fun readCapitals(): Map<String, String> =
         load<Map<String, String>>("/capitals.json")
+
+    /**
+     * Converts location string to use ISO country code
+     * @param location Location string in format "city,country"
+     * @return Location string with ISO country code or original string if conversion not possible
+     * @example "Zurich,Switzerland" -> "Zurich,CH"
+     */
+    fun iso(location: String): String {
+        val index = location.indexOf(',')
+        if (index > -1) {
+            val city = location.substring(0, index).trim()
+            val country = location.substring(index + 1).trim().lowercase()
+            val isoCode = country2Code[country]
+            return if (isoCode != null) {
+                "$city,$isoCode"
+            } else {
+                location.trim()
+            }
+        }
+        return location.trim()
+    }
 }
 

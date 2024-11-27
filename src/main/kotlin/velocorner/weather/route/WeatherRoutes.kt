@@ -8,11 +8,17 @@ import io.ktor.server.routing.*
 import velocorner.weather.service.WeatherService
 import velocorner.weather.util.toMeteoGramXml
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
+import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
+import velocorner.weather.util.CountryUtil
+
+private val logger = LoggerFactory.getLogger("WeatherRoutes")
 
 // location is in format: city[,isoCountry 2-letter code]
 fun Route.weatherRoutes(service: WeatherService) {
     route("weather") {
+
+        // retrieves the sunrise and sunset information for a given place
         get("current/{location}", {
             description = "Get current weather"
             tags = listOf("weather")
@@ -33,12 +39,17 @@ fun Route.weatherRoutes(service: WeatherService) {
                 "Missing location",
                 status = HttpStatusCode.BadRequest
             )
-            val current = service.current(location) ?: return@get call.respondText(
-                "Unknown location $location",
+            // convert city[,country] to city[ ,isoCountry]
+            val isoLocation = CountryUtil.iso(location)
+            logger.debug("collecting current weather for [$location] -> [$isoLocation]")
+            val current = service.current(isoLocation) ?: return@get call.respondText(
+                "Unknown location $isoLocation",
                 status = HttpStatusCode.NotFound
             )
             call.respond(current)
         }
+
+        // retrieves the weather forecast for a given place
         get("forecast/{location}", {
             description = "Get forecast"
             tags = listOf("weather")
@@ -56,9 +67,12 @@ fun Route.weatherRoutes(service: WeatherService) {
                 "Missing location",
                 status = HttpStatusCode.BadRequest
             )
-            val forecast = service.forecast(location)
+            // convert city[,country] to city[ ,isoCountry]
+            val isoLocation = CountryUtil.iso(location)
+            logger.debug("collecting weather forecast for [$location] -> [$isoLocation]")
+            val forecast = service.forecast(isoLocation)
             if (forecast.isEmpty()) return@get call.respondText(
-                "Unknown location $location",
+                "Unknown location $isoLocation",
                 status = HttpStatusCode.NotFound
             )
             call.respondText(toMeteoGramXml(forecast), contentType = Xml, status = HttpStatusCode.OK)

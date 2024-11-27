@@ -22,4 +22,45 @@ internal class CountryUtilTest {
         assertEquals(requireNotNull(code2Capital["HU"]), "Budapest")
         assertNull(code2Capital["unknown"])
     }
+
+    @Test
+    fun `should handle basic country conversions`() {
+        assertEquals("Zurich", CountryUtil.iso("Zurich"))
+        assertEquals("Zurich,CH", CountryUtil.iso("Zurich,Switzerland"))
+        assertEquals("Budapest,HU", CountryUtil.iso("Budapest,Hungary"))
+        assertEquals("Paris,FR", CountryUtil.iso("Paris,France"))
+    }
+
+    @Test
+    fun `should handle spaces in location names`() {
+        assertEquals("Zurich,CH", CountryUtil.iso("Zurich, Switzerland"))
+        assertEquals("Zurich,CH", CountryUtil.iso(" Zurich , Switzerland "))
+        assertEquals("finale ligure,IT", CountryUtil.iso("finale ligure, Italy"))
+    }
+
+    @Test
+    fun `should handle case insensitive country names`() {
+        assertEquals("budapest,HU", CountryUtil.iso("budapest, hungary"))
+        assertEquals("Zurich,CH", CountryUtil.iso("Zurich,SWITZERLAND"))
+        assertEquals("Zurich,CH", CountryUtil.iso("Zurich,switzerland"))
+    }
+
+    @Test
+    fun `should handle unknown countries`() {
+        assertEquals("Zurich, Helvetica", CountryUtil.iso("Zurich, Helvetica"))
+        assertEquals("City,Unknown", CountryUtil.iso("City,Unknown"))
+    }
+
+    @Test
+    fun `should handle single word locations`() {
+        assertEquals("London", CountryUtil.iso("London"))
+    }
+
+    @Test
+    fun `should handle empty and invalid inputs`() {
+        assertEquals("", CountryUtil.iso(""))
+        assertEquals(",", CountryUtil.iso(","))
+        assertEquals("City,", CountryUtil.iso("City,"))
+        assertEquals(",Country", CountryUtil.iso(",Country"))
+    }
 }
