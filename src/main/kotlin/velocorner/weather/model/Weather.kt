@@ -194,9 +194,23 @@ data class ForecastWeather(
 /**
  * The response structures from country.is.
  * https://github.com/hakanensari/country
+ * Response from CountryFeed
  */
 @Serializable
-data class CountryResponse(
+data class CountryFeedResponse(
     val ip: String,
     val country: String
 )
+
+@Serializable
+data class CountryIso(
+    val code: String,
+    val name: String
+)
+
+/**
+ * country is represented in ISO code 2 (CH, HU, etc.)
+ * Response from location/ip endpoint
+ */
+@Serializable
+data class GeoLocationResponse(val city: String, val country: String)

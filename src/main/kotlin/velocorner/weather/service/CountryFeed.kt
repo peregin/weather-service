@@ -5,7 +5,7 @@ import io.ktor.client.engine.java.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.serialization.json.Json
-import velocorner.weather.model.CountryResponse
+import velocorner.weather.model.CountryFeedResponse
 
 object CountryFeed {
 
@@ -14,7 +14,7 @@ object CountryFeed {
     suspend fun country(ip: String): String {
         HttpClient(Java).use {
             val response = it.get("https://api.country.is/$ip")
-            return runCatching { json.decodeFromString<CountryResponse>(response.bodyAsText()) }.getOrNull()?.country
+            return runCatching { json.decodeFromString<CountryFeedResponse>(response.bodyAsText()) }.getOrNull()?.country
                 ?: "CH"
         }
     }

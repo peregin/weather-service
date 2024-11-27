@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 import velocorner.weather.service.WeatherService
 import velocorner.weather.util.toMeteoGramXml
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
+import velocorner.weather.model.CurrentWeather
 
 // location is in format: city[,isoCountry 2-letter code]
 fun Route.weatherRoutes(service: WeatherService) {
@@ -19,7 +20,12 @@ fun Route.weatherRoutes(service: WeatherService) {
                 this@get.setupLocationParameter()
             }
             response {
-                HttpStatusCode.OK to { description = "Current weather" }
+                HttpStatusCode.OK to {
+                    description = "Current weather"
+                    body<CurrentWeather> {
+                        description = "The result of the current weather query"
+                    }
+                }
                 this@get.setupCommonResponses()
             }
         }) {
@@ -40,7 +46,9 @@ fun Route.weatherRoutes(service: WeatherService) {
                 this@get.setupLocationParameter()
             }
             response {
-                HttpStatusCode.OK to { description = "Forecast" }
+                HttpStatusCode.OK to {
+                    description = "Forecast"
+                }
                 this@get.setupCommonResponses()
             }
         }) {

@@ -2,7 +2,6 @@ package velocorner.weather.repo
 
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.selectAll
 import org.junit.AfterClass
@@ -14,6 +13,7 @@ import velocorner.weather.model.CurrentWeatherResponse
 import velocorner.weather.model.ForecastWeather
 import velocorner.weather.model.ForecastWeatherResponse
 import velocorner.weather.repo.DatabaseFactory.transact
+import velocorner.weather.util.ResourceUtil.load
 import velocorner.weather.util.WeatherCodeUtil
 import kotlin.test.*
 import kotlin.test.Test
@@ -47,14 +47,8 @@ internal class WeatherRepoTest {
         }
     }
 
-    private val currentFixture by lazy { loadFixture<CurrentWeatherResponse>("/current.json") }
-    private val forecastFixture by lazy { loadFixture<ForecastWeatherResponse>("/forecast.json") }
-    private inline fun <reified T> loadFixture(resource: String): T =
-        json.decodeFromString<T>(requireNotNull(javaClass.getResource(resource)) {
-            "Resource $resource not found"
-        }.readText())
-
-    private val json = Json { ignoreUnknownKeys = true }
+    private val currentFixture by lazy { load<CurrentWeatherResponse>("/current.json") }
+    private val forecastFixture by lazy { load<ForecastWeatherResponse>("/forecast.json") }
 
     @Before
     fun setup() {
