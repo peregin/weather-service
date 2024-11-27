@@ -13,6 +13,7 @@ import velocorner.weather.model.CurrentWeather
 import velocorner.weather.util.CountryUtil
 
 private val logger = LoggerFactory.getLogger("WeatherRoutes")
+private const val cookieAge = 60 * 60 * 24 * 7 // 7 days
 
 // location is in format: city[,isoCountry 2-letter code]
 fun Route.weatherRoutes(service: WeatherService) {
@@ -75,12 +76,14 @@ fun Route.weatherRoutes(service: WeatherService) {
                 "Unknown location $isoLocation",
                 status = HttpStatusCode.NotFound
             )
+            // add a cookie
+            call.response.cookies.append(Cookie("weather_location", encoding = CookieEncoding.BASE64_ENCODING, value = isoLocation, maxAge = cookieAge))
             call.respondText(toMeteoGramXml(forecast), contentType = Xml, status = HttpStatusCode.OK)
         }
     }
 }
 
-private fun OpenApiRoute.setupLocationParameter() {
+internal fun OpenApiRoute.setupLocationParameter() {
     request {
         pathParameter<String>("location") {
             description = "Location in format: city[,isoCountry 2-letter code]"
@@ -91,7 +94,7 @@ private fun OpenApiRoute.setupLocationParameter() {
     }
 }
 
-private fun OpenApiRoute.setupCommonResponses() {
+internal fun OpenApiRoute.setupCommonResponses() {
     response {
         HttpStatusCode.BadRequest to { description = "Missing location" }
         HttpStatusCode.NotFound to { description = "Unknown location" }

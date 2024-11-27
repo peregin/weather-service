@@ -214,3 +214,11 @@ data class CountryIso(
  */
 @Serializable
 data class GeoLocationResponse(val city: String, val country: String)
+
+// windy widget needs geolocation as input
+@Serializable
+data class GeoPosition(val latitude: Double, val longitude: Double)
+
+// locations
+@Serializable
+data class SuggestionResponse(val suggestions: List<String>)

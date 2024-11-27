@@ -1,10 +1,8 @@
 package velocorner.weather.service
 
 import org.slf4j.LoggerFactory
-import velocorner.weather.model.CurrentWeather
-import velocorner.weather.model.CurrentWeatherResponse
-import velocorner.weather.model.ForecastWeather
-import velocorner.weather.model.ForecastWeatherResponse
+import velocorner.weather.model.*
+import velocorner.weather.repo.LocationRepo
 import velocorner.weather.repo.WeatherRepo
 import velocorner.weather.util.WeatherCodeUtil
 import java.time.OffsetDateTime
@@ -14,14 +12,14 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 // it uses data from the cache/storage if was queried within the `refreshTimeout`
-class WeatherService(val feed: OpenWeatherFeed, val repo: WeatherRepo, val refreshTimeout: Duration = 60.minutes) {
+class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val locationRepo: LocationRepo, val refreshTimeout: Duration = 60.minutes) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     private fun clock(): OffsetDateTime = OffsetDateTime.now(ZoneId.of("UTC"))
 
     suspend fun current(location: String): CurrentWeather? {
-        val entry = repo.getCurrent(location)
+        val entry = weatherRepo.getCurrent(location)
         val reply =
             entry?.takeUnless {
                 val now = clock()
@@ -36,14 +34,19 @@ class WeatherService(val feed: OpenWeatherFeed, val repo: WeatherRepo, val refre
             } ?: feed.current(location).let { re ->
                 convert(location, re).also {
                     logger.info("retrieving and store fresh data for current [$location]")
-                    it?.let { repo.storeCurrent(it) }
+                    it?.let {
+                        weatherRepo.storeCurrent(it)
+                        // store into the locations storage for suggestions and Windy
+                        val geoLocation = GeoPosition(latitude = it.coord.lat, longitude = it.coord.lon)
+                        locationRepo.store(location, geoLocation)
+                    }
                 }
             }
         return reply
     }
 
     suspend fun forecast(location: String): List<ForecastWeather> {
-        val entries = repo.listForecast(location) // takes 40 entries, latest is now
+        val entries = weatherRepo.listForecast(location) // takes 40 entries, latest is now
         val last = entries.map { it.timestamp }.minOrNull()?.takeUnless {
             val now = clock()
             logger.debug("checking forecast weather cache $now - $it")
@@ -59,14 +62,14 @@ class WeatherService(val feed: OpenWeatherFeed, val repo: WeatherRepo, val refre
             feed.forecast(location).let { re ->
                 convert(location, re).also {
                     logger.info("retrieving and store fresh data for forecast [$location]")
-                    repo.storeForecast(it)
+                    weatherRepo.storeForecast(it)
                 }
             }
         }
         return reply
     }
 
-    private fun convert(location: String, reply: CurrentWeatherResponse?): CurrentWeather? {
+    internal fun convert(location: String, reply: CurrentWeatherResponse?): CurrentWeather? {
         return reply?.let { r ->
             with(r) {
                 if (weather != null && sys != null && main != null && coord != null) {
@@ -84,7 +87,7 @@ class WeatherService(val feed: OpenWeatherFeed, val repo: WeatherRepo, val refre
         }
     }
 
-    private fun convert(location: String, reply: ForecastWeatherResponse?): List<ForecastWeather> {
+    internal fun convert(location: String, reply: ForecastWeatherResponse?): List<ForecastWeather> {
         return reply?.list?.map {
             ForecastWeather(
                 location = location,

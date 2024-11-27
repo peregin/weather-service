@@ -11,7 +11,12 @@ import velocorner.weather.model.ForecastWeatherResponse
 
 private const val WEATHER_API_KEY = "WEATHER_API_KEY"
 
-class OpenWeatherFeed {
+interface WeatherFeed {
+    suspend fun current(location: String): CurrentWeatherResponse?
+    suspend fun forecast(location: String): ForecastWeatherResponse?
+}
+
+class OpenWeatherFeed: WeatherFeed {
 
     private val baseUrl = "https://api.openweathermap.org/data/2.5"
     private val json = Json { ignoreUnknownKeys = true }
@@ -20,10 +25,10 @@ class OpenWeatherFeed {
         logger.info("OpenWeatherMap key is [${it?.takeLast(4)?.padStart(it.length, 'X')}]")
     }) { "$WEATHER_API_KEY environment variable is not set" }
 
-    suspend fun current(location: String): CurrentWeatherResponse? =
+    override suspend fun current(location: String): CurrentWeatherResponse? =
         get<CurrentWeatherResponse>("weather", location)
 
-    suspend fun forecast(location: String): ForecastWeatherResponse? =
+    override suspend fun forecast(location: String): ForecastWeatherResponse? =
         get<ForecastWeatherResponse>("forecast", location)
 
     internal suspend inline fun <reified T> get(path: String, location: String): T? {

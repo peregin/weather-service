@@ -14,6 +14,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import velocorner.weather.repo.DatabaseFactory
+import velocorner.weather.repo.LocationRepoImpl
 import velocorner.weather.repo.WeatherRepoImpl
 import velocorner.weather.route.*
 import velocorner.weather.service.OpenWeatherFeed
@@ -27,8 +28,9 @@ fun main() {
 
         val feed = OpenWeatherFeed()
         DatabaseFactory.init()
-        val repo = WeatherRepoImpl()
-        val service = WeatherService(feed, repo)
+        val weatherRepo = WeatherRepoImpl()
+        val locationRepo = LocationRepoImpl()
+        val service = WeatherService(feed, weatherRepo, locationRepo)
 
         install(ContentNegotiation) {
             json()
@@ -60,7 +62,7 @@ fun main() {
             staticResources("/", "static")
             welcomeRoutes()
             weatherRoutes(service)
-            locationRoutes()
+            locationRoutes(locationRepo)
             route("api.json") {
                 openApiSpec()
             }

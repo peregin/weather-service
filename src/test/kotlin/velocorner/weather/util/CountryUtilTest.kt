@@ -1,5 +1,9 @@
 package velocorner.weather.util
 
+import junit.framework.TestCase.assertTrue
+import org.junit.jupiter.api.assertAll
+import velocorner.weather.util.CountryUtil.beautify
+import velocorner.weather.util.CountryUtil.normalize
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -62,5 +66,106 @@ internal class CountryUtilTest {
         assertEquals(",", CountryUtil.iso(","))
         assertEquals("City,", CountryUtil.iso("City,"))
         assertEquals(",Country", CountryUtil.iso(",Country"))
+    }
+
+    @Test
+    fun `should beautify locations correctly`() {
+        assertAll(
+            { assertEquals("Adliswil, CH", beautify("adliswil, ch")) },
+            { assertEquals("Abu Dhabi, AE", beautify("abu dhabi, ae")) },
+            { assertEquals("Buenos Aires, AR", beautify("buenos aires, ar")) },
+            { assertEquals("Budapest", beautify("budapest")) },
+            { assertEquals("New York City, US", beautify("new york city, us")) }
+        )
+    }
+
+    @Test
+    fun `should handle edge cases`() {
+        assertAll(
+            { assertEquals("City", beautify("  city  ")) },
+            { assertEquals("City, XX", beautify("city,xx")) },
+            { assertEquals("City, Country", beautify("city, country")) },
+            { assertEquals("City", beautify("city,")) },
+            { assertEquals("Budapest", beautify("budapest")) },
+            { assertEquals("Multi Word City", beautify("multi word city")) }
+        )
+    }
+
+    @Test
+    fun `beautify should handle special characters`() {
+        assertAll(
+            { assertEquals("São Paulo, BR", beautify("são paulo, br")) },
+            { assertEquals("Zürich, CH", beautify("zürich, ch")) }
+        )
+    }
+
+    @Test
+    fun `should normalize locations correctly`() {
+        val input = listOf(
+            "adliswil, ch",
+            "Adliswil, ch",
+            "adliswil",
+            "adliswil,CH",
+            "Adliswil,CH",
+            "Adliswil"
+        )
+
+        val result = normalize(input)
+
+        assertEquals(1, result.size)
+        assertEquals("Adliswil,CH", result.first())
+    }
+
+    @Test
+    fun `should handle empty input`() {
+        assertEquals(emptyList(), normalize(emptyList()))
+    }
+
+    @Test
+    fun `should handle multiple cities`() {
+        val input = listOf(
+            "Zurich, CH",
+            "zurich, ch",
+            "bern, ch",
+            "Bern, CH",
+            "geneva, ch"
+        )
+
+        val result = normalize(input)
+
+        assertEquals(3, result.size)
+        assertTrue(result.containsAll(listOf(
+            "Zurich, CH",
+            "Bern, CH",
+            "geneva, ch"
+        )))
+    }
+
+    @Test
+    fun `should handle multi-word cities`() {
+        val input = listOf(
+            "new york, us",
+            "New York, US",
+            "new york,US"
+        )
+
+        val result = normalize(input)
+
+        assertEquals(1, result.size)
+        assertEquals("New York, US", result.first())
+    }
+
+    @Test
+    fun `normalize should handle special characters`() {
+        val input = listOf(
+            "são paulo, br",
+            "São Paulo, BR",
+            "são paulo, br"
+        )
+
+        val result = normalize(input)
+
+        assertEquals(1, result.size)
+        assertEquals("São Paulo, BR", result.first())
     }
 }
