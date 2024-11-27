@@ -78,34 +78,34 @@ fun Route.locationRoutes(repo: LocationRepo) {
                 .let(::SuggestionResponse)
             call.respond(suggestions)
         }
-    }
 
-    get("geo/{location}", {
-        description = "Determines the country and capital from location"
-        tags(listOf("location"))
-        request {
-            this@get.setupLocationParameter()
-        }
-        response {
-            HttpStatusCode.OK to {
-                description = "The geolocation of the given input"
-                body<GeoPosition> {
-                    description = "The geolocation as latitude, longitude"
-                }
+        get("geo/{location}", {
+            description = "Determines the country and capital from location"
+            tags(listOf("location"))
+            request {
+                this@get.setupLocationParameter()
             }
-            this@get.setupCommonResponses()
+            response {
+                HttpStatusCode.OK to {
+                    description = "The geolocation of the given input"
+                    body<GeoPosition> {
+                        description = "The geolocation as latitude, longitude"
+                    }
+                }
+                this@get.setupCommonResponses()
+            }
+        }) {
+            val location = call.parameters["location"] ?: return@get call.respondText(
+                "Missing location",
+                status = HttpStatusCode.BadRequest
+            )
+            // convert city[,country] to city[ ,isoCountry]
+            val isoLocation = CountryUtil.iso(location)
+            val geoLocation = repo.getPosition(isoLocation) ?: return@get call.respondText(
+                "Unknown location $isoLocation",
+                status = HttpStatusCode.NotFound
+            )
+            call.respond(geoLocation)
         }
-    }) {
-        val location = call.parameters["location"] ?: return@get call.respondText(
-            "Missing location",
-            status = HttpStatusCode.BadRequest
-        )
-        // convert city[,country] to city[ ,isoCountry]
-        val isoLocation = CountryUtil.iso(location)
-        val geoLocation = repo.getPosition(isoLocation) ?: return@get call.respondText(
-            "Unknown location $isoLocation",
-            status = HttpStatusCode.NotFound
-        )
-        call.respond(geoLocation)
     }
 }
