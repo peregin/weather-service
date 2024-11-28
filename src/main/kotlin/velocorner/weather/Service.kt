@@ -56,6 +56,7 @@ fun main() {
             allowMethod(HttpMethod.Put)
             allowMethod(HttpMethod.Get)
             anyHost()
+            allowCredentials = true // to store cookies
         }
 
         routing {
