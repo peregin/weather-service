@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 import velocorner.weather.service.WeatherService
 import velocorner.weather.util.toMeteoGramXml
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
+import io.ktor.util.date.*
 import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.util.CountryUtil
@@ -75,6 +76,18 @@ fun Route.weatherRoutes(service: WeatherService) {
             if (forecast.isEmpty()) return@get call.respondText(
                 "Unknown location $isoLocation",
                 status = HttpStatusCode.NotFound
+            )
+            // remove old cookie set by the Scala web-app
+            call.response.cookies.append(
+                Cookie(
+                    name = "weather_location",
+                    encoding = CookieEncoding.BASE64_ENCODING,
+                    value = "",
+                    path = "/",
+                    domain = "velocorner.com",
+                    maxAge = 0,
+                    expires = GMTDate.START
+                )
             )
             // add a cookie, it is read by the frontend to lock the once set location for forecast
             call.response.cookies.append(
