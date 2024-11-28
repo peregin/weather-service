@@ -1,6 +1,8 @@
 # Weather Service
 Provides 5 days forecast, current weather conditions and suggestions for locations.
 
+Available on [weather.velocorner.com](https://weather.velocorner.com)
+
 ## TODO
 - optimize CI/CD, add test steps and deploy.sh should just copy the already built jar file
 

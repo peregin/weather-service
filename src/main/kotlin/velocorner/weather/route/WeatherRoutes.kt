@@ -76,8 +76,17 @@ fun Route.weatherRoutes(service: WeatherService) {
                 "Unknown location $isoLocation",
                 status = HttpStatusCode.NotFound
             )
-            // add a cookie
-            call.response.cookies.append(Cookie("weather_location", encoding = CookieEncoding.BASE64_ENCODING, value = isoLocation, maxAge = cookieAge))
+            // add a cookie, it is read by the frontend to lock the once set location for forecast
+            call.response.cookies.append(
+                Cookie(
+                    name = "weather_location",
+                    encoding = CookieEncoding.BASE64_ENCODING,
+                    value = isoLocation,
+                    path = "/",
+                    domain = ".velocorner.com",
+                    maxAge = cookieAge
+                )
+            )
             call.respondText(toMeteoGramXml(forecast), contentType = Xml, status = HttpStatusCode.OK)
         }
     }
