@@ -20,7 +20,7 @@ gradle wrapper
 # check for dependency updates
 ./gradlew checkUpdates
 # upgrade gradle version
-./gradlew wrapper --gradle-version 8.11.1
+./gradlew wrapper --gradle-version 8.12.1
 ```
 
 ## Docker

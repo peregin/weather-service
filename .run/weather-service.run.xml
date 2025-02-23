@@ -2,6 +2,9 @@
   <configuration default="false" name="weather-service" type="JetRunConfigurationType">
     <option name="ALTERNATIVE_JRE_PATH" value="BUNDLED" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="DB_PASSWORD" value="weather" />
+    </envs>
     <option name="MAIN_CLASS_NAME" value="velocorner.weather.ServiceKt" />
     <module name="weather-service.main" />
     <shortenClasspath name="NONE" />

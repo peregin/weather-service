@@ -14,10 +14,10 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.0.21"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
+    kotlin("jvm") version "2.1.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
     id("name.remal.check-updates") version "1.5.0"
-    id("io.ktor.plugin") version "3.0.1"
+    id("io.ktor.plugin") version "3.1.0"
 }
 
 kotlin {
@@ -47,7 +47,7 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
-    implementation("io.github.smiley4:ktor-swagger-ui:4.1.0")
+    implementation("io.github.smiley4:ktor-swagger-ui:4.1.6")
 
     // Database dependencies
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -65,7 +65,7 @@ dependencies {
 
     // Test dependencies
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.10")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
 }
