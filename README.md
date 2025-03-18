@@ -25,7 +25,8 @@ gradle wrapper
 
 ## Docker
 ```shell
-docker run -it --rm --name weather -p 9015:9015 peregin/velocorner.weather:latest
+docker build -t peregin/velocorner.weather:latest .
+docker run -it --rm --env-file ./local.env --name weather -p 9015:9015 peregin/velocorner.weather:latest
 ```
 
 ## Kotlin
