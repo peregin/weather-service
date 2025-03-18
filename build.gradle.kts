@@ -19,11 +19,25 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
     id("name.remal.check-updates") version "1.5.0"
     id("io.ktor.plugin") version "3.1.1"
+    id("org.graalvm.buildtools.native") version "0.10.6"
 }
 
 kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.toString()))
+    }
+}
+
+graalvmNative {
+    binaries {
+        named("main") {
+            imageName.set("weather-service")
+            buildArgs.add("--enable-url-protocols=http,https")
+            buildArgs.add("-H:+ReportExceptionStackTraces")
+            // Add if you're using reflection
+            buildArgs.add("--initialize-at-build-time=kotlin")
+            buildArgs.add("-H:+AddAllCharsets")
+        }
     }
 }
 
