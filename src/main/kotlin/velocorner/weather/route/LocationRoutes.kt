@@ -1,6 +1,6 @@
 package velocorner.weather.route
 
-import io.github.smiley4.ktorswaggerui.dsl.routing.get
+import io.github.smiley4.ktoropenapi.get
 import io.ktor.http.*
 import io.ktor.server.plugins.*
 import io.ktor.server.routing.*

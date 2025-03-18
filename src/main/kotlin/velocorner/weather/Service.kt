@@ -1,8 +1,8 @@
 package velocorner.weather
 
-import io.github.smiley4.ktorswaggerui.SwaggerUI
-import io.github.smiley4.ktorswaggerui.routing.openApiSpec
-import io.github.smiley4.ktorswaggerui.routing.swaggerUI
+import io.github.smiley4.ktoropenapi.OpenApi
+import io.github.smiley4.ktoropenapi.openApi
+import io.github.smiley4.ktorswaggerui.swaggerUI
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -36,7 +36,7 @@ fun main() {
             json()
         }
         install(CallLogging)
-        install(SwaggerUI) {
+        install(OpenApi) {
             info {
                 title = "Weather API"
                 version = "latest"
@@ -65,7 +65,7 @@ fun main() {
             weatherRoutes(service)
             locationRoutes(locationRepo)
             route("api.json") {
-                openApiSpec()
+                openApi()
             }
             route("docs") {
                 swaggerUI("/api.json")

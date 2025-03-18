@@ -2,6 +2,7 @@ import java.time.OffsetDateTime
 
 val ktor_version: String by project
 val kotlin_version: String by project
+val openapi_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val flyway_version: String by project
@@ -17,7 +18,7 @@ plugins {
     kotlin("jvm") version "2.1.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
     id("name.remal.check-updates") version "1.5.0"
-    id("io.ktor.plugin") version "3.1.0"
+    id("io.ktor.plugin") version "3.1.1"
 }
 
 kotlin {
@@ -47,7 +48,8 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
-    implementation("io.github.smiley4:ktor-swagger-ui:4.1.6")
+    implementation("io.github.smiley4:ktor-openapi:$openapi_version")
+    implementation("io.github.smiley4:ktor-swagger-ui:$openapi_version")
 
     // Database dependencies
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -81,13 +83,15 @@ ktor {
         customBaseImage = "openjdk:17-slim-buster"
         localImageName.set("velocorner.weather")
         imageTag.set("latest")
-        portMappings.set(listOf(
-            io.ktor.plugin.features.DockerPortMapping(
-                9015,
-                9015,
-                io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+        portMappings.set(
+            listOf(
+                io.ktor.plugin.features.DockerPortMapping(
+                    9015,
+                    9015,
+                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+                )
             )
-        ))
+        )
 
         externalRegistry.set(
             io.ktor.plugin.features.DockerImageRegistry.dockerHub(

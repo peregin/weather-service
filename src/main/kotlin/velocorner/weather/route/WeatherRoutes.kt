@@ -1,17 +1,17 @@
 package velocorner.weather.route
 
-import io.github.smiley4.ktorswaggerui.dsl.routes.OpenApiRoute
 import io.ktor.http.*
 import io.ktor.http.ContentType.Application.Xml
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import velocorner.weather.service.WeatherService
 import velocorner.weather.util.toMeteoGramXml
-import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.util.date.*
 import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.util.CountryUtil
+import io.github.smiley4.ktoropenapi.get
+import io.github.smiley4.ktoropenapi.config.RouteConfig
 
 private val logger = LoggerFactory.getLogger("WeatherRoutes")
 private const val cookieAge = 60 * 60 * 24 * 7 // 7 days
@@ -105,7 +105,7 @@ fun Route.weatherRoutes(service: WeatherService) {
     }
 }
 
-internal fun OpenApiRoute.setupLocationParameter() {
+internal fun RouteConfig.setupLocationParameter() {
     request {
         pathParameter<String>("location") {
             description = "Location in format: city[,isoCountry 2-letter code]"
@@ -116,7 +116,7 @@ internal fun OpenApiRoute.setupLocationParameter() {
     }
 }
 
-internal fun OpenApiRoute.setupCommonResponses() {
+internal fun RouteConfig.setupCommonResponses() {
     response {
         HttpStatusCode.BadRequest to { description = "Missing location" }
         HttpStatusCode.NotFound to { description = "Unknown location" }
