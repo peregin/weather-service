@@ -20,6 +20,8 @@ plugins {
     id("name.remal.check-updates") version "1.5.0"
     id("io.ktor.plugin") version "3.1.1"
     id("org.graalvm.buildtools.native") version "0.10.6"
+    // generate SBOM
+    id("org.cyclonedx.bom") version "2.2.0"
 }
 
 kotlin {

@@ -21,6 +21,8 @@ gradle wrapper
 ./gradlew checkUpdates
 # upgrade gradle version
 ./gradlew wrapper --gradle-version 8.12.1
+# generate Software Bill Of Materials SBOM
+./gradlew cyclonedxBom
 ```
 
 ## Docker
