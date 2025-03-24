@@ -134,4 +134,11 @@ tasks {
             )
         }
     }
+
+    cyclonedxBom {
+        setIncludeConfigs(listOf("runtimeClasspath"))
+        setDestination(layout.buildDirectory.dir("reports/cyclonedx").get().asFile)
+        setOutputName(project.name + ".cdx.sbom")
+        outputFormat.set("json")
+    }
 }
