@@ -14,12 +14,17 @@ docker buildx build --platform linux/arm64 -t peregin/velocorner.weather:latest 
 
 ## Database
 ### PostgreSQL
+```shell
+./psql.sh
+```
 ### Oracle
+Installation instructions
 https://dev.to/udara_dananjaya/running-oracle-19c-database-with-docker-1akg
+Run it
 ```shell
 docker run --name "oracle19.3" -p 1521:1521 -p 5500:5500 \  
     -e ORACLE_PDB=orapdb1 \  
-    -e ORACLE_PWD=topsecretpass \  
+    -e ORACLE_PWD=password \  
     -e ORACLE_MEM=3000 \  
     -v /opt/oracle/oradata:/opt/oracle/oradata \  
     -d oracle/database:19.3.0-ee 
