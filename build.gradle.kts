@@ -19,7 +19,7 @@ plugins {
     kotlin("jvm") version "2.1.20"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.20"
     id("name.remal.check-updates") version "1.5.0"
-    id("io.ktor.plugin") version "3.1.1"
+    id("io.ktor.plugin") version "3.1.2"
     id("org.graalvm.buildtools.native") version "0.10.6"
     // generate SBOM
     id("org.cyclonedx.bom") version "2.2.0"
