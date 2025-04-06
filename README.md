@@ -22,12 +22,18 @@ Installation instructions
 https://dev.to/udara_dananjaya/running-oracle-19c-database-with-docker-1akg
 Run it
 ```shell
-docker run --name "oracle19.3" -p 1521:1521 -p 5500:5500 \  
-    -e ORACLE_PDB=orapdb1 \  
-    -e ORACLE_PWD=password \  
-    -e ORACLE_MEM=3000 \  
-    -v /opt/oracle/oradata:/opt/oracle/oradata \  
-    -d oracle/database:19.3.0-ee 
+./osql.sh 
+```
+SQLDeveloper
+system as user, orapdb1 as service
+```shell
+CREATE USER weather IDENTIFIED BY your_password;
+-- Grant basic privileges to the user
+GRANT CONNECT, RESOURCE TO weather;
+-- Optionally, grant additional permissions
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE TO weather;
+-- Optionally, set quota on the user's default tablespace
+ALTER USER weather QUOTA UNLIMITED ON USERS;
 ```
 
 ## Gradle
