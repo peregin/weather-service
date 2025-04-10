@@ -9,6 +9,7 @@ val exposed_version: String by project
 val flyway_version: String by project
 val hikari_version: String by project
 val psql_version: String by project
+val oracle_version: String by project
 val testcontainers_version: String by project
 
 group = "velocorner.weather"
@@ -75,6 +76,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("org.postgresql:postgresql:$psql_version")
+    implementation("com.oracle.database.jdbc:ojdbc11:$oracle_version")
     implementation("com.zaxxer:HikariCP:$hikari_version")
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
