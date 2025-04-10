@@ -9,6 +9,7 @@ import org.junit.BeforeClass
 import org.testcontainers.containers.PostgreSQLContainer
 import velocorner.weather.model.*
 import velocorner.weather.repo.DatabaseFactory.transact
+import velocorner.weather.util.DockerUtil
 import kotlin.test.*
 import kotlin.test.Test
 
@@ -26,6 +27,8 @@ internal class LocationRepoTest {
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
+            DockerUtil.configureDockerSocketIfNeeded()
+
             postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
                 withDatabaseName(DB_NAME)
                 withUsername(DB_USER)
