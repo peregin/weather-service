@@ -88,6 +88,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$plugin_version")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
 }
 

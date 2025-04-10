@@ -7,11 +7,14 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Testcontainers
 import velocorner.weather.model.*
 import velocorner.weather.repo.DatabaseFactory.transact
 import kotlin.test.*
 import kotlin.test.Test
 
+
+// @Testcontainers
 internal class LocationRepoTest {
 
     companion object {
@@ -21,6 +24,7 @@ internal class LocationRepoTest {
 
         private lateinit var postgresContainer: PostgreSQLContainer<*>
 
+        // @Containers
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
