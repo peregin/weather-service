@@ -39,7 +39,7 @@ GRANT CONNECT, RESOURCE TO weather;
 -- Optionally, grant additional permissions
 GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE TO weather;
 -- Optionally, set quota on the user's default tablespace
-ALTER USER weather QUOTA UNLIMITED ON USERS;
+ALTER USER weather QUOTA UNLIMITED ON weather;
 ```
 
 ## Gradle
