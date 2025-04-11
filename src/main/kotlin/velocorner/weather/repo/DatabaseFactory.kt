@@ -17,7 +17,8 @@ object DatabaseFactory {
     // if not found return null and chain it at the caller with the Elvis operator
     private fun Config.tryString(path: String): String? = if (this.hasPath(path)) this.getString(path) else null
 
-    fun init(driverClassName: String = "org.postgresql.Driver", config: Config? = null) {
+    fun init(config: Config? = null) {
+        val driverClassName = config?.tryString("db.driver") ?: System.getenv("DB_DRIVER") ?: "org.postgresql.Driver"
         val dbUrl = config?.tryString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5494/weather"
         logger.info("connecting to $dbUrl")
         val dbUser = config?.tryString("db.user") ?: System.getenv("DB_USER") ?: "weather"
