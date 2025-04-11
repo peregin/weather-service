@@ -6,8 +6,8 @@ if [[ $(docker inspect -f '{{.State.Running}}' $CONTAINER_REPO) = "true" ]]; the
   echo "$CONTAINER_REPO is already running ..."
 else
   echo home directory is "$HOME"
-  docker run -p 1521:1521 -p 5500:5500 \
-      --rm --name $CONTAINER_REPO
+  docker run -d -p 1521:1521 -p 5500:5500 \
+      --rm --name $CONTAINER_REPO \
       --health-cmd='stat /etc/passwd || exit 1' \
       --health-interval=30s \
       -e ORACLE_PDB=orapdb1 \
