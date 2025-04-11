@@ -10,9 +10,17 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
+data class DatabaseSpecific(
+    val transactionIsolation: String,
+    val flywayLocation: String
+)
+
 object DatabaseFactory {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
+
+    // snippet to identify in the jdbc url
+    private const val oracleSnippet = ":oracle:"
 
     // if not found return null and chain it at the caller with the Elvis operator
     private fun Config.tryString(path: String): String? = if (this.hasPath(path)) this.getString(path) else null
@@ -27,14 +35,28 @@ object DatabaseFactory {
         logger.info("connecting as $dbUser")
         val dbPassword = config?.tryString("db.password") ?: System.getenv("DB_PASSWORD")
         requireNotNull(dbPassword) { "DB_PASSWORD is required" }
-        val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName)
+
+        val specific = when {
+            dbUrl.contains(oracleSnippet) -> DatabaseSpecific("2", "oracle/migration") // SERIALIZABLE
+            else -> DatabaseSpecific("TRANSACTION_REPEATABLE_READ", "psql/migration")
+        }
+        val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName, specific)
         Database.connect(dataSource)
-        val flyway =
-            Flyway.configure().locations("psql/migration").validateMigrationNaming(false).dataSource(dataSource).load()
+        val flyway = Flyway.configure()
+            .locations(specific.flywayLocation)
+            .validateMigrationNaming(false)
+            .dataSource(dataSource)
+            .load()
         flyway.migrate()
     }
 
-    private fun hikari(dbUrl: String, dbUser: String, dbPassword: String, driverClassName: String): HikariDataSource {
+    private fun hikari(
+        dbUrl: String,
+        dbUser: String,
+        dbPassword: String,
+        driverClassName: String,
+        specific: DatabaseSpecific
+    ): HikariDataSource {
         val config = HikariConfig()
         config.driverClassName = driverClassName
         config.jdbcUrl = dbUrl
@@ -43,10 +65,7 @@ object DatabaseFactory {
         config.maximumPoolSize = 3
         config.minimumIdle = 1
         config.isAutoCommit = false
-        config.transactionIsolation = when {
-            dbUrl.contains(":oracle:") -> "2" // SERIALIZABLE
-            else -> "TRANSACTION_REPEATABLE_READ"
-        }
+        config.transactionIsolation = specific.transactionIsolation
         config.validate()
         return HikariDataSource(config)
     }
