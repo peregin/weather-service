@@ -39,7 +39,9 @@ internal class LocationRepoTest {
         @AfterClass
         @JvmStatic
         fun tearDownSpec() {
-            postgresContainer.stop()
+            if (::postgresContainer.isInitialized) {
+                postgresContainer.stop()
+            }
         }
     }
 

@@ -43,7 +43,9 @@ internal class WeatherRepoTest {
         @AfterClass
         @JvmStatic
         fun tearDownSpec() {
-            postgresContainer.stop()
+            if (::postgresContainer.isInitialized) {
+                postgresContainer.stop()
+            }
         }
     }
 
