@@ -43,6 +43,9 @@ ALTER USER weather QUOTA UNLIMITED ON weather;
 ```
 JDBC
 ```shell
+# driver implemented in
+oracle.jdbc.driver.OracleDriver
+# url looks like
 jdbc:oracle:thin:@//localhost:1521/weather
 ```
 

@@ -17,6 +17,8 @@ object DatabaseFactory {
     // if not found return null and chain it at the caller with the Elvis operator
     private fun Config.tryString(path: String): String? = if (this.hasPath(path)) this.getString(path) else null
 
+    // only password is mandatory to have it configured
+    // it defaults to PSQL driver and db, but support Oracle autonomous database as well
     fun init(config: Config? = null) {
         val driverClassName = config?.tryString("db.driver") ?: System.getenv("DB_DRIVER") ?: "org.postgresql.Driver"
         val dbUrl = config?.tryString("db.url") ?: System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5494/weather"
@@ -27,7 +29,8 @@ object DatabaseFactory {
         requireNotNull(dbPassword) { "DB_PASSWORD is required" }
         val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName)
         Database.connect(dataSource)
-        val flyway = Flyway.configure().locations("psql/migration").validateMigrationNaming(false).dataSource(dataSource).load()
+        val flyway =
+            Flyway.configure().locations("psql/migration").validateMigrationNaming(false).dataSource(dataSource).load()
         flyway.migrate()
     }
 
@@ -40,7 +43,10 @@ object DatabaseFactory {
         config.maximumPoolSize = 3
         config.minimumIdle = 1
         config.isAutoCommit = false
-        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+        config.transactionIsolation = when {
+            dbUrl.contains(":oracle:") -> "2" // SERIALIZABLE
+            else -> "TRANSACTION_REPEATABLE_READ"
+        }
         config.validate()
         return HikariDataSource(config)
     }

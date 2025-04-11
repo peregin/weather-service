@@ -80,6 +80,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikari_version")
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
+    implementation("org.flywaydb:flyway-database-oracle:$flyway_version")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
