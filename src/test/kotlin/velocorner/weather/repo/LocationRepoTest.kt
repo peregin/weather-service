@@ -23,7 +23,6 @@ internal class LocationRepoTest {
 
         private lateinit var postgresContainer: PostgreSQLContainer<*>
 
-        // @Containers
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
