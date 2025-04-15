@@ -14,7 +14,7 @@ interface LocationRepo {
     suspend fun suggestLocations(snippet: String): List<String>
 }
 
-object LocationTable : Table("location") {
+object LocationTable : Table("LOCATION") {
     val location = text("location")
     val latitude = double("latitude")
     val longitude = double("longitude")
