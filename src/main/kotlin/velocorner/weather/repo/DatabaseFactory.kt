@@ -71,8 +71,8 @@ object DatabaseFactory {
         return HikariDataSource(config)
     }
 
-    suspend fun <T> transact(block: () -> T): T =
+    suspend fun <T> transact(block: (db: Database?) -> T): T =
         withContext(Dispatchers.IO) {
-            transaction { block() }
+            transaction { block(db) }
         }
 }

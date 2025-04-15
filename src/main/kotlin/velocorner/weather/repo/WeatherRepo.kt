@@ -23,7 +23,7 @@ interface WeatherRepo {
 
 object CurrentWeatherTable : Table("weather") {
     val location = varchar("location", 64)
-    val data = json<CurrentWeather>("DATA", Json) // needs to be capital for Oracle
+    val data = json<CurrentWeather>("data", Json) // needs to be capital for Oracle
 
     override val primaryKey = PrimaryKey(location)
 }
@@ -31,7 +31,7 @@ object CurrentWeatherTable : Table("weather") {
 object ForecastWeatherTable : Table("forecast") {
     val location = varchar("location", 64)
     val updateTime = datetime("update_time")
-    val data = json<ForecastWeather>("DATA", Json) // needs to be capital for Oracle
+    val data = json<ForecastWeather>("data", Json) // needs to be capital for Oracle
 
     override val primaryKey = PrimaryKey(location, updateTime)
 }
