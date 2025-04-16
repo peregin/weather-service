@@ -22,7 +22,10 @@ Installation instructions
 https://dev.to/udara_dananjaya/running-oracle-19c-database-with-docker-1akg
 Run it
 ```shell
-./osql.sh 
+# PDBADMIN, SYSTEM, SYS users
+./osql19ee.sh
+# or 
+./osql23ai.sh
 ```
 SQLDeveloper
 system as user, orapdb1 as service
