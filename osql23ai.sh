@@ -9,6 +9,8 @@ else
   echo home directory is "$HOME"
   docker run -d -p 1522:1521 -p 5500:5500 \
       --rm --name $CONTAINER_REPO \
+      --security-opt label=disable \
+      --shm-size=1g \
       -e ORACLE_PWD=password \
       -v /opt/oracle/oradata23:/opt/oracle/oradata \
       container-registry.oracle.com/database/free:latest
