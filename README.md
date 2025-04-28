@@ -20,6 +20,7 @@ docker buildx build --platform linux/arm64 -t peregin/velocorner.weather:latest 
 ### Oracle
 Installation instructions
 https://dev.to/udara_dananjaya/running-oracle-19c-database-with-docker-1akg
+
 Run it
 ```shell
 # PDBADMIN, SYSTEM, SYS users
@@ -27,16 +28,27 @@ Run it
 # or 
 ./osql23ai.sh
 ```
+
+Connect to it with SQLDeveloper, CLI, JDBC
 SQLDeveloper
 system as user, orapdb1 as service
+
+CLI
+docker exec -it oracle23ai su - oracle -c "
+export ORACLE_SID=orcl
+export ORAENV_ASK=NO
+. /usr/local/bin/oraenv
+\$ORACLE_HOME/bin/sqlplus / as sysdba
+"
+
 ```shell
 -- create pluggable database
-CREATE PLUGGABLE DATABASE weather ADMIN USER pdbadmin IDENTIFIED BY admin_password ROLE=(DBA) DEFAULT TABLESPACE weather DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
+CREATE PLUGGABLE DATABASE weather ADMIN USER pdbadmin IDENTIFIED BY password ROLE=(DBA) DEFAULT TABLESPACE weather DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
 ALTER PLUGGABLE DATABASE weather OPEN;
 ALTER PLUGGABLE DATABASE weather SAVE STATE;
 ALTER SESSION SET CONTAINER = weather;
 -- create dedicated user
-CREATE USER weather IDENTIFIED BY your_password DEFAULT TABLESPACE weather;
+CREATE USER weather IDENTIFIED BY weather DEFAULT TABLESPACE weather;
 -- Grant basic privileges to the user
 GRANT CONNECT, RESOURCE TO weather;
 -- Optionally, grant additional permissions
