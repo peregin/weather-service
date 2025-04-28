@@ -23,7 +23,7 @@ plugins {
     id("io.ktor.plugin") version "3.1.2"
     id("org.graalvm.buildtools.native") version "0.10.6"
     // generate SBOM
-    id("org.cyclonedx.bom") version "2.2.0"
+    id("org.cyclonedx.bom") version "2.3.0"
 }
 
 kotlin {
