@@ -13,6 +13,7 @@ import velocorner.weather.model.CurrentWeatherResponse
 import velocorner.weather.model.ForecastWeather
 import velocorner.weather.model.ForecastWeatherResponse
 import velocorner.weather.repo.DatabaseFactory.transact
+import velocorner.weather.util.DockerUtil
 import velocorner.weather.util.ResourceUtil.load
 import velocorner.weather.util.WeatherCodeUtil
 import kotlin.test.*

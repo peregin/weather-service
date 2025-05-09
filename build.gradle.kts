@@ -20,7 +20,7 @@ plugins {
     kotlin("jvm") version "2.1.20"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.20"
     id("name.remal.check-updates") version "1.5.0"
-    id("io.ktor.plugin") version "3.1.2"
+    id("io.ktor.plugin") version "3.1.3"
     id("org.graalvm.buildtools.native") version "0.10.6"
     // generate SBOM
     id("org.cyclonedx.bom") version "2.3.0"
@@ -89,8 +89,8 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$plugin_version")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
-    // testImplementation("org.testcontainers:junit-jupiter:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
+    testImplementation("org.testcontainers:oracle-xe:$testcontainers_version")
 }
 
 ktor {

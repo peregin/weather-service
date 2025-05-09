@@ -31,7 +31,8 @@ Run it
 
 Connect to it with SQLDeveloper, CLI, JDBC
 SQLDeveloper
-system as user, orapdb1 as service
+19: system as user, orapdb1 as service
+23: sys as user, free as service
 
 CLI
 docker exec -it oracle23ai su - oracle -c "
@@ -42,6 +43,9 @@ export ORAENV_ASK=NO
 "
 
 ```shell
+-- move to the root container 
+ALTER SESSION SET CONTAINER = CDB$ROOT;
+
 -- create pluggable database
 CREATE PLUGGABLE DATABASE weather ADMIN USER pdbadmin IDENTIFIED BY password ROLE=(DBA) DEFAULT TABLESPACE weather DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
 ALTER PLUGGABLE DATABASE weather OPEN;

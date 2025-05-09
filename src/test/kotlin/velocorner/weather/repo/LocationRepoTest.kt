@@ -17,6 +17,10 @@ import kotlin.test.Test
 internal class LocationRepoTest {
 
     companion object {
+        init {
+            DockerUtil.configureDockerSocketIfNeeded()
+        }
+
         private const val DB_NAME = "location_test"
         private const val DB_USER = "location"
         private const val DB_PASSWORD = "location"
@@ -26,8 +30,6 @@ internal class LocationRepoTest {
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
-            DockerUtil.configureDockerSocketIfNeeded()
-
             postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
                 withDatabaseName(DB_NAME)
                 withUsername(DB_USER)
