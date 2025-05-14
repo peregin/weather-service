@@ -2,7 +2,7 @@ import java.time.OffsetDateTime
 
 val ktor_version: String by project
 val kotlin_version: String by project
-val plugin_version = "2.1.20"
+val plugin_version = "2.1.21"
 val openapi_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
@@ -17,8 +17,8 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.1.20"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.20"
+    kotlin("jvm") version "2.1.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
     id("name.remal.check-updates") version "1.5.0"
     id("io.ktor.plugin") version "3.1.3"
     id("org.graalvm.buildtools.native") version "0.10.6"
