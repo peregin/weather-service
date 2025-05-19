@@ -5,6 +5,8 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.json.json
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.sql.vendors.OracleDialect
+import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.ForecastWeather
 import velocorner.weather.repo.DatabaseFactory.transact
@@ -21,9 +23,10 @@ interface WeatherRepo {
     suspend fun storeCurrent(weather: CurrentWeather)
 }
 
-object CurrentWeatherTable : Table("weather") {
-    val location = varchar("location", 64)
-    val data = json<CurrentWeather>("data", Json) // needs to be capital for Oracle
+// quoted entity names needed by Oracle database
+object CurrentWeatherTable : Table("\"weather\"") {
+    val location = varchar("\"location\"", 64)
+    val data = json<CurrentWeather>("data", Json)
 
     override val primaryKey = PrimaryKey(location)
 }
@@ -31,12 +34,14 @@ object CurrentWeatherTable : Table("weather") {
 object ForecastWeatherTable : Table("forecast") {
     val location = varchar("location", 64)
     val updateTime = datetime("update_time")
-    val data = json<ForecastWeather>("data", Json) // needs to be capital for Oracle
+    val data = json<ForecastWeather>("data", Json)
 
     override val primaryKey = PrimaryKey(location, updateTime)
 }
 
 class WeatherRepoImpl : WeatherRepo {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     override suspend fun listForecast(location: String, limit: Int): List<ForecastWeather> = transact {
         ForecastWeatherTable
@@ -73,14 +78,24 @@ class WeatherRepoImpl : WeatherRepo {
     }
 
     override suspend fun storeCurrent(weather: CurrentWeather) {
-        transact {
-            val count = CurrentWeatherTable.insertIgnore {
-                it[location] = weather.location
-                it[data] = weather
-            }.insertedCount
-            if (count == 0) {
-                CurrentWeatherTable.update({ CurrentWeatherTable.location eq weather.location }) {
+        transact { db ->
+            logger.debug("db dialect is {}", db?.dialect)
+            if (db?.dialect is OracleDialect) {
+                logger.debug("IS Oracle dialect for weather upsert")
+                CurrentWeatherTable.insert {
+                    it[location] = weather.location
                     it[data] = weather
+                }
+            } else {
+                logger.debug("NOT Oracle dialect for weather upsert")
+                val count = CurrentWeatherTable.insertIgnore {
+                    it[location] = weather.location
+                    it[data] = weather
+                }.insertedCount
+                if (count == 0) {
+                    CurrentWeatherTable.update({ CurrentWeatherTable.location eq weather.location }) {
+                        it[data] = weather
+                    }
                 }
             }
         }
