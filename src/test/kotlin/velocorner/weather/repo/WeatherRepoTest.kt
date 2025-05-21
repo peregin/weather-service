@@ -13,7 +13,6 @@ import velocorner.weather.model.CurrentWeatherResponse
 import velocorner.weather.model.ForecastWeather
 import velocorner.weather.model.ForecastWeatherResponse
 import velocorner.weather.repo.DatabaseFactory.transact
-import velocorner.weather.util.DockerUtil
 import velocorner.weather.util.ResourceUtil.load
 import velocorner.weather.util.WeatherCodeUtil
 import kotlin.test.*
@@ -68,8 +67,8 @@ internal class WeatherRepoTest {
 
     private fun truncateTables() = runBlocking {
         transact {
-            CurrentWeatherTable.deleteAll()
-            ForecastWeatherTable.deleteAll()
+            PostgresqlCurrentWeatherTable.deleteAll()
+            PostgresqlForecastWeatherTable.deleteAll()
         }
     }
 
@@ -98,7 +97,7 @@ internal class WeatherRepoTest {
         assertEquals(weather, repo.getCurrent(ZH_LOCATION))
         // store it again, we should have only one entry
         repo.storeCurrent(weather)
-        val entries = transact { CurrentWeatherTable.selectAll().count() }
+        val entries = transact { PostgresqlCurrentWeatherTable.selectAll().count() }
         assertEquals(1, entries)
     }
 

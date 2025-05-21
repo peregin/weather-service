@@ -3,8 +3,10 @@ package velocorner.weather.repo
 import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.json.json
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
-import org.slf4j.LoggerFactory
+import org.jetbrains.exposed.sql.vendors.OracleDialect
+import org.jetbrains.exposed.sql.vendors.PostgreSQLDialect
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.ForecastWeather
 import velocorner.weather.repo.DatabaseFactory.transact
@@ -22,80 +24,138 @@ interface WeatherRepo {
 }
 
 // quoted entity names needed by Oracle database
-object CurrentWeatherTable : Table("\"weather\"") {
+abstract class CurrentWeatherTable : Table("\"weather\"") {
     val location = varchar("\"location\"", 64)
-    val data = text("data") // use text for compatibility with Oracle
     override val primaryKey = PrimaryKey(location)
 }
 
-object ForecastWeatherTable : Table("\"forecast\"") {
+object OracleCurrentWeatherTable : CurrentWeatherTable() {
+    val data = text("data") // use text for compatibility with Oracle - CLOB
+}
+
+object PostgresqlCurrentWeatherTable : CurrentWeatherTable() {
+    val data = json<CurrentWeather>("data", Json) // use json with Psql - jsonb
+}
+
+abstract class ForecastWeatherTable : Table("\"forecast\"") {
     val location = varchar("\"location\"", 64)
     val updateTime = datetime("\"update_time\"")
-    val data = text("data")
     override val primaryKey = PrimaryKey(location, updateTime)
+}
+
+object OracleForecastWeatherTable : ForecastWeatherTable() {
+    val data = text("data") // use text for compatibility with Oracle - CLOB
+}
+
+object PostgresqlForecastWeatherTable : ForecastWeatherTable() {
+    val data = json<ForecastWeather>("data", Json) // use json with Psql - jsonb
 }
 
 class WeatherRepoImpl : WeatherRepo {
 
-    private val logger = LoggerFactory.getLogger(this.javaClass)
+    //private val logger = LoggerFactory.getLogger(this.javaClass)
     private val json = Json { ignoreUnknownKeys = true }
 
-    override suspend fun listForecast(location: String, limit: Int): List<ForecastWeather> = transact {
-        ForecastWeatherTable
-            .selectAll().where { ForecastWeatherTable.location eq location }
-            .orderBy(Pair(ForecastWeatherTable.updateTime, SortOrder.DESC))
-            .limit(limit)
-            .mapNotNull { row ->
-                row[ForecastWeatherTable.data].let { jsonString ->
-                    runCatching { json.decodeFromString(ForecastWeather.serializer(), jsonString) }.getOrNull()
+    override suspend fun listForecast(location: String, limit: Int): List<ForecastWeather> = transact { db ->
+        when (db?.dialect) {
+            is OracleDialect -> OracleForecastWeatherTable
+                .selectAll().where { OracleForecastWeatherTable.location eq location }
+                .orderBy(Pair(OracleForecastWeatherTable.updateTime, SortOrder.DESC))
+                .limit(limit)
+                .mapNotNull {
+                    it[OracleForecastWeatherTable.data].let { jsonString ->
+                        runCatching { json.decodeFromString(ForecastWeather.serializer(), jsonString) }.getOrNull()
+                    }
                 }
-            }
+
+            is PostgreSQLDialect -> PostgresqlForecastWeatherTable
+                .selectAll().where { PostgresqlForecastWeatherTable.location eq location }
+                .orderBy(Pair(PostgresqlForecastWeatherTable.updateTime, SortOrder.DESC))
+                .limit(limit)
+                .mapNotNull { it[PostgresqlForecastWeatherTable.data] }
+
+            else -> throw IllegalStateException("db dialect ${db?.dialect?.name} not supported")
+        }
     }
 
-    override suspend fun storeForecast(forecast: List<ForecastWeather>) = transact {
+    override suspend fun storeForecast(forecast: List<ForecastWeather>) = transact { db ->
         forecast.forEach { w ->
-            val timestamp = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
-            val jsonString = json.encodeToString(ForecastWeather.serializer(), w)
-            // can't use insertIgnore to have it generic with Oracle and Postgresql
-            val updated = ForecastWeatherTable.update({
-                (ForecastWeatherTable.location eq w.location) and
-                        (ForecastWeatherTable.updateTime eq timestamp)
-            }) {
-                it[data] = jsonString
-            }
-            if (updated == 0) {
-                ForecastWeatherTable.insert {
-                    it[location] = w.location
-                    it[updateTime] = timestamp
-                    it[data] = jsonString
+            when (db?.dialect) {
+                is OracleDialect -> {
+                    val timestamp = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
+                    val jsonString = json.encodeToString(ForecastWeather.serializer(), w)
+                    // can't use insertIgnore to have it generic with Oracle and Postgresql
+                    val updated = OracleForecastWeatherTable.update({
+                        (OracleForecastWeatherTable.location eq w.location) and
+                                (OracleForecastWeatherTable.updateTime eq timestamp)
+                    }) {
+                        it[data] = jsonString
+                    }
+                    if (updated == 0) {
+                        OracleForecastWeatherTable.insert {
+                            it[location] = w.location
+                            it[updateTime] = timestamp
+                            it[data] = jsonString
+                        }
+                    }
                 }
+
+                is PostgreSQLDialect -> PostgresqlForecastWeatherTable.insertIgnore {
+                    it[location] = w.location
+                    it[updateTime] = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
+                    it[data] = w
+                }
+
+                else -> throw IllegalStateException("db dialect ${db?.dialect?.name} not supported")
             }
         }
     }
 
-    override suspend fun getCurrent(location: String): CurrentWeather? = transact {
-        CurrentWeatherTable
-            .selectAll().where { CurrentWeatherTable.location eq location }
-            .mapNotNull { row ->
-                row[CurrentWeatherTable.data].let { jsonString ->
-                    runCatching { json.decodeFromString(CurrentWeather.serializer(), jsonString) }.getOrNull()
+    override suspend fun getCurrent(location: String): CurrentWeather? = transact { db ->
+        when (db?.dialect) {
+            is OracleDialect -> OracleCurrentWeatherTable.selectAll()
+                .where { OracleCurrentWeatherTable.location eq location }
+                .mapNotNull { row ->
+                    row[OracleCurrentWeatherTable.data].let { jsonString ->
+                        runCatching { json.decodeFromString(CurrentWeather.serializer(), jsonString) }.getOrNull()
+                    }
                 }
-            }
-            .singleOrNull()
+                .singleOrNull()
+
+            is PostgreSQLDialect -> PostgresqlCurrentWeatherTable.selectAll()
+                .where { PostgresqlCurrentWeatherTable.location eq location }
+                .mapNotNull { it[PostgresqlCurrentWeatherTable.data] }
+                .singleOrNull()
+
+            else -> throw IllegalStateException("db dialect ${db?.dialect?.name} not supported")
+        }
     }
 
     override suspend fun storeCurrent(weather: CurrentWeather): Unit = transact { db ->
-        logger.debug("db dialect is {}", db?.dialect)
-        val jsonString = json.encodeToString(CurrentWeather.serializer(), weather)
-        // can't use insertIgnore to have it generic with Oracle and Postgresql
-        val updated = CurrentWeatherTable.update({ CurrentWeatherTable.location eq weather.location }) {
-            it[data] = jsonString
-        }
-        if (updated == 0) {
-            CurrentWeatherTable.insert {
-                it[location] = weather.location
-                it[data] = jsonString
+        when (db?.dialect) {
+            is OracleDialect -> {
+                val jsonString = json.encodeToString(CurrentWeather.serializer(), weather)
+                val updated =
+                    OracleCurrentWeatherTable.update({ OracleCurrentWeatherTable.location eq weather.location }) {
+                        it[data] = jsonString
+                    }
+                if (updated == 0) {
+                    OracleCurrentWeatherTable.insert {
+                        it[location] = weather.location
+                        it[data] = jsonString
+                    }
+                }
             }
+
+            is PostgreSQLDialect -> {
+                PostgresqlCurrentWeatherTable.insertIgnore {
+                    it[location] = weather.location
+                    it[data] = weather
+                }
+            }
+
+            else -> throw IllegalStateException("db dialect ${db?.dialect?.name} not supported")
+
         }
     }
 }

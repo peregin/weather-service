@@ -62,8 +62,8 @@ internal class LocationRepoTest {
 
     private fun truncateTables() = runBlocking {
         transact {
-            CurrentWeatherTable.deleteAll()
-            ForecastWeatherTable.deleteAll()
+            PostgresqlCurrentWeatherTable.deleteAll()
+            PostgresqlForecastWeatherTable.deleteAll()
             LocationTable.deleteAll()
         }
     }
