@@ -1,0 +1,13 @@
+FROM ghcr.io/graalvm/graalvm-ce:17 AS build
+RUN gu install native-image
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle shadowJar --no-daemon
+RUN native-image --no-server -jar build/libs/service.jar -H:Name=weather-service
+
+FROM debian:bookworm-slim
+EXPOSE 9015
+RUN mkdir /app
+COPY --from=build /home/gradle/src/weather-service /app/weather-service
+ENTRYPOINT ["/app/weather-service"]
+CMD []

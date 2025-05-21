@@ -84,6 +84,7 @@ gradle wrapper
 ## Docker
 ```shell
 docker build -t peregin/velocorner.weather:latest .
+docker build -t peregin/velocorner.weather:latest -f Dockerfile.graal .
 docker run -it --rm --env-file ./local.env --name weather -p 9015:9015 peregin/velocorner.weather:latest
 ```
 
