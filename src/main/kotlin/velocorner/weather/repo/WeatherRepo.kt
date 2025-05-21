@@ -3,9 +3,7 @@ package velocorner.weather.repo
 import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.json.json
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
-import org.jetbrains.exposed.sql.vendors.OracleDialect
 import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.ForecastWeather
@@ -26,45 +24,50 @@ interface WeatherRepo {
 // quoted entity names needed by Oracle database
 object CurrentWeatherTable : Table("\"weather\"") {
     val location = varchar("\"location\"", 64)
-    val data = json<CurrentWeather>("data", Json)
-
+    val data = text("data") // use text for compatibility with Oracle
     override val primaryKey = PrimaryKey(location)
 }
 
-object ForecastWeatherTable : Table("forecast") {
-    val location = varchar("location", 64)
-    val updateTime = datetime("update_time")
-    val data = json<ForecastWeather>("data", Json)
-
+object ForecastWeatherTable : Table("\"forecast\"") {
+    val location = varchar("\"location\"", 64)
+    val updateTime = datetime("\"update_time\"")
+    val data = text("data")
     override val primaryKey = PrimaryKey(location, updateTime)
 }
 
 class WeatherRepoImpl : WeatherRepo {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
+    private val json = Json { ignoreUnknownKeys = true }
 
     override suspend fun listForecast(location: String, limit: Int): List<ForecastWeather> = transact {
         ForecastWeatherTable
             .selectAll().where { ForecastWeatherTable.location eq location }
             .orderBy(Pair(ForecastWeatherTable.updateTime, SortOrder.DESC))
             .limit(limit)
-            .map { it[ForecastWeatherTable.data] }
+            .mapNotNull { row ->
+                row[ForecastWeatherTable.data].let { jsonString ->
+                    runCatching { json.decodeFromString(ForecastWeather.serializer(), jsonString) }.getOrNull()
+                }
+            }
     }
 
     override suspend fun storeForecast(forecast: List<ForecastWeather>) = transact {
         forecast.forEach { w ->
-            val count = ForecastWeatherTable.insertIgnore {
-                it[location] = w.location
-                it[updateTime] = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
-                it[data] = w
-            }.insertedCount
-            if (count == 0) {
-                ForecastWeatherTable.update({
-                    (ForecastWeatherTable.location eq w.location) and
-                            (ForecastWeatherTable.updateTime eq w.timestamp.toLocalDateTime().toKotlinLocalDateTime())
-                }) {
-                    it[updateTime] = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
-                    it[data] = w
+            val timestamp = w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
+            val jsonString = json.encodeToString(ForecastWeather.serializer(), w)
+            // can't use insertIgnore to have it generic with Oracle and Postgresql
+            val updated = ForecastWeatherTable.update({
+                (ForecastWeatherTable.location eq w.location) and
+                        (ForecastWeatherTable.updateTime eq timestamp)
+            }) {
+                it[data] = jsonString
+            }
+            if (updated == 0) {
+                ForecastWeatherTable.insert {
+                    it[location] = w.location
+                    it[updateTime] = timestamp
+                    it[data] = jsonString
                 }
             }
         }
@@ -73,30 +76,25 @@ class WeatherRepoImpl : WeatherRepo {
     override suspend fun getCurrent(location: String): CurrentWeather? = transact {
         CurrentWeatherTable
             .selectAll().where { CurrentWeatherTable.location eq location }
-            .map { it[CurrentWeatherTable.data] }
+            .mapNotNull { row ->
+                row[CurrentWeatherTable.data].let { jsonString ->
+                    runCatching { json.decodeFromString(CurrentWeather.serializer(), jsonString) }.getOrNull()
+                }
+            }
             .singleOrNull()
     }
 
-    override suspend fun storeCurrent(weather: CurrentWeather) {
-        transact { db ->
-            logger.debug("db dialect is {}", db?.dialect)
-            if (db?.dialect is OracleDialect) {
-                logger.debug("IS Oracle dialect for weather upsert")
-                CurrentWeatherTable.insert {
-                    it[location] = weather.location
-                    it[data] = weather
-                }
-            } else {
-                logger.debug("NOT Oracle dialect for weather upsert")
-                val count = CurrentWeatherTable.insertIgnore {
-                    it[location] = weather.location
-                    it[data] = weather
-                }.insertedCount
-                if (count == 0) {
-                    CurrentWeatherTable.update({ CurrentWeatherTable.location eq weather.location }) {
-                        it[data] = weather
-                    }
-                }
+    override suspend fun storeCurrent(weather: CurrentWeather): Unit = transact { db ->
+        logger.debug("db dialect is {}", db?.dialect)
+        val jsonString = json.encodeToString(CurrentWeather.serializer(), weather)
+        // can't use insertIgnore to have it generic with Oracle and Postgresql
+        val updated = CurrentWeatherTable.update({ CurrentWeatherTable.location eq weather.location }) {
+            it[data] = jsonString
+        }
+        if (updated == 0) {
+            CurrentWeatherTable.insert {
+                it[location] = weather.location
+                it[data] = jsonString
             }
         }
     }

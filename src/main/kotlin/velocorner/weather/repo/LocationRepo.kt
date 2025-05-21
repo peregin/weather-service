@@ -1,7 +1,7 @@
 package velocorner.weather.repo
 
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insertIgnore
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import velocorner.weather.model.GeoPosition
 import velocorner.weather.repo.DatabaseFactory.transact
@@ -23,18 +23,17 @@ object LocationTable : Table("location") {
 
 class LocationRepoImpl : LocationRepo {
 
-    override suspend fun store(location: String, position: GeoPosition) {
-        transact {
-            val count = LocationTable.insertIgnore {
+    override suspend fun store(location: String, position: GeoPosition): Unit = transact {
+        // can't use insertIgnore to have it generic with Oracle and Postgresql
+        val updated = LocationTable.update({ LocationTable.location eq location.lowercase() }) {
+            it[latitude] = position.latitude
+            it[longitude] = position.longitude
+        }
+        if (updated == 0) {
+            LocationTable.insert {
                 it[LocationTable.location] = location.lowercase()
                 it[latitude] = position.latitude
                 it[longitude] = position.longitude
-            }.insertedCount
-            if (count == 0) {
-                LocationTable.update({ LocationTable.location eq location.lowercase() }) {
-                    it[latitude] = position.latitude
-                    it[longitude] = position.longitude
-                }
             }
         }
     }
