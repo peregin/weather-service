@@ -3,13 +3,13 @@ Provides 5 days forecast, current weather conditions and suggestions for locatio
 
 Available on [weather.velocorner.com](https://weather.velocorner.com)
 
-## TODO
-- optimize CI/CD, add test steps and deploy.sh should just copy the already built jar file
 
-## Deploy
+## Build
 ```shell
+# build jat jar
 ./gradlew shadowJar
-docker buildx build --platform linux/arm64 -t peregin/velocorner.weather:latest --push .
+# build native image with gradle
+native-image -cp build/libs/service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
 ```
 
 ## Database
@@ -84,6 +84,9 @@ gradle wrapper
 ## Docker
 ```shell
 docker build -t peregin/velocorner.weather:latest .
+# build ARM docker image
+docker buildx build --platform linux/arm64 -t peregin/velocorner.weather:latest --push .
+# build with native image
 docker build -t peregin/velocorner.weather:latest -f Dockerfile.graal .
 docker run -it --rm --env-file ./local.env --name weather -p 9015:9015 peregin/velocorner.weather:latest
 ```
