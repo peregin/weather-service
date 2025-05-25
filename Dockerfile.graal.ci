@@ -10,8 +10,8 @@ WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
 
 # Optimize Gradle build
-RUN gradle shadowJar --no-daemon --parallel \
-    --build-cache \
+RUN gradle shadowJar --no-daemon \
+    --parallel \
     --console=plain \
     && rm -rf ~/.gradle
 
