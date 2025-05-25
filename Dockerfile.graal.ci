@@ -1,0 +1,38 @@
+FROM ghcr.io/graalvm/graalvm-ce:21.2.0 AS build
+
+# Combine RUN commands and clean up in the same layer
+RUN gu install native-image && \
+    rm -rf /var/cache/gu
+
+# Create directory before COPY to ensure proper permissions
+WORKDIR /home/gradle/src
+
+COPY --chown=gradle:gradle . .
+
+# Optimize Gradle build
+RUN gradle shadowJar --no-daemon --parallel \
+    --build-cache \
+    --console=plain \
+    && rm -rf ~/.gradle
+
+RUN native-image -cp build/libs/service.jar velocorner.weather.ServiceKt \
+  --report-unsupported-elements-at-runtime \
+  --verbose \
+  --enable-https \
+  --strip-debug \
+  -o weather-service \
+  --initialize-at-build-time=ch.qos.logback \
+  --initialize-at-build-time=ch.qos.logback.classic.Logger \
+  --no-fallback \
+  -O2 \
+  --static
+
+# Use smaller base image for runtime
+FROM gcr.io/distroless/base-debian12
+EXPOSE 9015
+WORKDIR /app
+COPY --from=build /home/gradle/src/weather-service /app/
+
+# Use non-root user for security
+USER nonroot
+ENTRYPOINT ["/app/weather-service"]
