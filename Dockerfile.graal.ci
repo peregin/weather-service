@@ -21,17 +21,16 @@ RUN wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-
 
 # Create gradle user to avoid running as root
 RUN useradd -m -u 1001 gradle
+USER gradle
 
 WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
 
-USER gradle
-
 # Optimize Gradle build
-RUN gradle shadowJar --no-daemon \
+RUN gradle shadowJar \
+    --no-daemon \
     --parallel \
-    --console=plain \
-    && rm -rf ~/.gradle
+    --console=plain
 
 RUN native-image -cp build/libs/service.jar velocorner.weather.ServiceKt \
   --report-unsupported-elements-at-runtime \
