@@ -36,7 +36,6 @@ RUN native-image -cp build/libs/service.jar velocorner.weather.ServiceKt \
   --report-unsupported-elements-at-runtime \
   --verbose \
   --enable-https \
-  --strip-debug \
   -o weather-service \
   --initialize-at-build-time=ch.qos.logback \
   --initialize-at-build-time=ch.qos.logback.classic.Logger \
