@@ -27,20 +27,22 @@ WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
 
 # Optimize Gradle build
-RUN gradle shadowJar \
-    --no-daemon \
-    --parallel \
-    --console=plain
+#RUN gradle shadowJar \
+#    --no-daemon \
+#    --parallel \
+#    --console=plain
 
-RUN native-image -cp build/libs/service.jar velocorner.weather.ServiceKt \
+# or simply copy the jar from the previous step
+COPY --chown=gradle:gradle ./build/libs/service.jar build/libs/service.jar
+
+RUN "${JAVA_HOME}/bin/native-image" -cp build/libs/service.jar velocorner.weather.ServiceKt \
+  -o weather-service \
   --report-unsupported-elements-at-runtime \
   --verbose \
   --enable-https \
-  -o weather-service \
   --initialize-at-build-time=ch.qos.logback \
   --initialize-at-build-time=ch.qos.logback.classic.Logger \
   --no-fallback \
-  -O2 \
   --static
 
 # Use smaller base image for runtime
