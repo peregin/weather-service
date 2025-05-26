@@ -1,22 +1,9 @@
-FROM ghcr.io/graalvm/graalvm-ce:21.2.0 AS build
+FROM ghcr.io/graalvm/graalvm-community:23-ol9 AS build
 
-# Combine all installations in a single layer to reduce image size
-RUN microdnf install -y wget unzip shadow-utils \
+# Install native-image
+RUN microdnf install -y findutils \
     && microdnf clean all \
-    && gu install native-image \
-    && rm -rf /var/cache/gu
-
-# Install Gradle
-ENV GRADLE_VERSION=8.4
-ENV GRADLE_HOME=/opt/gradle
-ENV PATH="${GRADLE_HOME}/bin:${PATH}"
-
-RUN wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O gradle.zip \
-    && unzip gradle.zip -d /opt \
-    && rm gradle.zip \
-    && mv "/opt/gradle-${GRADLE_VERSION}" "${GRADLE_HOME}" \
-    && ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-    && gradle --version
+    && gu install native-image
 
 # Create gradle user to avoid running as root
 RUN useradd -m -u 1001 gradle
@@ -25,32 +12,16 @@ USER gradle
 WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
 
-# Optimize Gradle build
-#RUN gradle shadowJar \
-#    --no-daemon \
-#    --parallel \
-#    --console=plain
+# Build the application using Gradle wrapper and GraalVM native plugin
+RUN ./gradlew nativeCompile --no-daemon --console=plain
 
-# or simply copy the jar from the previous step
-COPY --chown=gradle:gradle ./build/libs/service.jar build/libs/service.jar
-
-RUN "${JAVA_HOME}/bin/native-image" -cp build/libs/service.jar velocorner.weather.ServiceKt \
-  -o weather-service \
-  --report-unsupported-elements-at-runtime \
-  --verbose \
-    --enable-https \
-    --initialize-at-build-time=ch.qos.logback,ch.qos.logback.classic.Logger \
-    --no-fallback \
-    --libc=musl \
-    --static \
-    --enable-url-protocols=https \
-    -H:+ReportExceptionStackTraces
-
-# Use distroless as minimal base image for runtime
+# Use a compatible runtime base image for the native binary
 FROM gcr.io/distroless/base-debian12:nonroot
 EXPOSE 9015
 WORKDIR /app
-COPY --from=build /home/gradle/src/weather-service /app/
+
+# Copy the native binary from the build stage
+COPY --from=build /home/gradle/src/build/native/nativeCompile/weather-service /app/weather-service
 
 # Use non-root user for security
 USER nonroot:nonroot
