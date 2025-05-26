@@ -1,7 +1,7 @@
 FROM ghcr.io/graalvm/graalvm-ce:21.2.0 AS build
 
 # Combine all installations in a single layer to reduce image size
-RUN gu install native-image \
+RUN microdnf install -y wget unzip shadow-utils \
     && microdnf clean all \
     && gu install native-image \
     && rm -rf /var/cache/gu
