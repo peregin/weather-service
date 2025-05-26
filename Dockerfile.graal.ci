@@ -43,7 +43,7 @@ RUN "${JAVA_HOME}/bin/native-image" -cp build/libs/service.jar velocorner.weathe
   --initialize-at-build-time=ch.qos.logback \
   --initialize-at-build-time=ch.qos.logback.classic.Logger \
   --no-fallback \
-  --static
+  --libc=musl
 
 # Use smaller base image for runtime
 FROM gcr.io/distroless/base-debian12
