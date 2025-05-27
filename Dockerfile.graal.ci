@@ -10,6 +10,7 @@ USER gradle
 
 WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
+RUN chmod +x ./gradlew
 
 # Build the application using Gradle wrapper and GraalVM native plugin
 RUN ./gradlew nativeCompile --no-daemon --console=plain
