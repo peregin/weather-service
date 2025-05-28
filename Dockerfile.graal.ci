@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/graalvm-community:23-ol9 AS build
+FROM ghcr.io/graalvm/jdk-community:24.0.1 AS build
 
 # Install native-image
 RUN microdnf install -y findutils \
