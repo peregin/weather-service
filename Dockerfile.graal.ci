@@ -2,7 +2,8 @@ FROM ghcr.io/graalvm/graalvm-community:23-ol9 AS build
 
 # Install native-image
 RUN microdnf install -y findutils \
-    && microdnf clean all
+    && microdnf clean all \
+    && gu install native-image
 
 # Create gradle user to avoid running as root
 RUN useradd -m -u 1001 gradle
