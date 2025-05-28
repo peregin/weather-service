@@ -15,7 +15,7 @@ COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
 
 # Build the application using Gradle wrapper and GraalVM native plugin
 # RUN ./gradlew nativeCompile --no-daemon --console=plain
-native-image -cp /app/weather-service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
+RUN native-image -cp /app/weather-service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
 
 # Use a compatible runtime base image for the native binary
 FROM gcr.io/distroless/base-debian12:nonroot
