@@ -14,7 +14,6 @@ RUN native-image \
   --verbose \
   --no-fallback \
   --enable-https \
-  --color=always \
   -H:+ReportExceptionStackTraces \
   -o weather-service \
   --initialize-at-run-time=io.netty,org.slf4j \
