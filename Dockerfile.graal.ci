@@ -11,10 +11,16 @@ RUN native-image \
   -cp /app/weather-service.jar \
   velocorner.weather.ServiceKt \
   --report-unsupported-elements-at-runtime \
-  --verbose --enable-https \
+  --verbose \
+  --no-fallback \
+  --enable-https \
+  --color=always \
   -H:+ReportExceptionStackTraces \
   -o weather-service \
-  --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
+  --initialize-at-run-time=io.netty,org.slf4j \
+  --initialize-at-build-time=ch.qos.logback \
+  --initialize-at-build-time=ch.qos.logback.classic.Logger \
+  --initialize-at-build-time=kotlin.DeprecationLevel
 
 # Use a compatible runtime base image for the native binary
 FROM gcr.io/distroless/base-debian12:nonroot
