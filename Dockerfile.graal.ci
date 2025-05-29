@@ -24,7 +24,10 @@ RUN native-image \
   --initialize-at-build-time=kotlin.DeprecationLevel
 
 # Use a compatible runtime base image for the native binary with libz.so.1
-FROM gcr.io/distroless/cc-debian12:nonroot
+FROM debian:bullseye-slim
+
+RUN apt-get update && apt-get install -y zlib1g && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/weather-service /app/weather-service
 EXPOSE 9015
 
