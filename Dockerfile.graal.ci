@@ -1,29 +1,25 @@
-FROM ghcr.io/graalvm/jdk-community:24.0.1 AS build
-
-# Install native-image
-RUN microdnf install -y findutils \
-    && microdnf clean all
+FROM ghcr.io/graalvm/native-image:ol8-java17-22.3.3 AS build
 
 # Create gradle user to avoid running as root
 RUN useradd -m -u 1001 gradle
+
+COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
+WORKDIR /app
 USER gradle
 
-WORKDIR /home/gradle
-# COPY --chown=gradle:gradle . .
-# RUN chmod +x ./gradlew
-COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
-
-# Build the application using Gradle wrapper and GraalVM native plugin
-# RUN ./gradlew nativeCompile --no-daemon --console=plain
-RUN "${JAVA_HOME}/bin/native-image" -cp /app/weather-service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
+RUN native-image \
+  -cp /app/weather-service.jar \
+  velocorner.weather.ServiceKt \
+  --report-unsupported-elements-at-runtime \
+  --verbose --enable-https \
+  -H:+ReportExceptionStackTraces \
+  -o weather-service \
+  --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
 
 # Use a compatible runtime base image for the native binary
 FROM gcr.io/distroless/base-debian12:nonroot
+COPY --from=build /app/weather-service /app/weather-service
 EXPOSE 9015
-WORKDIR /app
-
-# Copy the native binary from the build stage
-COPY --from=build /home/gradle/weather-service /app/weather-service
 
 # Use non-root user for security
 USER nonroot:nonroot
