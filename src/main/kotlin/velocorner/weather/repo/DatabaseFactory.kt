@@ -68,7 +68,8 @@ object DatabaseFactory {
         config.isAutoCommit = false
         config.transactionIsolation = specific.transactionIsolation
         config.validate()
-        config.toString().let { logger.info(it) }
+        println(config.toString())
+        logger.info(config.toString())
         return HikariDataSource(config)
     }
 
