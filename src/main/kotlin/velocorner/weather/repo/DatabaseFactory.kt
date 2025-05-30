@@ -69,7 +69,8 @@ object DatabaseFactory {
         config.transactionIsolation = specific.transactionIsolation
         config.validate()
         println(config.toString())
-        logger.info(config.toString())
+        println("driver: ${config.driverClassName}")
+        println("url: ${config.jdbcUrl}")
         return HikariDataSource(config)
     }
 
