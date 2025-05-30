@@ -8,10 +8,6 @@ IFS=$'\n\t'
 BUILDER_NAME="multi-arch-builder"
 IMAGE_NAME="peregin/velocorner.weather"
 TAG="latest"
-PLATFORMS="linux/arm64"
-# read it as parameter of default it
-DOCKERFILE=${1:-"Dockerfile"}
-echo "building from $DOCKERFILE"
 
 # Color output
 RED='\033[0;31m'
@@ -32,6 +28,14 @@ log() {
     esac
     echo -e "${color}[$(date +'%Y-%m-%d %H:%M:%S')] [$level] $*${NC}"
 }
+
+# read it as parameter of default it
+DOCKERFILE=${1:-"Dockerfile"}
+log "INFO" "building from $DOCKERFILE"
+#PLATFORMS="linux/arm64,linux/amd64"
+PLATFORMS=${2:-"linux/arm64"}
+log "INFO" "multi-arch image for platforms: ${PLATFORMS}"
+
 
 # Error handler
 error_handler() {
