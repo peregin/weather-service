@@ -31,6 +31,4 @@ RUN apt-get update && apt-get install -y zlib1g && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/weather-service /app/weather-service
 EXPOSE 9015
 
-# Use non-root user for security
-USER nonroot:nonroot
 ENTRYPOINT ["/app/weather-service"]
