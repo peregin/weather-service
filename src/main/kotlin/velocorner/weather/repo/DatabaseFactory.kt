@@ -71,6 +71,8 @@ object DatabaseFactory {
         println(config.toString())
         println("driver: ${config.driverClassName}")
         println("url: ${config.jdbcUrl}")
+        println("user: ${config.username}")
+        println("specific: ${specific}")
         return HikariDataSource(config)
     }
 
