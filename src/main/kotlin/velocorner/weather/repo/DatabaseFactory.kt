@@ -67,6 +67,7 @@ object DatabaseFactory {
         config.minimumIdle = 1
         config.isAutoCommit = false
         config.transactionIsolation = specific.transactionIsolation
+        config.initializationFailTimeout = 10_000 // 10 seconds
         config.validate()
         println(config.toString())
         println("driver: ${config.driverClassName}")
