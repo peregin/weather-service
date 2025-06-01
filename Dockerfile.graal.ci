@@ -21,7 +21,8 @@ RUN native-image \
   --initialize-at-run-time=io.netty,org.slf4j \
   --initialize-at-build-time=ch.qos.logback \
   --initialize-at-build-time=ch.qos.logback.classic.Logger \
-  --initialize-at-build-time=kotlin.DeprecationLevel
+  --initialize-at-build-time=kotlin.DeprecationLevel \
+  --initialize-at-build-time=org.postgresql.Driver
 
 # Use a compatible runtime base image for the native binary with libz.so.1
 FROM debian:bullseye-slim
