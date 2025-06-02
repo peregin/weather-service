@@ -17,6 +17,7 @@ RUN native-image \
   --no-fallback \
   --enable-https \
   -H:+ReportExceptionStackTraces \
+  --static \
   -o weather-service \
   --initialize-at-run-time=io.netty,org.slf4j,org.flyway \
   --initialize-at-build-time=ch.qos.logback \
