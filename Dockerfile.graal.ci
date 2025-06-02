@@ -18,9 +18,8 @@ RUN native-image \
   --enable-https \
   -H:+ReportExceptionStackTraces \
   -o weather-service \
-  --initialize-at-run-time=io.netty,org.slf4j \
+  --initialize-at-run-time=io.netty,org.slf4j,org.flyway \
   --initialize-at-build-time=ch.qos.logback \
-  --initialize-at-build-time=ch.qos.logback.classic.Logger \
   --initialize-at-build-time=kotlin.DeprecationLevel \
   --initialize-at-build-time=org.postgresql,java.sql.DriverManager
 
