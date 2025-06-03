@@ -2,7 +2,7 @@ FROM ghcr.io/graalvm/native-image-community:21.0.2-ol9 AS build
 
 # Create gradle user to avoid running as root
 RUN useradd -m -u 1001 gradle \
- && mkdir -p /app/META-INF \
+ && mkdir -p /app/META-INF/ \
  && chown -R gradle:gradle /app
 
 COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
@@ -24,7 +24,7 @@ RUN native-image \
   -o weather-service \
   --initialize-at-run-time=io.netty,org.slf4j,org.flyway,com.zaxxer.hikari,org.postgresql.Driver \
   --initialize-at-build-time=ch.qos.logback \
-  --initialize-at-build-time=kotlin.DeprecationLevel \
+  --initialize-at-build-time=kotlin \
   -H:EnableURLProtocols=http,https \
   -H:+AddAllCharsets \
   -H:ReflectionConfigurationFiles=META-INF/native-image/reflect-config.json
