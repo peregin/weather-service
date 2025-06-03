@@ -6,6 +6,8 @@ RUN useradd -m -u 1001 gradle \
  && chown -R gradle:gradle /app
 
 COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
+COPY --chown=gradle:gradle ./META-INF/*.* /app/META-INF/
+
 WORKDIR /app
 USER gradle
 
