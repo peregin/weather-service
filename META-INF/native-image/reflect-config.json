@@ -1,0 +1,1419 @@
+[
+{
+  "name":"[B"
+},
+{
+  "name":"[C"
+},
+{
+  "name":"[D"
+},
+{
+  "name":"[F"
+},
+{
+  "name":"[I"
+},
+{
+  "name":"[J"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.BeanDeserializerModifier;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.KeyDeserializers;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.ser.BeanSerializerModifier;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.ser.Serializers;"
+},
+{
+  "name":"[Lcom.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry;"
+},
+{
+  "name":"[Ljava.lang.Object;"
+},
+{
+  "name":"[Ljava.lang.String;"
+},
+{
+  "name":"[Ljava.sql.Statement;"
+},
+{
+  "name":"[Ljava.util.HashMap$Node;"
+},
+{
+  "name":"[Ljavax.management.openmbean.CompositeData;"
+},
+{
+  "name":"[S"
+},
+{
+  "name":"[Z"
+},
+{
+  "name":"ch.qos.logback.classic.encoder.PatternLayoutEncoder",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.classic.joran.SerializedModelConfigurator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.classic.util.DefaultJoranConfigurator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.core.ConsoleAppender",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.core.OutputStreamAppender",
+  "methods":[{"name":"setEncoder","parameterTypes":["ch.qos.logback.core.encoder.Encoder"] }]
+},
+{
+  "name":"ch.qos.logback.core.encoder.Encoder",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"ch.qos.logback.core.encoder.LayoutWrappingEncoder",
+  "methods":[{"name":"setParent","parameterTypes":["ch.qos.logback.core.spi.ContextAware"] }]
+},
+{
+  "name":"ch.qos.logback.core.pattern.PatternLayoutEncoderBase",
+  "methods":[{"name":"setPattern","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"ch.qos.logback.core.spi.ContextAware",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.HmacCore$HmacSHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.PBKDF2Core$HmacSHA1",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.PBKDF2Core$HmacSHA224",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.PBKDF2Core$HmacSHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.PBKDF2Core$HmacSHA384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.PBKDF2Core$HmacSHA512",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.management.GarbageCollectorMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.GcInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.HotSpotDiagnosticMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.ThreadMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.UnixOperatingSystemMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.VMOption",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.internal.GarbageCollectorExtImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.HotSpotDiagnostic",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.HotSpotThreadImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.OperatingSystemImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.zaxxer.hikari.HikariConfig",
+  "allDeclaredFields":true
+},
+{
+  "name":"com.zaxxer.hikari.pool.PoolBase",
+  "fields":[{"name":"catalog"}]
+},
+{
+  "name":"com.zaxxer.hikari.pool.PoolEntry",
+  "fields":[{"name":"state"}]
+},
+{
+  "name":"io.ktor.http.HttpStatusCode"
+},
+{
+  "name":"io.ktor.server.application.PluginInstance"
+},
+{
+  "name":"io.ktor.server.engine.BaseApplicationResponse"
+},
+{
+  "name":"io.ktor.server.plugins.calllogging.KtorMDCProvider"
+},
+{
+  "name":"io.ktor.server.routing.RoutingRoot"
+},
+{
+  "name":"io.ktor.util.Attributes"
+},
+{
+  "name":"io.ktor.util.collections.CopyOnWriteHashMap",
+  "fields":[{"name":"current"}]
+},
+{
+  "name":"io.ktor.util.internal.LockFreeLinkedListNode",
+  "fields":[{"name":"_next"}, {"name":"_prev"}, {"name":"removedRef"}]
+},
+{
+  "name":"io.netty.bootstrap.ServerBootstrap$1"
+},
+{
+  "name":"io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor",
+  "methods":[{"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }]
+},
+{
+  "name":"io.netty.buffer.AbstractByteBufAllocator",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.netty.channel.AbstractChannelHandlerContext",
+  "fields":[{"name":"handlerState"}]
+},
+{
+  "name":"io.netty.channel.ChannelInboundHandlerAdapter",
+  "methods":[{"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }]
+},
+{
+  "name":"io.netty.channel.ChannelInitializer",
+  "methods":[{"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }]
+},
+{
+  "name":"io.netty.channel.ChannelOutboundBuffer",
+  "fields":[{"name":"totalPendingSize"}, {"name":"unwritable"}]
+},
+{
+  "name":"io.netty.channel.DefaultChannelConfig",
+  "fields":[{"name":"autoRead"}, {"name":"writeBufferWaterMark"}]
+},
+{
+  "name":"io.netty.channel.DefaultChannelPipeline",
+  "fields":[{"name":"estimatorHandle"}]
+},
+{
+  "name":"io.netty.channel.DefaultChannelPipeline$HeadContext",
+  "methods":[{"name":"bind","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, {"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"close","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, {"name":"connect","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, {"name":"deregister","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, {"name":"disconnect","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, {"name":"flush","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"read","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, {"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }]
+},
+{
+  "name":"io.netty.channel.DefaultChannelPipeline$TailContext",
+  "methods":[{"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }]
+},
+{
+  "name":"io.netty.channel.DefaultFileRegion"
+},
+{
+  "name":"io.netty.channel.epoll.NativeDatagramPacketArray$NativeDatagramPacket"
+},
+{
+  "name":"io.netty.channel.socket.nio.NioServerSocketChannel",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.netty.channel.unix.PeerCredentials"
+},
+{
+  "name":"io.netty.util.AbstractReferenceCounted",
+  "fields":[{"name":"refCnt"}]
+},
+{
+  "name":"io.netty.util.DefaultAttributeMap",
+  "fields":[{"name":"attributes"}]
+},
+{
+  "name":"io.netty.util.concurrent.DefaultPromise",
+  "fields":[{"name":"result"}]
+},
+{
+  "name":"io.netty.util.concurrent.SingleThreadEventExecutor",
+  "fields":[{"name":"state"}, {"name":"threadProperties"}]
+},
+{
+  "name":"io.netty.util.internal.NativeLibraryUtil",
+  "methods":[{"name":"loadLibrary","parameterTypes":["java.lang.String","boolean"] }]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields",
+  "fields":[{"name":"producerLimit"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields",
+  "fields":[{"name":"consumerIndex"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields",
+  "fields":[{"name":"producerIndex"}]
+},
+{
+  "name":"io.swagger.v3.core.jackson.ApiResponsesSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.core.jackson.PathsSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.Components31Mixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.ExampleMixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.ExtensionsMixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.MediaTypeMixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.OpenAPI31Mixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.OperationMixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.Schema31Mixin",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.core.jackson.mixin.Schema31Mixin$TypeSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.Components",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getCallbacks","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getLinks","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getPathItems","parameterTypes":[] }, {"name":"getRequestBodies","parameterTypes":[] }, {"name":"getResponses","parameterTypes":[] }, {"name":"getSchemas","parameterTypes":[] }, {"name":"getSecuritySchemes","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.ExternalDocumentation",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getUrl","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.OpenAPI",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getComponents","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getInfo","parameterTypes":[] }, {"name":"getJsonSchemaDialect","parameterTypes":[] }, {"name":"getOpenapi","parameterTypes":[] }, {"name":"getPaths","parameterTypes":[] }, {"name":"getSecurity","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getTags","parameterTypes":[] }, {"name":"getWebhooks","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.Operation",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getCallbacks","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getOperationId","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRequestBody","parameterTypes":[] }, {"name":"getResponses","parameterTypes":[] }, {"name":"getSecurity","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTags","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.PathItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getDelete","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getGet","parameterTypes":[] }, {"name":"getHead","parameterTypes":[] }, {"name":"getOptions","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getPatch","parameterTypes":[] }, {"name":"getPost","parameterTypes":[] }, {"name":"getPut","parameterTypes":[] }, {"name":"getServers","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTrace","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.Paths",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.examples.Example",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalValue","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.info.Info",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getContact","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getLicense","parameterTypes":[] }, {"name":"getSummary","parameterTypes":[] }, {"name":"getTermsOfService","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getVersion","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.Content",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.swagger.v3.oas.models.media.MediaType",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getEncoding","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.media.Schema",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$anchor","parameterTypes":[] }, {"name":"get$comment","parameterTypes":[] }, {"name":"get$dynamicAnchor","parameterTypes":[] }, {"name":"get$id","parameterTypes":[] }, {"name":"get$ref","parameterTypes":[] }, {"name":"get$schema","parameterTypes":[] }, {"name":"get$vocabulary","parameterTypes":[] }, {"name":"getAdditionalItems","parameterTypes":[] }, {"name":"getAdditionalProperties","parameterTypes":[] }, {"name":"getAllOf","parameterTypes":[] }, {"name":"getAnyOf","parameterTypes":[] }, {"name":"getConst","parameterTypes":[] }, {"name":"getContains","parameterTypes":[] }, {"name":"getContentEncoding","parameterTypes":[] }, {"name":"getContentMediaType","parameterTypes":[] }, {"name":"getContentSchema","parameterTypes":[] }, {"name":"getDefault","parameterTypes":[] }, {"name":"getDependentRequired","parameterTypes":[] }, {"name":"getDependentSchemas","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDiscriminator","parameterTypes":[] }, {"name":"getElse","parameterTypes":[] }, {"name":"getEnum","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExclusiveMaximumValue","parameterTypes":[] }, {"name":"getExclusiveMinimumValue","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getExternalDocs","parameterTypes":[] }, {"name":"getFormat","parameterTypes":[] }, {"name":"getIf","parameterTypes":[] }, {"name":"getItems","parameterTypes":[] }, {"name":"getMaxContains","parameterTypes":[] }, {"name":"getMaxItems","parameterTypes":[] }, {"name":"getMaxLength","parameterTypes":[] }, {"name":"getMaxProperties","parameterTypes":[] }, {"name":"getMaximum","parameterTypes":[] }, {"name":"getMinContains","parameterTypes":[] }, {"name":"getMinItems","parameterTypes":[] }, {"name":"getMinLength","parameterTypes":[] }, {"name":"getMinProperties","parameterTypes":[] }, {"name":"getMinimum","parameterTypes":[] }, {"name":"getMultipleOf","parameterTypes":[] }, {"name":"getNot","parameterTypes":[] }, {"name":"getOneOf","parameterTypes":[] }, {"name":"getPattern","parameterTypes":[] }, {"name":"getPatternProperties","parameterTypes":[] }, {"name":"getPrefixItems","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getPropertyNames","parameterTypes":[] }, {"name":"getReadOnly","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getThen","parameterTypes":[] }, {"name":"getTitle","parameterTypes":[] }, {"name":"getTypes","parameterTypes":[] }, {"name":"getUnevaluatedItems","parameterTypes":[] }, {"name":"getUnevaluatedProperties","parameterTypes":[] }, {"name":"getUniqueItems","parameterTypes":[] }, {"name":"getWriteOnly","parameterTypes":[] }, {"name":"getXml","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.parameters.Parameter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getAllowEmptyValue","parameterTypes":[] }, {"name":"getAllowReserved","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDeprecated","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExample","parameterTypes":[] }, {"name":"getExamples","parameterTypes":[] }, {"name":"getExplode","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getIn","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getRequired","parameterTypes":[] }, {"name":"getSchema","parameterTypes":[] }, {"name":"getStyle","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.swagger.v3.oas.models.responses.ApiResponse",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"get$ref","parameterTypes":[] }, {"name":"getContent","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getExtensions","parameterTypes":[] }, {"name":"getHeaders","parameterTypes":[] }, {"name":"getLinks","parameterTypes":[] }]
+},
+{
+  "name":"io.swagger.v3.oas.models.responses.ApiResponses",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.io.File"
+},
+{
+  "name":"java.io.FileDescriptor"
+},
+{
+  "name":"java.io.ObjectInput"
+},
+{
+  "name":"java.io.ObjectInputStream"
+},
+{
+  "name":"java.io.ObjectOutput"
+},
+{
+  "name":"java.io.Serializable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Boolean",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Byte",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.CharSequence"
+},
+{
+  "name":"java.lang.Character",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Class",
+  "methods":[{"name":"getPermittedSubclasses","parameterTypes":[] }, {"name":"getRecordComponents","parameterTypes":[] }, {"name":"isRecord","parameterTypes":[] }, {"name":"isSealed","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassValue"
+},
+{
+  "name":"java.lang.Cloneable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Comparable",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"compareTo","parameterTypes":["java.lang.Object"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Deprecated",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.Double",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Float",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.FunctionalInterface",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Integer",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Iterable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Long",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Number"
+},
+{
+  "name":"java.lang.Object",
+  "allDeclaredFields":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ProcessHandle",
+  "methods":[{"name":"current","parameterTypes":[] }, {"name":"pid","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.SecurityManager",
+  "methods":[{"name":"checkPermission","parameterTypes":["java.security.Permission"] }]
+},
+{
+  "name":"java.lang.Short",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.StackTraceElement",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.String",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.System",
+  "methods":[{"name":"getSecurityManager","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Thread",
+  "fields":[{"name":"threadLocalRandomProbe"}]
+},
+{
+  "name":"java.lang.Void",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.annotation.Annotation",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.annotation.Documented",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.annotation.Retention",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.annotation.Target",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.BufferPoolMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.ClassLoadingMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.CompilationMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.LockInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.ManagementPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.management.MemoryMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryManagerMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryPoolMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryUsage",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MonitorInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.PlatformLoggingMXBean",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getLoggerLevel","parameterTypes":["java.lang.String"] }, {"name":"getLoggerNames","parameterTypes":[] }, {"name":"getParentLoggerName","parameterTypes":["java.lang.String"] }, {"name":"setLoggerLevel","parameterTypes":["java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"java.lang.management.RuntimeMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.ThreadInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.reflect.Executable",
+  "methods":[{"name":"getParameters","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Method"
+},
+{
+  "name":"java.lang.reflect.Parameter",
+  "methods":[{"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"java.math.BigDecimal"
+},
+{
+  "name":"java.math.BigInteger"
+},
+{
+  "name":"java.nio.Bits",
+  "fields":[{"name":"MAX_MEMORY"}, {"name":"UNALIGNED"}]
+},
+{
+  "name":"java.nio.Buffer",
+  "fields":[{"name":"address"}]
+},
+{
+  "name":"java.nio.ByteBuffer",
+  "methods":[{"name":"alignedSlice","parameterTypes":["int"] }]
+},
+{
+  "name":"java.nio.DirectByteBuffer",
+  "methods":[{"name":"<init>","parameterTypes":["long","long"] }]
+},
+{
+  "name":"java.nio.channels.FileChannel"
+},
+{
+  "name":"java.nio.channels.spi.SelectorProvider",
+  "methods":[{"name":"openServerSocketChannel","parameterTypes":["java.net.ProtocolFamily"] }]
+},
+{
+  "name":"java.security.AccessController",
+  "methods":[{"name":"doPrivileged","parameterTypes":["java.security.PrivilegedExceptionAction"] }]
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"java.time.Clock"
+},
+{
+  "name":"java.time.DayOfWeek"
+},
+{
+  "name":"java.time.Instant"
+},
+{
+  "name":"java.time.LocalDate"
+},
+{
+  "name":"java.time.LocalDateTime"
+},
+{
+  "name":"java.time.LocalTime"
+},
+{
+  "name":"java.time.Month"
+},
+{
+  "name":"java.time.OffsetDateTime",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.time.OffsetTime"
+},
+{
+  "name":"java.time.ZoneId"
+},
+{
+  "name":"java.time.ZoneOffset"
+},
+{
+  "name":"java.time.ZonedDateTime"
+},
+{
+  "name":"java.time.format.DateTimeFormatter"
+},
+{
+  "name":"java.time.temporal.Temporal",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.time.temporal.TemporalAccessor",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.time.temporal.TemporalAdjuster",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.time.temporal.TemporalAmount"
+},
+{
+  "name":"java.time.temporal.TemporalField"
+},
+{
+  "name":"java.time.temporal.TemporalQuery"
+},
+{
+  "name":"java.time.temporal.TemporalUnit"
+},
+{
+  "name":"java.time.temporal.ValueRange"
+},
+{
+  "name":"java.util.AbstractCollection",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.AbstractList",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.AbstractMap",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.Arrays$ArrayList",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.util.Collection",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.Comparator"
+},
+{
+  "name":"java.util.Date"
+},
+{
+  "name":"java.util.HashMap",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.LinkedHashMap",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.List",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.Map",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.PropertyPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"java.util.RandomAccess",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.SequencedMap",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.util.concurrent.ScheduledThreadPoolExecutor",
+  "methods":[{"name":"setRemoveOnCancelPolicy","parameterTypes":["boolean"] }]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicBoolean",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicReference",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.Striped64",
+  "fields":[{"name":"base"}, {"name":"cellsBusy"}]
+},
+{
+  "name":"java.util.logging.LogManager",
+  "methods":[{"name":"getLoggingMXBean","parameterTypes":[] }]
+},
+{
+  "name":"java.util.logging.LoggingMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"javax.management.MBeanOperationInfo",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getSignature","parameterTypes":[] }]
+},
+{
+  "name":"javax.management.MBeanServerBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"javax.management.MXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"javax.management.ObjectName"
+},
+{
+  "name":"javax.management.StandardEmitterMBean",
+  "methods":[{"name":"cacheMBeanInfo","parameterTypes":["javax.management.MBeanInfo"] }, {"name":"getCachedMBeanInfo","parameterTypes":[] }, {"name":"getMBeanInfo","parameterTypes":[] }]
+},
+{
+  "name":"javax.management.openmbean.CompositeData"
+},
+{
+  "name":"javax.management.openmbean.OpenMBeanOperationInfoSupport"
+},
+{
+  "name":"javax.management.openmbean.TabularData"
+},
+{
+  "name":"jdk.internal.ValueBased",
+  "allDeclaredFields":true,
+  "allDeclaredClasses":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"jdk.internal.misc.Unsafe",
+  "methods":[{"name":"getUnsafe","parameterTypes":[] }]
+},
+{
+  "name":"jdk.management.jfr.ConfigurationInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.EventTypeInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.FlightRecorderMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.FlightRecorderMXBeanImpl",
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"cacheMBeanInfo","parameterTypes":["javax.management.MBeanInfo"] }, {"name":"getCachedMBeanInfo","parameterTypes":[] }, {"name":"getMBeanInfo","parameterTypes":[] }, {"name":"getNotificationInfo","parameterTypes":[] }]
+},
+{
+  "name":"jdk.management.jfr.RecordingInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.SettingDescriptorInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"kotlin.Annotation"
+},
+{
+  "name":"kotlin.Any"
+},
+{
+  "name":"kotlin.Array"
+},
+{
+  "name":"kotlin.Boolean"
+},
+{
+  "name":"kotlin.BooleanArray"
+},
+{
+  "name":"kotlin.Byte"
+},
+{
+  "name":"kotlin.ByteArray"
+},
+{
+  "name":"kotlin.Char"
+},
+{
+  "name":"kotlin.CharArray"
+},
+{
+  "name":"kotlin.CharSequence"
+},
+{
+  "name":"kotlin.Comparable"
+},
+{
+  "name":"kotlin.Double"
+},
+{
+  "name":"kotlin.DoubleArray"
+},
+{
+  "name":"kotlin.Float"
+},
+{
+  "name":"kotlin.FloatArray"
+},
+{
+  "name":"kotlin.Int"
+},
+{
+  "name":"kotlin.IntArray"
+},
+{
+  "name":"kotlin.Long"
+},
+{
+  "name":"kotlin.LongArray"
+},
+{
+  "name":"kotlin.Metadata",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"bv","parameterTypes":[] }, {"name":"d1","parameterTypes":[] }, {"name":"d2","parameterTypes":[] }, {"name":"k","parameterTypes":[] }, {"name":"mv","parameterTypes":[] }, {"name":"pn","parameterTypes":[] }, {"name":"xi","parameterTypes":[] }, {"name":"xs","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.Number"
+},
+{
+  "name":"kotlin.SafePublicationLazyImpl",
+  "fields":[{"name":"_value"}]
+},
+{
+  "name":"kotlin.Short"
+},
+{
+  "name":"kotlin.ShortArray"
+},
+{
+  "name":"kotlin.String"
+},
+{
+  "name":"kotlin.UByte"
+},
+{
+  "name":"kotlin.UByteArray"
+},
+{
+  "name":"kotlin.UInt"
+},
+{
+  "name":"kotlin.UIntArray"
+},
+{
+  "name":"kotlin.ULong"
+},
+{
+  "name":"kotlin.ULongArray"
+},
+{
+  "name":"kotlin.UShort"
+},
+{
+  "name":"kotlin.UShortArray"
+},
+{
+  "name":"kotlin.Unit"
+},
+{
+  "name":"kotlin.annotation.AnnotationTarget"
+},
+{
+  "name":"kotlin.annotation.MustBeDocumented",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"kotlin.annotation.Retention"
+},
+{
+  "name":"kotlin.annotation.Target",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"allowedTargets","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.collections.Collection"
+},
+{
+  "name":"kotlin.collections.Iterable"
+},
+{
+  "name":"kotlin.collections.List"
+},
+{
+  "name":"kotlin.collections.Set"
+},
+{
+  "name":"kotlin.jvm.JvmStatic",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"kotlin.jvm.internal.DefaultConstructorMarker"
+},
+{
+  "name":"kotlin.reflect.KClass"
+},
+{
+  "name":"kotlin.reflect.jvm.internal.ReflectionFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.reflect.jvm.internal.impl.resolve.scopes.DescriptorKindFilter",
+  "allPublicFields":true
+},
+{
+  "name":"kotlinx.coroutines.CancellableContinuationImpl",
+  "fields":[{"name":"_decisionAndIndex$volatile"}, {"name":"_parentHandle$volatile"}, {"name":"_state$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.CompletedExceptionally",
+  "fields":[{"name":"_handled$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.JobSupport",
+  "fields":[{"name":"_parentHandle$volatile"}, {"name":"_state$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.JobSupport$Finishing",
+  "fields":[{"name":"_exceptionsHolder$volatile"}, {"name":"_isCompleting$volatile"}, {"name":"_rootCause$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.DispatchedContinuation",
+  "fields":[{"name":"_reusableCancellableContinuation$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeLinkedListNode",
+  "fields":[{"name":"_next$volatile"}, {"name":"_prev$volatile"}, {"name":"_removedRef$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeTaskQueue",
+  "fields":[{"name":"_cur$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.internal.LockFreeTaskQueueCore",
+  "fields":[{"name":"_next$volatile"}, {"name":"_state$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.CoroutineScheduler",
+  "fields":[{"name":"_isTerminated$volatile"}, {"name":"controlState$volatile"}, {"name":"parkedWorkersStack$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.CoroutineScheduler$Worker",
+  "fields":[{"name":"workerCtl$volatile"}]
+},
+{
+  "name":"kotlinx.coroutines.scheduling.WorkQueue",
+  "fields":[{"name":"blockingTasksInBuffer$volatile"}, {"name":"consumerIndex$volatile"}, {"name":"lastScheduledTask$volatile"}, {"name":"producerIndex$volatile"}]
+},
+{
+  "name":"kotlinx.serialization.KSerializer"
+},
+{
+  "name":"kotlinx.serialization.Serializable",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"with","parameterTypes":[] }]
+},
+{
+  "name":"kotlinx.serialization.descriptors.SerialDescriptor"
+},
+{
+  "name":"kotlinx.serialization.encoding.CompositeEncoder"
+},
+{
+  "name":"kotlinx.serialization.internal.SerializationConstructorMarker"
+},
+{
+  "name":"oracle.as.jmx.framework.PortableMBeanFactory"
+},
+{
+  "name":"oracle.jdbc.OracleDriver"
+},
+{
+  "name":"oracle.jdbc.diagnostics.DiagnosticsMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"oracle.jdbc.diagnostics.OracleDiagnosticsMXBean",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"oracle.sql.AnyDataFactory"
+},
+{
+  "name":"oracle.sql.TypeDescriptorFactory"
+},
+{
+  "name":"org.flywaydb.core.api.migration.baseline.BaselineMigrationConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getBaselineMigrationPrefix","parameterTypes":[] }, {"name":"setBaselineMigrationPrefix","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.flywaydb.core.extensibility.ConfigurationExtension",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.flywaydb.core.extensibility.Plugin",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.flywaydb.core.internal.command.clean.CleanModeConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getClean","parameterTypes":[] }, {"name":"setClean","parameterTypes":["org.flywaydb.core.internal.command.clean.CleanModel"] }]
+},
+{
+  "name":"org.flywaydb.core.internal.command.clean.CleanModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.flywaydb.core.internal.command.clean.SchemaModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.flywaydb.core.internal.configuration.extensions.DeployScriptFilenameConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getScriptFilename","parameterTypes":[] }, {"name":"setScriptFilename","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.flywaydb.core.internal.configuration.extensions.PrepareScriptFilenameConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getScriptFilename","parameterTypes":[] }, {"name":"setScriptFilename","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.flywaydb.core.internal.logging.slf4j.Slf4jLogCreator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.flywaydb.core.internal.proprietaryStubs.LicensingConfigurationExtensionStub",
+  "allDeclaredFields":true
+},
+{
+  "name":"org.flywaydb.core.internal.proprietaryStubs.PATTokenConfigurationExtensionStub",
+  "allDeclaredFields":true
+},
+{
+  "name":"org.flywaydb.core.internal.publishing.PublishingConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"isCheckDriftOnMigrate","parameterTypes":[] }, {"name":"isPublishResult","parameterTypes":[] }, {"name":"setCheckDriftOnMigrate","parameterTypes":["boolean"] }, {"name":"setPublishResult","parameterTypes":["boolean"] }]
+},
+{
+  "name":"org.flywaydb.database.oracle.OracleConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getKerberosCacheFile","parameterTypes":[] }, {"name":"getSqlplus","parameterTypes":[] }, {"name":"getSqlplusWarn","parameterTypes":[] }, {"name":"getWalletLocation","parameterTypes":[] }, {"name":"setKerberosCacheFile","parameterTypes":["java.lang.String"] }, {"name":"setSqlplus","parameterTypes":["java.lang.Boolean"] }, {"name":"setSqlplusWarn","parameterTypes":["java.lang.Boolean"] }, {"name":"setWalletLocation","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.flywaydb.database.postgresql.PostgreSQLConfigurationExtension",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getTransactional","parameterTypes":[] }, {"name":"isTransactionalLock","parameterTypes":[] }, {"name":"setTransactional","parameterTypes":["org.flywaydb.database.postgresql.TransactionalModel"] }, {"name":"setTransactionalLock","parameterTypes":["boolean"] }]
+},
+{
+  "name":"org.flywaydb.database.postgresql.TransactionalModel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.postgresql.Driver",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.postgresql.core.QueryExecutorCloseAction",
+  "fields":[{"name":"pgStream"}]
+},
+{
+  "name":"org.postgresql.jdbc.PgStatement",
+  "fields":[{"name":"cancelTimerTask"}, {"name":"isClosed"}, {"name":"statementState"}]
+},
+{
+  "name":"org.slf4j.Logger"
+},
+{
+  "name":"org.slf4j.impl.StaticLoggerBinder"
+},
+{
+  "name":"org.slf4j.spi.SLF4JServiceProvider"
+},
+{
+  "name":"sun.management.ClassLoadingImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.CompilationImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.ManagementFactoryHelper$1",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.ManagementFactoryHelper$PlatformLoggingImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryManagerImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryPoolImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.RuntimeImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.misc.Unsafe",
+  "fields":[{"name":"theUnsafe"}],
+  "methods":[{"name":"copyMemory","parameterTypes":["java.lang.Object","long","java.lang.Object","long","long"] }, {"name":"getAndAddLong","parameterTypes":["java.lang.Object","long","long"] }, {"name":"getAndSetObject","parameterTypes":["java.lang.Object","long","java.lang.Object"] }, {"name":"invokeCleaner","parameterTypes":["java.nio.ByteBuffer"] }, {"name":"storeFence","parameterTypes":[] }]
+},
+{
+  "name":"sun.nio.ch.SelectorImpl",
+  "fields":[{"name":"publicSelectedKeys"}, {"name":"selectedKeys"}]
+},
+{
+  "name":"sun.security.provider.NativePRNG",
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA224",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA512",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"velocorner.weather.model.Coord",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["double","double"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.Coord","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.Coord$$serializer"
+},
+{
+  "name":"velocorner.weather.model.Coord$Companion"
+},
+{
+  "name":"velocorner.weather.model.CurrentWeather",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"component6","parameterTypes":[] }, {"name":"component7","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.time.OffsetDateTime","java.lang.String","velocorner.weather.model.WeatherDescription","velocorner.weather.model.WeatherInfo","velocorner.weather.model.SunriseSunsetInfo","velocorner.weather.model.Coord"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.CurrentWeather","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.CurrentWeather$$serializer"
+},
+{
+  "name":"velocorner.weather.model.CurrentWeather$Companion"
+},
+{
+  "name":"velocorner.weather.model.GeoLocationResponse",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getCity","parameterTypes":[] }, {"name":"getCountry","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.GeoLocationResponse","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.GeoLocationResponse$$serializer"
+},
+{
+  "name":"velocorner.weather.model.GeoLocationResponse$Companion"
+},
+{
+  "name":"velocorner.weather.model.GeoPosition",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["double","double"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.GeoPosition","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.GeoPosition$$serializer"
+},
+{
+  "name":"velocorner.weather.model.GeoPosition$Companion"
+},
+{
+  "name":"velocorner.weather.model.SunriseSunsetInfo",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"copy","parameterTypes":["java.time.OffsetDateTime","java.time.OffsetDateTime"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.SunriseSunsetInfo","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.SunriseSunsetInfo$$serializer"
+},
+{
+  "name":"velocorner.weather.model.SunriseSunsetInfo$Companion"
+},
+{
+  "name":"velocorner.weather.model.WeatherDescription",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"copy","parameterTypes":["int","java.lang.String","java.lang.String","java.lang.String"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.WeatherDescription","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.WeatherDescription$$serializer"
+},
+{
+  "name":"velocorner.weather.model.WeatherDescription$Companion"
+},
+{
+  "name":"velocorner.weather.model.WeatherInfo",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"component1","parameterTypes":[] }, {"name":"component2","parameterTypes":[] }, {"name":"component3","parameterTypes":[] }, {"name":"component4","parameterTypes":[] }, {"name":"component5","parameterTypes":[] }, {"name":"copy","parameterTypes":["float","float","float","float","float"] }, {"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }, {"name":"write$Self$weather_service","parameterTypes":["velocorner.weather.model.WeatherInfo","kotlinx.serialization.encoding.CompositeEncoder","kotlinx.serialization.descriptors.SerialDescriptor"] }]
+},
+{
+  "name":"velocorner.weather.model.WeatherInfo$$serializer"
+},
+{
+  "name":"velocorner.weather.model.WeatherInfo$Companion"
+}
+]
