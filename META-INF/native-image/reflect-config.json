@@ -295,6 +295,16 @@
   "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields",
   "fields":[{"name":"producerIndex"}]
 },
+  {
+    "name": "io.netty.util.ResourceLeakDetector",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.netty.util.ReferenceCountUtil",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
 {
   "name":"io.swagger.v3.core.jackson.ApiResponsesSerializer",
   "methods":[{"name":"<init>","parameterTypes":[] }]
