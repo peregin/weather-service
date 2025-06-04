@@ -6,7 +6,7 @@ RUN useradd -m -u 1001 gradle \
  && chown -R gradle:gradle /app
 
 COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
-COPY --chown=gradle:gradle ./META-INF/*.* /app/META-INF/
+COPY --chown=gradle:gradle ./META-INF/* /app/META-INF/*
 
 
 WORKDIR /app
@@ -24,10 +24,10 @@ RUN native-image \
   -o weather-service \
   --initialize-at-run-time=io.netty,org.slf4j,org.flyway,com.zaxxer.hikari,org.postgresql.Driver \
   --initialize-at-build-time=ch.qos.logback \
-  --initialize-at-build-time=kotlin \
+  --initialize-at-build-time=kotlin.DeprecationLevel \
   -H:EnableURLProtocols=http,https \
   -H:+AddAllCharsets \
-  -H:ReflectionConfigurationFiles=META-INF/native-image/reflect-config.json \
+  -H:ReflectionConfigurationFiles=/app/META-INF/native-image/reflect-config.json \
   -H:IncludeResources='(.*)'
 
 # Use a compatible runtime base image for the native binary with libz.so.1
