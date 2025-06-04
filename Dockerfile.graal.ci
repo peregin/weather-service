@@ -27,7 +27,8 @@ RUN native-image \
   --initialize-at-build-time=kotlin \
   -H:EnableURLProtocols=http,https \
   -H:+AddAllCharsets \
-  -H:ReflectionConfigurationFiles=META-INF/native-image/reflect-config.json
+  -H:ReflectionConfigurationFiles=META-INF/native-image/reflect-config.json \
+  -H:IncludeResources='(.*)'
 
 # Use a compatible runtime base image for the native binary with libz.so.1
 FROM debian:bullseye-slim
