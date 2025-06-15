@@ -6,9 +6,11 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 
 ## Build
 ```shell
-# build jat jar
+# build fat jar
 ./gradlew shadowJar
 # build native image with gradle
+./gradlew nativeCompile
+# build native image with graalvm cli
 native-image -cp build/libs/service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
 ```
 
