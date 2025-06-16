@@ -171,7 +171,8 @@
 },
 {
   "name":"com.zaxxer.hikari.HikariConfig",
-  "allDeclaredFields":true
+  "allDeclaredFields":true,
+  "methods":[{"name":"getCredentials","parameterTypes":[] }]
 },
 {
   "name":"com.zaxxer.hikari.pool.PoolBase",

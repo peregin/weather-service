@@ -11,7 +11,22 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 # build native image with gradle
 ./gradlew nativeCompile
 # build native image with graalvm cli
-native-image -cp build/libs/service.jar velocorner.weather.ServiceKt --report-unsupported-elements-at-runtime --verbose --enable-https --strip-debug -o weather-service --initialize-at-build-time=ch.qos.logback --initialize-at-build-time=ch.qos.logback.classic.Logger
+/Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home/bin/native-image \
+  -cp build/libs/service.jar \
+  velocorner.weather.ServiceKt \
+  --report-unsupported-elements-at-runtime \
+  --verbose \
+  --no-fallback \
+  --enable-https \
+  -H:+ReportExceptionStackTraces \
+  -o weather-service \
+  --initialize-at-run-time=io.netty,org.slf4j,org.flyway,com.zaxxer.hikari,org.postgresql.Driver \
+  --initialize-at-build-time=ch.qos.logback \
+  --initialize-at-build-time=kotlin.DeprecationLevel \
+  -H:EnableURLProtocols=http,https \
+  -H:+AddAllCharsets \
+  -H:ReflectionConfigurationFiles=META-INF/native-image/reflect-config.json \
+  -H:IncludeResources='(.*)'
 ```
 
 ## Database
