@@ -20,7 +20,7 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
   --enable-https \
   -H:+ReportExceptionStackTraces \
   -o weather-service \
-  --initialize-at-run-time=io.netty,org.slf4j,org.flyway,com.zaxxer.hikari,org.postgresql.Driver \
+  --initialize-at-run-time=io.netty,org.slf4j,org.flyway,com.zaxxer.hikari,org.postgresql.Driver,oracle.jdbc.driver.OracleDriver \
   --initialize-at-build-time=ch.qos.logback \
   --initialize-at-build-time=kotlin.DeprecationLevel \
   -H:EnableURLProtocols=http,https \
