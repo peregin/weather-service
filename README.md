@@ -93,7 +93,7 @@ gradle wrapper
 # check for dependency updates
 ./gradlew checkUpdates
 # upgrade gradle version
-./gradlew wrapper --gradle-version 8.12.1
+./gradlew wrapper --gradle-version 8.14.2
 # generate Software Bill Of Materials SBOM
 ./gradlew cyclonedxBom
 ```
