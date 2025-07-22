@@ -101,7 +101,7 @@ ktor {
     // it is generated from the script, deploy.sh
     docker {
         jreVersion.set(JavaVersion.VERSION_17)
-        customBaseImage = "openjdk:17-slim-buster"
+        customBaseImage = "eclipse-temurin:17-jre-noble"
         localImageName.set("velocorner.weather")
         imageTag.set("latest")
         portMappings.set(
