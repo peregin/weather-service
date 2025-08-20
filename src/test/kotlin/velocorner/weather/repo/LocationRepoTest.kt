@@ -15,10 +15,12 @@ import kotlin.test.Test
 
 
 internal class LocationRepoTest {
-
     companion object {
         init {
-            DockerUtil.configureDockerSocketIfNeeded()
+            System.setProperty("testcontainers.logging", "true")
+            val dockerSocket = DockerUtil.detectDockerSocket()
+            println("docker socket is: " + dockerSocket);
+            System.setProperty("DOCKER_HOST", dockerSocket)
         }
 
         private const val DB_NAME = "location_test"
@@ -34,6 +36,7 @@ internal class LocationRepoTest {
                 withDatabaseName(DB_NAME)
                 withUsername(DB_USER)
                 withPassword(DB_PASSWORD)
+                withUrlParam("loggerLevel", "DEBUG") // Add DEBUG logging for Testcontainers
                 start()
             }
         }
