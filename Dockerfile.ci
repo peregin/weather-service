@@ -1,5 +1,5 @@
-FROM openjdk:17-slim-buster
-EXPOSE 9015:9015
+FROM eclipse-temurin:21-alpine
+EXPOSE 9015
 RUN mkdir /app
 COPY --chown=gradle:gradle ./build/libs/service.jar /app/weather-service.jar
 ENTRYPOINT ["java","-Duser.timezone=UTC","-jar","/app/weather-service.jar"]
