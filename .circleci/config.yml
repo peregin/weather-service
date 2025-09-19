@@ -75,7 +75,7 @@ jobs:
           command: docker login -u peregin -p $DOCKERHUB_PASSWORD docker.io
       - run:
           name: deploy weather service
-          command: ./deploy.sh Dockerfile.ci
+          command: ./deploy.sh
 
   restart_stack:
     executor: ci-min
