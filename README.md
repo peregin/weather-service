@@ -8,7 +8,7 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 ```shell
 # build fat jar
 ./gradlew shadowJar
-# build native image with gradle
+# build native image with gradle got GraalVM
 ./gradlew nativeCompile
 ```
 
@@ -74,7 +74,7 @@ Useful commands and plugins
 # initialize existing project with the desired wrapper version
 gradle wrapper
 # check for dependency updates
-./gradlew checkUpdates
+./gradlew refreshVersions
 # upgrade gradle version
 ./gradlew wrapper --gradle-version 8.14.2
 # generate Software Bill Of Materials SBOM
