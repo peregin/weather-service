@@ -38,7 +38,8 @@ jobs:
   build_weather-backend:
     executor: ci-jdk
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - setup_remote_docker:
           docker_layer_caching: false
       - restore_cache:
