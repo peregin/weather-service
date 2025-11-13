@@ -77,6 +77,7 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
                         location = location,
                         timestamp = reply.dt ?: OffsetDateTime.now(ZoneId.of("UTC")),
                         bootstrapIcon = WeatherCodeUtil.bootstrapIcon(weather[0].id),
+                        reactIcon = WeatherCodeUtil.reactIcon(weather[0].id),
                         current = weather[0],
                         info = main,
                         sunriseSunset = sys,

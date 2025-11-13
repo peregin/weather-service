@@ -88,6 +88,7 @@ internal class WeatherRepoTest {
             location = ZH_LOCATION,
             timestamp = requireNotNull(currentFixture.dt),
             bootstrapIcon = WeatherCodeUtil.bootstrapIcon(requireNotNull(currentFixture.weather).first().id),
+            reactIcon = WeatherCodeUtil.reactIcon(requireNotNull(currentFixture.weather).first().id),
             current = requireNotNull(currentFixture.weather).first(),
             info = requireNotNull(currentFixture.main),
             sunriseSunset = requireNotNull(currentFixture.sys),
