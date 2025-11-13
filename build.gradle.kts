@@ -20,7 +20,6 @@ plugins {
     kotlin("jvm") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("io.ktor.plugin") version "3.2.3"
-    id("org.graalvm.buildtools.native") version "0.10.4"
     // generate SBOM
     id("org.cyclonedx.bom") version "1.10.0"
 }
