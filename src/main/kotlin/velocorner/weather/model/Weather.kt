@@ -166,7 +166,7 @@ data class CurrentWeather(
     @Serializable(with = OffsetDateTimeSerializer::class)
     val timestamp: OffsetDateTime,
     val bootstrapIcon: String, // bootstrap icon derived from the current weather code
-    val reactIcon: String?, // react icon derived from the current weather code
+    val reactIcon: String? = null, // react icon derived from the current weather code
     val current: WeatherDescription,
     val info: WeatherInfo,
     val sunriseSunset: SunriseSunsetInfo,
