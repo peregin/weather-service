@@ -17,12 +17,12 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.2.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
-    id("io.ktor.plugin") version "3.2.2"
-    id("org.graalvm.buildtools.native") version "0.11.0"
+    kotlin("jvm")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("io.ktor.plugin")
+    id("org.graalvm.buildtools.native")
     // generate SBOM
-    id("org.cyclonedx.bom") version "2.3.1"
+    id("org.cyclonedx.bom")
 }
 
 kotlin {
@@ -55,41 +55,41 @@ application {
 
 dependencies {
     // Ktor dependencies
-    implementation(platform("io.ktor:ktor-bom:$ktor_version"))
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-java:$ktor_version")
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-    implementation("io.ktor:ktor-server-html-builder:$ktor_version")
-    implementation("io.ktor:ktor-server-call-logging:$ktor_version")
-    implementation("io.ktor:ktor-server-cors:$ktor_version")
-    implementation("io.github.smiley4:ktor-openapi:$openapi_version")
-    implementation("io.github.smiley4:ktor-swagger-ui:$openapi_version")
+    implementation(platform(libs.ktor.bom))
+    implementation(Ktor.client.core)
+    implementation(Ktor.client.java)
+    implementation(Ktor.server.core)
+    implementation(Ktor.server.netty)
+    implementation(Ktor.server.contentNegotiation)
+    implementation(Ktor.plugins.serialization.kotlinx.json)
+    implementation(Ktor.server.htmlBuilder)
+    implementation(Ktor.server.callLogging)
+    implementation(Ktor.server.cors)
+    implementation(libs.ktor.openapi)
+    implementation(libs.ktor.swagger.ui)
 
     // Database dependencies
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
-    implementation("org.postgresql:postgresql:$psql_version")
-    implementation("com.oracle.database.jdbc:ojdbc11:$oracle_version")
-    implementation("com.zaxxer:HikariCP:$hikari_version")
-    implementation("org.flywaydb:flyway-core:$flyway_version")
-    implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
-    implementation("org.flywaydb:flyway-database-oracle:$flyway_version")
+    implementation(JetBrains.exposed.core)
+    implementation(JetBrains.exposed.dao)
+    implementation(JetBrains.exposed.jdbc)
+    implementation(libs.exposed.json)
+    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.org.postgresql.postgresql)
+    implementation(libs.ojdbc11)
+    implementation(libs.hikaricp)
+    implementation(libs.flyway.core)
+    implementation(libs.flyway.database.postgresql)
+    implementation(libs.flyway.database.oracle)
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation(libs.logback.classic)
 
     // Test dependencies
-    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$plugin_version")
-    testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
-    testImplementation("org.testcontainers:postgresql:$testcontainers_version")
-    testImplementation("org.testcontainers:oracle-xe:$testcontainers_version")
+    testImplementation(Ktor.server.testHost)
+    testImplementation(Kotlin.test.junit)
+    testImplementation(libs.testcontainers)
+    testImplementation(libs.org.testcontainers.postgresql)
+    testImplementation(libs.oracle.xe)
 }
 
 ktor {
@@ -100,7 +100,7 @@ ktor {
     // it is generated from the script, deploy.sh
     docker {
         jreVersion.set(JavaVersion.VERSION_17)
-        customBaseImage = "eclipse-temurin:17-jre-noble"
+        customBaseImage = "eclipse-temurin:17-jre-noble:_"
         localImageName.set("velocorner.weather")
         imageTag.set("latest")
         portMappings.set(
