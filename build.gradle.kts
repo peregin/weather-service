@@ -17,10 +17,9 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "1.8.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    kotlin("jvm") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
     id("io.ktor.plugin") version "3.2.3"
-    // generate SBOM
     id("org.cyclonedx.bom") version "1.10.0"
 }
 
@@ -30,18 +29,7 @@ kotlin {
     }
 }
 
-graalvmNative {
-    binaries {
-        named("main") {
-            imageName.set("weather-service")
-            buildArgs.add("--enable-url-protocols=http,https")
-            buildArgs.add("-H:+ReportExceptionStackTraces")
-            // Add if you're using reflection
-            buildArgs.add("--initialize-at-build-time=kotlin")
-            buildArgs.add("-H:+AddAllCharsets")
-        }
-    }
-}
+
 
 
 repositories {
