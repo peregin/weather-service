@@ -32,6 +32,8 @@ internal class LocationRepoTest {
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
+            // Docker 29.0.0 (which is what recent Docker Desktop releases ship) requires client API ≥ 1.44.
+            System.setProperty("api.version", "1.44")
             postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
                 withDatabaseName(DB_NAME)
                 withUsername(DB_USER)

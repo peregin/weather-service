@@ -25,11 +25,12 @@ kotlin = "2.2.10"
 ##  ⬆ = "2.2.21"
 ##  ⬆ = "2.3.0-Beta1"
 ##  ⬆ = "2.3.0-Beta2"
+##  ⬆ = "2.3.0-RC"
+##  ⬆ = "2.3.0-RC2"
+##  ⬆ = "2.3.0-RC3"
 
-ktor = "3.2.3"
-##⬆ = "3.3.0"
-##⬆ = "3.3.1"
-##⬆ = "3.3.2"
+ktor = "3.3.2"
+##⬆ = "3.3.3"
 
 jetbrains-exposed = "0.61.0"
 ##             ⬆ = "1.0.0-beta-1"
@@ -40,6 +41,7 @@ jetbrains-exposed = "0.61.0"
 ##             ⬆ = "1.0.0-rc-1"
 ##             ⬆ = "1.0.0-rc-2"
 ##             ⬆ = "1.0.0-rc-3"
+##             ⬆ = "1.0.0-rc-4"
 
 [libraries]
 
@@ -77,6 +79,10 @@ flyway-core = "org.flywaydb:flyway-core:11.11.1"
 ##                                  ⬆ :11.15.0"
 ##                                  ⬆ :11.16.0"
 ##                                  ⬆ :11.17.0"
+##                                  ⬆ :11.17.1"
+##                                  ⬆ :11.17.2"
+##                                  ⬆ :11.18.0"
+##                                  ⬆ :11.19.0"
 
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.11.1"
 ##                                                                ⬆ :11.11.2"
@@ -90,6 +96,10 @@ flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.11.1"
 ##                                                                ⬆ :11.15.0"
 ##                                                                ⬆ :11.16.0"
 ##                                                                ⬆ :11.17.0"
+##                                                                ⬆ :11.17.1"
+##                                                                ⬆ :11.17.2"
+##                                                                ⬆ :11.18.0"
+##                                                                ⬆ :11.19.0"
 
 flyway-database-oracle = "org.flywaydb:flyway-database-oracle:11.11.1"
 ##                                                        ⬆ :11.11.2"
@@ -103,11 +113,13 @@ flyway-database-oracle = "org.flywaydb:flyway-database-oracle:11.11.1"
 ##                                                        ⬆ :11.15.0"
 ##                                                        ⬆ :11.16.0"
 ##                                                        ⬆ :11.17.0"
+##                                                        ⬆ :11.17.1"
+##                                                        ⬆ :11.17.2"
+##                                                        ⬆ :11.18.0"
+##                                                        ⬆ :11.19.0"
 
-logback-classic = "ch.qos.logback:logback-classic:1.5.18"
-##                                            ⬆ :1.5.19"
-##                                            ⬆ :1.5.20"
-##                                            ⬆ :1.5.21"
+logback-classic = "ch.qos.logback:logback-classic:1.5.21"
+##                                            ⬆ :1.5.22"
 
 kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl" }
 
@@ -116,9 +128,6 @@ kotlin-scripting-compiler-embeddable = { group = "org.jetbrains.kotlin", name = 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
 junit-platform-native = "org.graalvm.buildtools:junit-platform-native:0.11.0"
-##                                                                ⬆ :0.11.1"
-##                                                                ⬆ :0.11.2"
-##                                                                ⬆ :0.11.3"
 
 testcontainers = "org.testcontainers:testcontainers:1.21.3"
 ##                                              ⬆ :2.0.0"

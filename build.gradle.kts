@@ -8,7 +8,6 @@ val logback_version: String by project
 val exposed_version: String by project
 val flyway_version: String by project
 val hikari_version: String by project
-val psql_version: String by project
 val oracle_version: String by project
 val testcontainers_version: String by project
 
@@ -17,9 +16,9 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.1.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
-    id("io.ktor.plugin") version "3.2.3"
+    kotlin("jvm") version "2.2.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
+    id("io.ktor.plugin") version "3.3.2"
     id("org.cyclonedx.bom") version "1.10.0"
 }
 
