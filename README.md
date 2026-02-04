@@ -75,6 +75,7 @@ Useful commands and plugins
 gradle wrapper
 # check for dependency updates
 ./gradlew refreshVersions
+./gradlew build --refresh-dependencies
 # upgrade gradle version
 ./gradlew wrapper --gradle-version 9.2.0
 # generate Software Bill Of Materials SBOM
