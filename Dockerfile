@@ -27,7 +27,7 @@ USER 65532:65532
 
 WORKDIR /app
 COPY --from=jre-builder /customjre /jre
-COPY build/libs/service.jar /app/weather-service.jar
+COPY build/libs/weather-service-all.jar /app/weather-service.jar
 
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75" \
     TZ=UTC \

@@ -1,5 +1,3 @@
-import java.time.OffsetDateTime
-
 val ktor_version: String by project
 val openapi_version: String by project
 val kotlin_version: String by project
@@ -76,5 +74,12 @@ tasks {
                 "Implementation-Version" to project.version
             )
         }
+    }
+
+    cyclonedxBom {
+        setIncludeConfigs(listOf("runtimeClasspath"))
+        setDestination(layout.buildDirectory.dir("reports/cyclonedx").get().asFile)
+        setOutputName(project.name + ".cdx.sbom")
+        outputFormat.set("json")
     }
 }
