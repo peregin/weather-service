@@ -28,15 +28,9 @@ kotlin = "2.2.10"
 ##  ⬆ = "2.3.0-RC"
 ##  ⬆ = "2.3.0-RC2"
 ##  ⬆ = "2.3.0-RC3"
-##  ⬆ = "2.3.0"
-##  ⬆ = "2.3.10-RC"
-##  ⬆ = "2.3.10-RC2"
-##  ⬆ = "2.3.20-Beta1"
-##  ⬆ = "2.3.20-Beta2"
 
 ktor = "3.3.2"
 ##⬆ = "3.3.3"
-##⬆ = "3.4.0"
 
 jetbrains-exposed = "0.61.0"
 ##             ⬆ = "1.0.0-beta-1"
@@ -48,7 +42,6 @@ jetbrains-exposed = "0.61.0"
 ##             ⬆ = "1.0.0-rc-2"
 ##             ⬆ = "1.0.0-rc-3"
 ##             ⬆ = "1.0.0-rc-4"
-##             ⬆ = "1.0.0"
 
 [libraries]
 
@@ -68,11 +61,9 @@ exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kot
 
 org-postgresql-postgresql = "org.postgresql:postgresql:42.7.7"
 ##                                                 ⬆ :42.7.8"
-##                                                 ⬆ :42.7.9"
 
 ojdbc11 = "com.oracle.database.jdbc:ojdbc11:23.9.0.25.07"
 ##                                      ⬆ :23.26.0.0.0"
-##                                      ⬆ :23.26.1.0.0"
 
 hikaricp = "com.zaxxer:HikariCP:7.0.2"
 
@@ -92,12 +83,6 @@ flyway-core = "org.flywaydb:flyway-core:11.11.1"
 ##                                  ⬆ :11.17.2"
 ##                                  ⬆ :11.18.0"
 ##                                  ⬆ :11.19.0"
-##                                  ⬆ :11.19.1"
-##                                  ⬆ :11.20.0"
-##                                  ⬆ :11.20.1"
-##                                  ⬆ :11.20.2"
-##                                  ⬆ :11.20.3"
-##                                  ⬆ :12.0.0"
 
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.11.1"
 ##                                                                ⬆ :11.11.2"
@@ -115,12 +100,6 @@ flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.11.1"
 ##                                                                ⬆ :11.17.2"
 ##                                                                ⬆ :11.18.0"
 ##                                                                ⬆ :11.19.0"
-##                                                                ⬆ :11.19.1"
-##                                                                ⬆ :11.20.0"
-##                                                                ⬆ :11.20.1"
-##                                                                ⬆ :11.20.2"
-##                                                                ⬆ :11.20.3"
-##                                                                ⬆ :12.0.0"
 
 flyway-database-oracle = "org.flywaydb:flyway-database-oracle:11.11.1"
 ##                                                        ⬆ :11.11.2"
@@ -138,20 +117,9 @@ flyway-database-oracle = "org.flywaydb:flyway-database-oracle:11.11.1"
 ##                                                        ⬆ :11.17.2"
 ##                                                        ⬆ :11.18.0"
 ##                                                        ⬆ :11.19.0"
-##                                                        ⬆ :11.19.1"
-##                                                        ⬆ :11.20.0"
-##                                                        ⬆ :11.20.1"
-##                                                        ⬆ :11.20.2"
-##                                                        ⬆ :11.20.3"
-##                                                        ⬆ :12.0.0"
 
 logback-classic = "ch.qos.logback:logback-classic:1.5.21"
 ##                                            ⬆ :1.5.22"
-##                                            ⬆ :1.5.23"
-##                                            ⬆ :1.5.24"
-##                                            ⬆ :1.5.25"
-##                                            ⬆ :1.5.26"
-##                                            ⬆ :1.5.27"
 
 kotlin-build-tools-impl = { module = "org.jetbrains.kotlin:kotlin-build-tools-impl" }
 
@@ -162,17 +130,13 @@ kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotli
 junit-platform-native = "org.graalvm.buildtools:junit-platform-native:0.11.0"
 
 testcontainers = "org.testcontainers:testcontainers:1.21.3"
-##                                              ⬆ :1.21.4"
 ##                                              ⬆ :2.0.0"
 ##                                              ⬆ :2.0.1"
 ##                                              ⬆ :2.0.2"
-##                                              ⬆ :2.0.3"
 
 org-testcontainers-postgresql = "org.testcontainers:postgresql:1.21.3"
-##                                                         ⬆ :1.21.4"
 
 oracle-xe = "org.testcontainers:oracle-xe:1.21.3"
-##                                    ⬆ :1.21.4"
 
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
