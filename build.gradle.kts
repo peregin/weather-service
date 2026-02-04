@@ -65,7 +65,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
-    testImplementation("com.oracle.database.xe:oracle-xe:$oracle_version")
 }
 
 tasks {
