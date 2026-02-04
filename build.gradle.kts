@@ -1,13 +1,13 @@
 import java.time.OffsetDateTime
 
 val ktor_version: String by project
-val kotlin_version: String by project
-val plugin_version = "2.2.10"
 val openapi_version: String by project
+val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val flyway_version: String by project
 val hikari_version: String by project
+val psql_version: String by project
 val oracle_version: String by project
 val testcontainers_version: String by project
 
@@ -18,18 +18,13 @@ plugins {
     application
     kotlin("jvm") version "2.2.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
-    id("io.ktor.plugin") version "3.3.2"
+    id("io.ktor.plugin") version "3.2.3"
     id("org.cyclonedx.bom") version "1.10.0"
 }
 
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.toString()))
-    }
+    jvmToolchain(17)
 }
-
-
-
 
 repositories {
     mavenCentral()
@@ -40,95 +35,47 @@ application {
 }
 
 dependencies {
-    // Ktor dependencies
-    implementation(platform(libs.ktor.bom))
-    implementation(Ktor.client.core)
-    implementation(Ktor.client.java)
-    implementation(Ktor.server.core)
-    implementation(Ktor.server.netty)
-    implementation(Ktor.server.contentNegotiation)
-    implementation(Ktor.plugins.serialization.kotlinx.json)
-    implementation(Ktor.server.htmlBuilder)
-    implementation(Ktor.server.callLogging)
-    implementation(Ktor.server.cors)
-    implementation(libs.ktor.openapi)
-    implementation(libs.ktor.swagger.ui)
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-java:$ktor_version")
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-server-html-builder:$ktor_version")
+    implementation("io.ktor:ktor-server-call-logging:$ktor_version")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("io.github.smiley4:ktor-openapi:${openapi_version}")
+    implementation("io.github.smiley4:ktor-swagger-ui:${openapi_version}")
 
-    // Database dependencies
-    implementation(JetBrains.exposed.core)
-    implementation(JetBrains.exposed.dao)
-    implementation(JetBrains.exposed.jdbc)
-    implementation(libs.exposed.json)
-    implementation(libs.exposed.kotlin.datetime)
-    implementation(libs.org.postgresql.postgresql)
-    implementation(libs.ojdbc11)
-    implementation(libs.hikaricp)
-    implementation(libs.flyway.core)
-    implementation(libs.flyway.database.postgresql)
-    implementation(libs.flyway.database.oracle)
+    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
+    implementation("org.postgresql:postgresql:$psql_version")
+    implementation("com.oracle.database.jdbc:ojdbc11:$oracle_version")
+    implementation("com.zaxxer:HikariCP:$hikari_version")
+    implementation("org.flywaydb:flyway-core:$flyway_version")
+    implementation("org.flywaydb:flyway-database-postgresql:$flyway_version")
+    implementation("org.flywaydb:flyway-database-oracle:$flyway_version")
 
-    // Logging
-    implementation(libs.logback.classic)
+    implementation("ch.qos.logback:logback-classic:$logback_version")
 
-    // Test dependencies
-    testImplementation(Ktor.server.testHost)
-    testImplementation(Kotlin.test.junit)
-    testImplementation(libs.testcontainers)
-    testImplementation(libs.org.testcontainers.postgresql)
-    testImplementation(libs.oracle.xe)
-}
-
-ktor {
-    fatJar {
-        archiveFileName = "service.jar"
-    }
-
-    // it is generated from the script, deploy.sh
-    docker {
-        jreVersion.set(JavaVersion.VERSION_17)
-        customBaseImage = "eclipse-temurin:17-jre-noble:_"
-        localImageName.set("velocorner.weather")
-        imageTag.set("latest")
-        portMappings.set(
-            listOf(
-                io.ktor.plugin.features.DockerPortMapping(
-                    9015,
-                    9015,
-                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP
-                )
-            )
-        )
-
-        externalRegistry.set(
-            io.ktor.plugin.features.DockerImageRegistry.dockerHub(
-                appName = provider { "velocorner.weather" },
-                username = provider { "peregin" },
-                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
-            )
-        )
-    }
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
+    testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
+    testImplementation("org.testcontainers:postgresql:$testcontainers_version")
+    testImplementation("com.oracle.database.xe:oracle-xe:$oracle_version")
 }
 
 tasks {
     shadowJar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        mergeServiceFiles()
         archiveBaseName.set("WeatherApp")
         manifest {
             attributes(
-                mapOf(
-                    "Main-Class" to "velocorner.weather.ServiceKt",
-                    "Build-Time" to OffsetDateTime.now().toString(),
-                    "Implementation-Version" to project.version
-                )
+                "Main-Class" to "velocorner.weather.ServiceKt",
+                "Implementation-Version" to project.version
             )
         }
-    }
-
-    cyclonedxBom {
-        setIncludeConfigs(listOf("runtimeClasspath"))
-        setDestination(layout.buildDirectory.dir("reports/cyclonedx").get().asFile)
-        setOutputName(project.name + ".cdx.sbom")
-        outputFormat.set("json")
     }
 }

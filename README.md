@@ -74,7 +74,6 @@ Useful commands and plugins
 # initialize existing project with the desired wrapper version
 gradle wrapper
 # check for dependency updates
-./gradlew refreshVersions
 ./gradlew build --refresh-dependencies
 # upgrade gradle version
 ./gradlew wrapper --gradle-version 9.2.0
