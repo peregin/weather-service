@@ -67,7 +67,7 @@ dependencies {
 
 tasks {
     shadowJar {
-        archiveBaseName.set("WeatherApp")
+        archiveFileName.set("service.jar")
         manifest {
             attributes(
                 "Main-Class" to "velocorner.weather.ServiceKt",

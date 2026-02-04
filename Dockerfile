@@ -2,14 +2,14 @@
 FROM eclipse-temurin:21-jdk-jammy AS jre-builder
 
 WORKDIR /work
-COPY build/libs/service.jar /work/weather-service.jar
+COPY build/libs/service.jar /work/service.jar
 
 # Inspect module deps, then build a trimmed JRE.
 # Add jdk.crypto.ec for TLS and jdk.unsupported for sun.misc.Unsafe (often needed by Scala/Play).
 RUN jdeps \
       --multi-release 21 \
       --ignore-missing-deps \
-      --print-module-deps /work/weather-service.jar > /work/deps.txt && \
+      --print-module-deps /work/service.jar > /work/deps.txt && \
     $JAVA_HOME/bin/jlink \
       --add-modules $(cat /work/deps.txt),jdk.crypto.ec,jdk.unsupported \
       --strip-debug \
@@ -27,7 +27,7 @@ USER 65532:65532
 
 WORKDIR /app
 COPY --from=jre-builder /customjre /jre
-COPY build/libs/weather-service-all.jar /app/weather-service.jar
+COPY build/libs/service.jar /app/service.jar
 
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75" \
     TZ=UTC \
@@ -36,4 +36,4 @@ ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75" \
 EXPOSE 9015
 
 # Use absolute path (no shell in Distroless; PATH lookup isn’t used by Docker exec)
-ENTRYPOINT ["/jre/bin/java", "-Duser.timezone=UTC", "-jar", "/app/weather-service.jar"]
+ENTRYPOINT ["/jre/bin/java", "-Duser.timezone=UTC", "-jar", "/app/service.jar"]
