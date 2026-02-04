@@ -67,6 +67,7 @@ dependencies {
 
 tasks {
     shadowJar {
+        mergeServiceFiles()
         archiveFileName.set("service.jar")
         manifest {
             attributes(

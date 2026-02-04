@@ -37,8 +37,8 @@ object DatabaseFactory {
         requireNotNull(dbPassword) { "DB_PASSWORD is required" }
 
         val specific = when {
-            dbUrl.contains(oracleSnippet) -> DatabaseSpecific("2", "classpath:migration/oracle") // SERIALIZABLE
-            else -> DatabaseSpecific("TRANSACTION_REPEATABLE_READ", "classpath:migration/psql")
+            dbUrl.contains(oracleSnippet) -> DatabaseSpecific("2", "migration/oracle") // SERIALIZABLE
+            else -> DatabaseSpecific("TRANSACTION_REPEATABLE_READ", "migration/psql")
         }
         logger.info("creating datasource with $specific")
         val dataSource = hikari(dbUrl, dbUser, dbPassword, driverClassName, specific)
