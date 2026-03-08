@@ -67,6 +67,8 @@ dependencies {
 
 tasks {
     shadowJar {
+        // Keep duplicate service descriptors so ServiceFileTransformer can merge them.
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
         mergeServiceFiles()
         archiveFileName.set("service.jar")
         manifest {
