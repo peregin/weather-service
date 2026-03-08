@@ -2,8 +2,8 @@ package velocorner.weather.repo
 
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.deleteAll
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.v1.jdbc.deleteAll
+import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass

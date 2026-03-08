@@ -2,7 +2,7 @@ package velocorner.weather.repo
 
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.v1.jdbc.deleteAll
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
@@ -19,7 +19,7 @@ internal class LocationRepoTest {
         init {
             System.setProperty("testcontainers.logging", "true")
             val dockerSocket = DockerUtil.detectDockerSocket()
-            println("docker socket is: " + dockerSocket);
+            println("docker socket is: " + dockerSocket)
             System.setProperty("DOCKER_HOST", dockerSocket)
         }
 

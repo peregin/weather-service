@@ -1,8 +1,9 @@
 package velocorner.weather.repo
 
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.core.*
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.update
 import velocorner.weather.model.GeoPosition
 import velocorner.weather.repo.DatabaseFactory.transact
 import velocorner.weather.repo.LocationTable.latitude

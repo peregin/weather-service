@@ -14,10 +14,10 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.2.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
-    id("io.ktor.plugin") version "3.2.3"
-    id("org.cyclonedx.bom") version "1.10.0"
+    kotlin("jvm") version "2.3.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.10"
+    id("io.ktor.plugin") version "3.4.1"
+    id("org.cyclonedx.bom") version "3.2.0"
 }
 
 kotlin {
@@ -60,7 +60,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:postgresql:$testcontainers_version")
 }
@@ -77,10 +77,4 @@ tasks {
         }
     }
 
-    cyclonedxBom {
-        setIncludeConfigs(listOf("runtimeClasspath"))
-        setDestination(layout.buildDirectory.dir("reports/cyclonedx").get().asFile)
-        setOutputName(project.name + ".cdx.sbom")
-        outputFormat.set("json")
-    }
 }

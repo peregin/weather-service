@@ -1,7 +1,6 @@
 package velocorner.weather.util
 
 import junit.framework.TestCase.assertTrue
-import org.junit.jupiter.api.assertAll
 import velocorner.weather.util.CountryUtil.beautify
 import velocorner.weather.util.CountryUtil.normalize
 import kotlin.test.Test
@@ -70,33 +69,27 @@ internal class CountryUtilTest {
 
     @Test
     fun `should beautify locations correctly`() {
-        assertAll(
-            { assertEquals("Adliswil, CH", beautify("adliswil, ch")) },
-            { assertEquals("Abu Dhabi, AE", beautify("abu dhabi, ae")) },
-            { assertEquals("Buenos Aires, AR", beautify("buenos aires, ar")) },
-            { assertEquals("Budapest", beautify("budapest")) },
-            { assertEquals("New York City, US", beautify("new york city, us")) }
-        )
+        assertEquals("Adliswil, CH", beautify("adliswil, ch"))
+        assertEquals("Abu Dhabi, AE", beautify("abu dhabi, ae"))
+        assertEquals("Buenos Aires, AR", beautify("buenos aires, ar"))
+        assertEquals("Budapest", beautify("budapest"))
+        assertEquals("New York City, US", beautify("new york city, us"))
     }
 
     @Test
     fun `should handle edge cases`() {
-        assertAll(
-            { assertEquals("City", beautify("  city  ")) },
-            { assertEquals("City, XX", beautify("city,xx")) },
-            { assertEquals("City, Country", beautify("city, country")) },
-            { assertEquals("City", beautify("city,")) },
-            { assertEquals("Budapest", beautify("budapest")) },
-            { assertEquals("Multi Word City", beautify("multi word city")) }
-        )
+        assertEquals("City", beautify("  city  "))
+        assertEquals("City, XX", beautify("city,xx"))
+        assertEquals("City, Country", beautify("city, country"))
+        assertEquals("City", beautify("city,"))
+        assertEquals("Budapest", beautify("budapest"))
+        assertEquals("Multi Word City", beautify("multi word city"))
     }
 
     @Test
     fun `beautify should handle special characters`() {
-        assertAll(
-            { assertEquals("São Paulo, BR", beautify("são paulo, br")) },
-            { assertEquals("Zürich, CH", beautify("zürich, ch")) }
-        )
+        assertEquals("São Paulo, BR", beautify("são paulo, br"))
+        assertEquals("Zürich, CH", beautify("zürich, ch"))
     }
 
     @Test
