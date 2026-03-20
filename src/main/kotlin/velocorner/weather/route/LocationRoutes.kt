@@ -17,6 +17,15 @@ fun Route.locationRoutes(repo: LocationRepo) {
         get("ip", {
             description = "Determines the country and capital from IP address"
             tags = listOf("location")
+            request {
+                queryParameter<String>("ip") {
+                    description = "Optional IP address. Falls back to X-Forwarded-For or remote address when omitted."
+                    required = false
+                    example("IPv4") {
+                        value = "8.8.8.8"
+                    }
+                }
+            }
             response {
                 HttpStatusCode.OK to {
                     description = "City, Country"
@@ -34,11 +43,7 @@ fun Route.locationRoutes(repo: LocationRepo) {
                 HttpStatusCode.NotFound to { description = "Country not found" }
             }
         }) {
-            val ip = call.request.headers["X-Forwarded-For"] ?: call.request.origin.remoteAddress
-            val country = CountryFeed.country(ip)
-            val capital = CountryUtil.code2Capital[country]
-                ?: throw NotFoundException("country $country not found")
-            call.respond(GeoLocationResponse(city = capital, country = country))
+            call.respondGeoLocation()
         }
 
         get("suggest", {
@@ -108,4 +113,15 @@ fun Route.locationRoutes(repo: LocationRepo) {
             call.respond(geoLocation)
         }
     }
+}
+
+private suspend fun RoutingCall.respondGeoLocation() {
+    val ip = parameters["ip"]
+        ?: request.queryParameters["ip"]
+        ?: request.headers["X-Forwarded-For"]
+        ?: request.origin.remoteAddress
+    val country = CountryFeed.country(ip)
+    val capital = CountryUtil.code2Capital[country]
+        ?: throw NotFoundException("country $country not found")
+    respond(GeoLocationResponse(city = capital, country = country))
 }
