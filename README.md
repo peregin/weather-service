@@ -26,39 +26,49 @@ Run it
 # PDBADMIN, SYSTEM, SYS users
 ./osql19ee.sh
 # or 
-./osql23ai.sh
+./osql26ai.sh
 ```
 
 Connect to it with SQLDeveloper, CLI, JDBC
 SQLDeveloper
 19: system as user, orapdb1 as service
-23: sys as user, free as service
+26: sys as user, free as service
 
 CLI
-docker exec -it oracle23ai su - oracle -c "
+docker exec -it oracle26ai su - oracle -c "
 export ORACLE_SID=orcl
 export ORAENV_ASK=NO
 . /usr/local/bin/oraenv
 \$ORACLE_HOME/bin/sqlplus / as sysdba
 "
 
-```shell
+```sql
 -- move to the root container 
 ALTER SESSION SET CONTAINER = CDB$ROOT;
 
--- create pluggable database
-CREATE PLUGGABLE DATABASE weather ADMIN USER pdbadmin IDENTIFIED BY password ROLE=(DBA) DEFAULT TABLESPACE weather DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
+-- create pluggable database for a local Oracle CDB
+CREATE PLUGGABLE DATABASE weather
+  ADMIN USER pdbadmin IDENTIFIED BY "WthrPdb26Pass1"
+  ROLES = (DBA)
+  DEFAULT TABLESPACE weather
+  DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
 ALTER PLUGGABLE DATABASE weather OPEN;
 ALTER PLUGGABLE DATABASE weather SAVE STATE;
 ALTER SESSION SET CONTAINER = weather;
 -- create dedicated user
-CREATE USER weather IDENTIFIED BY weather DEFAULT TABLESPACE weather;
--- Grant basic privileges to the user
-GRANT CONNECT, RESOURCE TO weather;
--- Optionally, grant additional permissions
+CREATE USER weather IDENTIFIED BY "WthrSvc26Pass1" DEFAULT TABLESPACE weather QUOTA UNLIMITED ON weather;
+-- Grant privileges required by Flyway migrations
 GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE TO weather;
--- Optionally, set quota on the user's default tablespace
-ALTER USER weather QUOTA UNLIMITED ON weather;
+```
+
+For Oracle Autonomous Database 26ai, connect as `ADMIN` to the Autonomous
+Database and create only the application user. PDB and tablespace administration
+is managed by the service.
+
+```sql
+-- Use a password that satisfies the Autonomous Database password policy.
+CREATE USER weather IDENTIFIED BY "WthrSvc26Pass1" QUOTA UNLIMITED ON DATA;
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE TO weather;
 ```
 JDBC
 ```shell
