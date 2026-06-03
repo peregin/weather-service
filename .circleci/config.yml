@@ -11,7 +11,7 @@ executors:
           JVM_OPTS: -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
   ci-min:
     docker:
-      - image: cimg/base:2024.11
+      - image: cimg/base:2026.06
 
 commands:
   restart_service:
