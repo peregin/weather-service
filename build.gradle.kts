@@ -1,23 +1,23 @@
-val ktor_version: String by project
-val openapi_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val exposed_version: String by project
-val flyway_version: String by project
-val hikari_version: String by project
-val psql_version: String by project
-val oracle_version: String by project
-val testcontainers_version: String by project
+val ktor_version = project.property("ktor_version") as String
+val openapi_version = project.property("openapi_version") as String
+val kotlin_version = project.property("kotlin_version") as String
+val logback_version = project.property("logback_version") as String
+val exposed_version = project.property("exposed_version") as String
+val flyway_version = project.property("flyway_version") as String
+val hikari_version = project.property("hikari_version") as String
+val psql_version = project.property("psql_version") as String
+val oracle_version = project.property("oracle_version") as String
+val testcontainers_version = project.property("testcontainers_version") as String
 
 group = "velocorner.weather"
 version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.3.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.10"
-    id("io.ktor.plugin") version "3.4.1"
-    id("org.cyclonedx.bom") version "3.2.0"
+    kotlin("jvm") version "2.4.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.0"
+    id("io.ktor.plugin") version "3.5.0"
+    id("org.cyclonedx.bom") version "3.2.4"
 }
 
 kotlin {
