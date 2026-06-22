@@ -6,17 +6,25 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import io.ktor.server.html.*
 import kotlinx.html.*
-import java.util.*
+import java.util.jar.Manifest
 
-val javaOpts = System.getenv("JAVA_OPTS") ?: "n/a"
+private const val NOT_AVAILABLE = "n/a"
+
+val javaOpts = System.getenv("JAVA_OPTS") ?: NOT_AVAILABLE
+
+internal fun resolveBuildTime(classLoader: ClassLoader = Thread.currentThread().contextClassLoader): String =
+    classLoader.getResources("META-INF/MANIFEST.MF")
+        .asSequence().firstNotNullOfOrNull { resource ->
+            runCatching {
+                resource.openStream().use { Manifest(it).mainAttributes.getValue("Build-Time") }
+            }.getOrNull()
+        }
+        ?: NOT_AVAILABLE
 
 fun Route.welcomeRoutes() {
     get("/") {
         val now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
-        // read manifest attribute with the build time
-        val buildTime = this.javaClass.classLoader.getResource("META-INF/MANIFEST.MF")?.openStream()?.use {
-            Properties().apply { load(it) }.getProperty("Build-Time")
-        } ?: "n/a"
+        val buildTime = resolveBuildTime()
         call.respondHtml(HttpStatusCode.OK) {
             head {
                 title("Weather Service")

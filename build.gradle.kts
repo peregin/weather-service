@@ -1,3 +1,5 @@
+import java.time.Instant
+
 val ktor_version = project.property("ktor_version") as String
 val openapi_version = project.property("openapi_version") as String
 val kotlin_version = project.property("kotlin_version") as String
@@ -74,7 +76,8 @@ tasks {
         manifest {
             attributes(
                 "Main-Class" to "velocorner.weather.ServiceKt",
-                "Implementation-Version" to project.version
+                "Implementation-Version" to project.version,
+                "Build-Time" to Instant.now().toString()
             )
         }
     }
