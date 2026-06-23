@@ -1,6 +1,7 @@
 package velocorner.weather.util
 
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 object DockerUtil {
@@ -18,10 +19,7 @@ object DockerUtil {
      * @throws IllegalStateException if no Docker socket is found
      */
     fun detectDockerSocket(): String {
-        val possibleSockets = listOf(
-            Paths.get("${System.getProperty("user.home")}/.colima/docker.sock"), // Colima socket
-            Paths.get("/var/run/docker.sock") // Regular Docker socket
-        )
+        val possibleSockets = colimaSockets() + Paths.get("/var/run/docker.sock") // Regular Docker socket
 
         val dockerSocket = possibleSockets.find { Files.exists(it) }
 
@@ -33,4 +31,11 @@ object DockerUtil {
             }
         }
     }
+
+    fun isColimaAvailable(): Boolean = colimaSockets().any { Files.exists(it) }
+
+    private fun colimaSockets(): List<Path> = listOf(
+        Paths.get("${System.getProperty("user.home")}/.colima/default/docker.sock"), // Colima default profile socket
+        Paths.get("${System.getProperty("user.home")}/.colima/docker.sock") // Legacy Colima socket
+    )
 }

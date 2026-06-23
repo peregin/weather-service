@@ -82,4 +82,28 @@ tasks {
         }
     }
 
+    withType<Test>().configureEach {
+        doFirst {
+            val colimaSocket = listOf(
+                file("${System.getProperty("user.home")}/.colima/default/docker.sock"),
+                file("${System.getProperty("user.home")}/.colima/docker.sock")
+            ).firstOrNull { it.exists() }
+
+            if (colimaSocket != null) {
+                val dockerHost = "unix://${colimaSocket.absolutePath}"
+
+                environment("DOCKER_HOST", dockerHost)
+                environment("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
+                systemProperty(
+                    "docker.client.strategy",
+                    "org.testcontainers.dockerclient.EnvironmentAndSystemPropertyClientProviderStrategy"
+                )
+                systemProperty("docker.host", dockerHost)
+                systemProperty("weather.test.database", "oracle")
+
+                logger.lifecycle("Using Colima Docker socket for tests: $dockerHost")
+                logger.lifecycle("Using Oracle database container for tests because Colima was detected")
+            }
+        }
+    }
 }

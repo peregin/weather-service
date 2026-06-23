@@ -18,46 +18,42 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 ./psql.sh
 ```
 ### Oracle
-Installation instructions
-https://dev.to/udara_dananjaya/running-oracle-19c-database-with-docker-1akg
-
 Run it
 ```shell
-# PDBADMIN, SYSTEM, SYS users
-./osql19ee.sh
-# or 
+# Starts Oracle AI Database Free 26ai on localhost:1522.
+# The script pins container-registry.oracle.com/database/free:23.26.0.0.
 ./osql26ai.sh
 ```
 
 Connect to it with SQLDeveloper, CLI, JDBC
 SQLDeveloper
-19: system as user, orapdb1 as service
-26: sys as user, free as service
+26ai Free: `system` as user, `FREEPDB1` as service, `localhost:1522`
 
 CLI
+```shell
 docker exec -it oracle26ai su - oracle -c "
 export ORACLE_SID=orcl
 export ORAENV_ASK=NO
 . /usr/local/bin/oraenv
 \$ORACLE_HOME/bin/sqlplus / as sysdba
 "
+```
 
 ```sql
--- move to the root container 
-ALTER SESSION SET CONTAINER = CDB$ROOT;
+-- The Oracle Database Free container already provides the FREEPDB1 pluggable database.
+-- Create the application tablespace and user inside that PDB.
+ALTER SESSION SET CONTAINER = FREEPDB1;
 
--- create pluggable database for a local Oracle CDB
-CREATE PLUGGABLE DATABASE weather
-  ADMIN USER pdbadmin IDENTIFIED BY "WthrPdb26Pass1"
-  ROLES = (DBA)
-  DEFAULT TABLESPACE weather
-  DATAFILE SIZE 256M AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
-ALTER PLUGGABLE DATABASE weather OPEN;
-ALTER PLUGGABLE DATABASE weather SAVE STATE;
-ALTER SESSION SET CONTAINER = weather;
--- create dedicated user
-CREATE USER weather IDENTIFIED BY "WthrSvc26Pass1" DEFAULT TABLESPACE weather QUOTA UNLIMITED ON weather;
--- Grant privileges required by Flyway migrations
+CREATE TABLESPACE "WEATHER"
+  DATAFILE 'weather01.dbf'
+  SIZE 256M
+  AUTOEXTEND ON NEXT 128M MAXSIZE UNLIMITED;
+
+CREATE USER weather
+  IDENTIFIED BY "WthrSvc26Pass1"
+  DEFAULT TABLESPACE "WEATHER"
+  QUOTA UNLIMITED ON "WEATHER";
+
 GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE TO weather;
 ```
 
@@ -75,7 +71,7 @@ JDBC
 # driver implemented in
 oracle.jdbc.OracleDriver
 # url looks like
-jdbc:oracle:thin:@//localhost:1521/weather
+jdbc:oracle:thin:@//localhost:1522/FREEPDB1
 ```
 
 ## Gradle
