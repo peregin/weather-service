@@ -20,9 +20,9 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
 
     suspend fun current(location: String): CurrentWeather? {
         val entry = weatherRepo.getCurrent(location)
+        val now = clock()
         val reply =
             entry?.takeUnless {
-                val now = clock()
                 val last = it.timestamp
                 logger.debug("checking current weather cache $now - $last")
                 val cacheHit = (now.toEpochSecond() - last.toEpochSecond())
@@ -47,8 +47,8 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
 
     suspend fun forecast(location: String): List<ForecastWeather> {
         val entries = weatherRepo.listForecast(location) // takes 40 entries, latest is now
+        val now = clock()
         val last = entries.map { it.timestamp }.minOrNull()?.takeUnless {
-            val now = clock()
             logger.debug("checking forecast weather cache $now - $it")
             val cacheHit = (now.toEpochSecond() - it.toEpochSecond())
                 .seconds
@@ -69,6 +69,7 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
         return reply
     }
 
+    // current weather gives a window of 3 hours, hence the min and max temperature is misleading, it is not for the day
     internal fun convert(location: String, reply: CurrentWeatherResponse?): CurrentWeather? {
         return reply?.let { r ->
             with(r) {
@@ -86,6 +87,11 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
                 } else null
             }
         }
+    }
+
+    // convert the current for today from the forecast, list of 3h windows to have the proper min and max temperature
+    internal fun convert(now: OffsetDateTime, location: String, reply: ForecastWeatherResponse?): CurrentWeather? {
+        return null
     }
 
     internal fun convert(location: String, reply: ForecastWeatherResponse?): List<ForecastWeather> {
