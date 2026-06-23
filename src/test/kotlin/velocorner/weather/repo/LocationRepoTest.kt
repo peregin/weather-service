@@ -1,76 +1,30 @@
 package velocorner.weather.repo
 
-import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.v1.jdbc.deleteAll
-import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
-import org.testcontainers.containers.PostgreSQLContainer
 import velocorner.weather.model.*
-import velocorner.weather.repo.DatabaseFactory.transact
-import velocorner.weather.util.DockerUtil
 import kotlin.test.*
 import kotlin.test.Test
 
 
 internal class LocationRepoTest {
     companion object {
-        init {
-            System.setProperty("testcontainers.logging", "true")
-            val dockerSocket = DockerUtil.detectDockerSocket()
-            println("docker socket is: " + dockerSocket)
-            System.setProperty("DOCKER_HOST", dockerSocket)
-        }
-
-        private const val DB_NAME = "location_test"
-        private const val DB_USER = "location"
-        private const val DB_PASSWORD = "location"
-
-        private lateinit var postgresContainer: PostgreSQLContainer<*>
-
         @BeforeClass
         @JvmStatic
         fun setupSpec() {
-            // Docker 29.0.0 (which is what recent Docker Desktop releases ship) requires client API ≥ 1.44.
-            System.setProperty("api.version", "1.44")
-            postgresContainer = PostgreSQLContainer<Nothing>("postgres:16.4").apply {
-                withDatabaseName(DB_NAME)
-                withUsername(DB_USER)
-                withPassword(DB_PASSWORD)
-                withUrlParam("loggerLevel", "DEBUG") // Add DEBUG logging for Testcontainers
-                start()
-            }
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun tearDownSpec() {
-            if (::postgresContainer.isInitialized) {
-                postgresContainer.stop()
-            }
+            TestDatabase.start()
         }
     }
 
     @Before
     fun setup() {
-        val config = ConfigFactory.parseString(
-            """
-            db.url="${postgresContainer.jdbcUrl}"
-            db.user="$DB_USER"
-            db.password="$DB_PASSWORD"
-        """.trimIndent()
-        )
-        DatabaseFactory.init(config = config)
+        DatabaseFactory.init(config = TestDatabase.config())
         truncateTables()
     }
 
     private fun truncateTables() = runBlocking {
-        transact {
-            PostgresqlCurrentWeatherTable.deleteAll()
-            PostgresqlForecastWeatherTable.deleteAll()
-            LocationTable.deleteAll()
-        }
+        TestDatabase.truncateAllTables()
     }
 
     private val locationRepo = LocationRepoImpl()

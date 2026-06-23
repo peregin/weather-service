@@ -15,10 +15,10 @@ interface LocationRepo {
     suspend fun suggestLocations(snippet: String): List<String>
 }
 
-object LocationTable : Table("location") {
-    val location = text("location")
-    val latitude = double("latitude")
-    val longitude = double("longitude")
+object LocationTable : Table("\"location\"") {
+    val location = text("\"location\"")
+    val latitude = double("\"latitude\"")
+    val longitude = double("\"longitude\"")
     override val primaryKey = PrimaryKey(location)
 }
 
