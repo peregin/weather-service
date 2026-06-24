@@ -18,14 +18,14 @@ private val faviconLinks = listOf(
     FaviconLink("/favicon-32x32.png", "image/png")
 )
 
-private val welcomeLinks = listOf(
-    WelcomeLink("/docs", "OpenAPI"),
-    WelcomeLink("weather/current/Zurich,CH", "current weather for Zürich, Switzerland 🇨🇭"),
-    WelcomeLink("weather/forecast/Zurich,CH", "5 days forecast ☀️ in 🇨🇭")
+private val actionLinks = listOf(
+    ActionLink("/weather/current/Zurich,CH", "Current Weather", "Zurich, CH"),
+    ActionLink("/weather/forecast/Zurich,CH", "Forecast", "5 day meteogram"),
+    ActionLink("/docs", "OpenAPI", "Interactive API docs")
 )
 
 private data class FaviconLink(val href: String, val type: String)
-private data class WelcomeLink(val href: String, val text: String)
+private data class ActionLink(val href: String, val label: String, val detail: String)
 
 internal fun resolveBuildTime(classLoader: ClassLoader = Thread.currentThread().contextClassLoader): String =
     classLoader.getResources("META-INF/MANIFEST.MF")
@@ -42,21 +42,77 @@ fun Route.welcomeRoutes() {
     get("/") {
         val now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
         call.respondHtml(HttpStatusCode.OK) {
+            attributes["lang"] = "en"
             head {
                 title("Weather Service")
+                meta(charset = "utf-8")
+                meta(name = "viewport", content = "width=device-width, initial-scale=1")
+                meta(
+                    name = "description",
+                    content = "Weather Service landing page with current weather, forecast, and OpenAPI links."
+                )
                 faviconLinks.forEach { favicon ->
                     link(rel = "icon", href = favicon.href, type = favicon.type)
                 }
+                link(rel = "stylesheet", href = "/welcome.css")
             }
             body {
-                h1 { +"Welcome @ $now" }
-                ul {
-                    welcomeLinks.forEach { welcomeLink ->
-                        li { a(welcomeLink.href) { +welcomeLink.text } }
+                header("topbar") {
+                    a(href = "/", classes = "brand") {
+                        img(src = "/weatherimage.png", alt = "", classes = "brand-mark")
+                        span("brand-name") { +"Weather Service" }
+                    }
+                    nav("nav-links") {
+                        actionLinks.forEach { action ->
+                            a(href = action.href) { +action.label }
+                        }
                     }
                 }
-                p { +"JAVA_OPTS: $javaOpts" }
-                p { +"Build-Time: $buildTime" }
+                main {
+                    section("hero") {
+                        div("hero-content") {
+                            p("eyebrow") { +"Live weather endpoints" }
+                            h1 { +"Weather Service" }
+                            p("hero-copy") {
+                                +"Current conditions, forecast data, and API documentation for location-aware clients."
+                            }
+                            div("hero-actions") {
+                                a(href = "/weather/current/Zurich,CH", classes = "button primary") {
+                                    +"Current Zurich"
+                                }
+                                a(href = "/docs", classes = "button secondary") {
+                                    +"API Docs"
+                                }
+                            }
+                        }
+                    }
+                    section("actions-band") {
+                        div("actions-grid") {
+                            actionLinks.forEach { action ->
+                                a(href = action.href, classes = "action-card") {
+                                    span("action-label") { +action.label }
+                                    span("action-detail") { +action.detail }
+                                }
+                            }
+                        }
+                    }
+                    section("status-band") {
+                        div("status-list") {
+                            div("status-item") {
+                                span("status-label") { +"Local time" }
+                                span("status-value") { +now }
+                            }
+                            div("status-item") {
+                                span("status-label") { +"Build time" }
+                                span("status-value") { +buildTime }
+                            }
+                            div("status-item") {
+                                span("status-label") { +"JAVA_OPTS" }
+                                span("status-value") { +javaOpts }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
