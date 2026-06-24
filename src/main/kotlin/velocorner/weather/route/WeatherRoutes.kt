@@ -6,7 +6,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import velocorner.weather.service.WeatherService
 import velocorner.weather.util.toMeteoGramXml
-import io.ktor.util.date.*
 import org.slf4j.LoggerFactory
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.util.CountryUtil
@@ -15,6 +14,9 @@ import io.github.smiley4.ktoropenapi.config.RouteConfig
 
 private val logger = LoggerFactory.getLogger("WeatherRoutes")
 private const val cookieAge = 60 * 60 * 24 * 7 // 7 days
+private const val locationCookie = "weather_location"
+
+private data class WeatherLocation(val raw: String, val iso: String)
 
 // location is in format: city[,isoCountry 2-letter code]
 fun Route.weatherRoutes(service: WeatherService) {
@@ -37,28 +39,10 @@ fun Route.weatherRoutes(service: WeatherService) {
                 this@get.setupCommonResponses()
             }
         }) {
-            val location = call.parameters["location"] ?: return@get call.respondText(
-                "Missing location",
-                status = HttpStatusCode.BadRequest
-            )
-            // convert city[,country] to city[ ,isoCountry]
-            val isoLocation = CountryUtil.iso(location)
-            logger.debug("collecting current weather for [$location] -> [$isoLocation]")
-            val current = service.current(isoLocation) ?: return@get call.respondText(
-                "Unknown location $isoLocation",
-                status = HttpStatusCode.NotFound
-            )
-            // add a cookie, it is read by the frontend to lock the once set location for forecast
-            call.response.cookies.append(
-                Cookie(
-                    name = "weather_location",
-                    encoding = CookieEncoding.BASE64_ENCODING,
-                    value = isoLocation,
-                    path = "/",
-                    domain = ".velocorner.com",
-                    maxAge = cookieAge
-                )
-            )
+            val location = call.weatherLocationOrNull() ?: return@get
+            logger.debug("collecting current weather for [${location.raw}] -> [${location.iso}]")
+            val current = service.current(location.iso) ?: return@get call.respondUnknownLocation(location.iso)
+            call.rememberWeatherLocation(location.iso)
             call.respond(current)
         }
 
@@ -76,32 +60,41 @@ fun Route.weatherRoutes(service: WeatherService) {
                 this@get.setupCommonResponses()
             }
         }) {
-            val location = call.parameters["location"] ?: return@get call.respondText(
-                "Missing location",
-                status = HttpStatusCode.BadRequest
-            )
-            // convert city[,country] to city[ ,isoCountry]
-            val isoLocation = CountryUtil.iso(location)
-            logger.debug("collecting weather forecast for [$location] -> [$isoLocation]")
-            val forecast = service.forecast(isoLocation)
-            if (forecast.isEmpty()) return@get call.respondText(
-                "Unknown location $isoLocation",
-                status = HttpStatusCode.NotFound
-            )
-            // add a cookie, it is read by the frontend to lock the once set location for forecast
-            call.response.cookies.append(
-                Cookie(
-                    name = "weather_location",
-                    encoding = CookieEncoding.BASE64_ENCODING,
-                    value = isoLocation,
-                    path = "/",
-                    domain = ".velocorner.com",
-                    maxAge = cookieAge
-                )
-            )
+            val location = call.weatherLocationOrNull() ?: return@get
+            logger.debug("collecting weather forecast for [${location.raw}] -> [${location.iso}]")
+            val forecast = service.forecast(location.iso)
+            if (forecast.isEmpty()) return@get call.respondUnknownLocation(location.iso)
+            call.rememberWeatherLocation(location.iso)
             call.respondText(toMeteoGramXml(forecast), contentType = Xml, status = HttpStatusCode.OK)
         }
     }
+}
+
+private suspend fun RoutingCall.weatherLocationOrNull(): WeatherLocation? {
+    val location = parameters["location"] ?: run {
+        respondText("Missing location", status = HttpStatusCode.BadRequest)
+        return null
+    }
+    // convert city[,country] to city[ ,isoCountry]
+    return WeatherLocation(raw = location, iso = CountryUtil.iso(location))
+}
+
+private suspend fun RoutingCall.respondUnknownLocation(isoLocation: String) {
+    respondText("Unknown location $isoLocation", status = HttpStatusCode.NotFound)
+}
+
+private fun RoutingCall.rememberWeatherLocation(isoLocation: String) {
+    // Read by the frontend to lock the once set location for forecast.
+    response.cookies.append(
+        Cookie(
+            name = locationCookie,
+            encoding = CookieEncoding.BASE64_ENCODING,
+            value = isoLocation,
+            path = "/",
+            domain = ".velocorner.com",
+            maxAge = cookieAge
+        )
+    )
 }
 
 internal fun RouteConfig.setupLocationParameter() {
