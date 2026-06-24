@@ -7,6 +7,7 @@ import velocorner.weather.repo.WeatherRepo
 import velocorner.weather.util.WeatherCodeUtil
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -31,8 +32,12 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
                 cacheHit > 0
             }.also {
                 logger.debug("retrieving cached data for current [$location]")
-            } ?: feed.current(location).let { re ->
-                convert(location, re).also {
+            } ?: run {
+                // extract current weather from the forecast of today orr fall back to the current 3h window weather
+                val freshWeather = feed.forecast(location)
+                    .let { re -> convert(now, location, re) }
+                    ?: feed.current(location).let { re -> convert(location, re) }
+                freshWeather.also {
                     logger.info("retrieving and store fresh data for current [$location]")
                     it?.let {
                         weatherRepo.storeCurrent(it)
@@ -91,7 +96,36 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
 
     // convert the current for today from the forecast, list of 3h windows to have the proper min and max temperature
     internal fun convert(now: OffsetDateTime, location: String, reply: ForecastWeatherResponse?): CurrentWeather? {
-        return null
+        val city = reply?.city ?: return null
+        val coord = city.coord ?: return null
+        val sunrise = city.sunrise ?: return null
+        val sunset = city.sunset ?: return null
+        val forecasts = reply.list?.takeIf { it.isNotEmpty() } ?: return null
+        val timezone = city.timezone?.let { ZoneOffset.ofTotalSeconds(it) } ?: now.offset
+        val today = now.withOffsetSameInstant(timezone).toLocalDate()
+        val todayForecasts = forecasts.filter {
+            it.dt.withOffsetSameInstant(timezone).toLocalDate() == today
+        }
+        val currentForecast = todayForecasts
+            .filter { !it.dt.toInstant().isBefore(now.toInstant()) }
+            .minByOrNull { it.dt.toInstant() }
+            ?: todayForecasts.maxByOrNull { it.dt.toInstant() }
+            ?: return null
+        val current = currentForecast.weather.firstOrNull() ?: return null
+        val info = currentForecast.main.copy(
+            temp_min = todayForecasts.minOf { it.main.temp_min },
+            temp_max = todayForecasts.maxOf { it.main.temp_max }
+        )
+        return CurrentWeather(
+            location = location,
+            timestamp = now,
+            bootstrapIcon = WeatherCodeUtil.bootstrapIcon(current.id),
+            reactIcon = WeatherCodeUtil.reactIcon(current.id),
+            current = current,
+            info = info,
+            sunriseSunset = SunriseSunsetInfo(sunrise = sunrise, sunset = sunset),
+            coord = coord
+        )
     }
 
     internal fun convert(location: String, reply: ForecastWeatherResponse?): List<ForecastWeather> {

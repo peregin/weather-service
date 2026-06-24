@@ -131,7 +131,13 @@ data class WindDescription(
 data class City(
     val id: Long,
     val name: String, // plain name, such as Zurich, Budapest
-    val country: String // ISO code 2 letter
+    val country: String, // ISO code 2 letter
+    val coord: Coord? = null,
+    val timezone: Int? = null,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val sunrise: OffsetDateTime? = null,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val sunset: OffsetDateTime? = null
 )
 
 // one of the entry points, the response contains a list of Weather structures, also stored in database

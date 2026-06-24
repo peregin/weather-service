@@ -6,6 +6,7 @@ import velocorner.weather.model.*
 import velocorner.weather.repo.LocationRepo
 import velocorner.weather.repo.WeatherRepo
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 class WeatherServiceTest {
     private lateinit var weatherService: WeatherService
@@ -82,6 +83,44 @@ class WeatherServiceTest {
         assertEquals(weather.coord.lon, storedLocation.longitude)
     }
 
+    @Test
+    fun `should convert forecast weather to current weather with today min and max temperature`() {
+        // given
+        val location = "Zurich"
+        val now = OffsetDateTime.parse("2026-06-24T10:30:00Z")
+        val forecastResponse = createForecastWeather(now)
+
+        // when
+        val weather = requireNotNull(weatherService.convert(now, location, forecastResponse))
+
+        // then
+        assertEquals(location, weather.location)
+        assertEquals(now, weather.timestamp)
+        assertEquals(WeatherDescription(800, "Clear", "clear sky", "01d"), weather.current)
+        assertEquals(23.0f, weather.info.temp)
+        assertEquals(8.0f, weather.info.temp_min)
+        assertEquals(26.0f, weather.info.temp_max)
+        assertEquals(forecastResponse.city?.coord, weather.coord)
+        assertEquals(forecastResponse.city?.sunrise, weather.sunriseSunset.sunrise)
+        assertEquals(forecastResponse.city?.sunset, weather.sunriseSunset.sunset)
+    }
+
+    @Test
+    fun `should fetch fresh current weather from forecast when available`() = runBlocking {
+        // given
+        val location = "Zurich"
+        mockFeed.setForecastWeather(location, createForecastWeather(OffsetDateTime.now(ZoneOffset.UTC)))
+
+        // when
+        val result = requireNotNull(weatherService.current(location))
+
+        // then
+        assertEquals(1, mockFeed.forecastCallCount)
+        assertEquals(0, mockFeed.currentCallCount)
+        assertNotNull(mockLocationRepo.getPosition(location))
+        assertEquals(location, result.location)
+    }
+
     private fun createCurrentWeather(
         timestamp: OffsetDateTime = OffsetDateTime.now()
     ) = CurrentWeatherResponse(
@@ -98,16 +137,73 @@ class WeatherServiceTest {
         coord = Coord(lon = 47.3769, lat = 8.5417),
         dt = timestamp
     )
+
+    private fun createForecastWeather(
+        now: OffsetDateTime,
+        timezone: ZoneOffset = ZoneOffset.UTC
+    ): ForecastWeatherResponse {
+        val today = now.withOffsetSameInstant(timezone).toLocalDate()
+        fun forecastTime(hour: Int) = today.atTime(hour, 0).atOffset(timezone)
+        return ForecastWeatherResponse(
+            cod = "200",
+            city = City(
+                id = 2657896,
+                name = "Zurich",
+                country = "CH",
+                coord = Coord(lon = 8.5417, lat = 47.3769),
+                timezone = timezone.totalSeconds,
+                sunrise = today.atTime(5, 30).atOffset(timezone),
+                sunset = today.atTime(21, 30).atOffset(timezone)
+            ),
+            list = listOf(
+                createForecastWindow(forecastTime(0), 10.0f, 8.0f, 12.0f, 801, "Clouds", "few clouds", "02n"),
+                createForecastWindow(forecastTime(9), 18.0f, 16.0f, 20.0f, 802, "Clouds", "scattered clouds", "03d"),
+                createForecastWindow(forecastTime(12), 23.0f, 21.0f, 26.0f, 800, "Clear", "clear sky", "01d"),
+                createForecastWindow(forecastTime(18), 20.0f, 17.0f, 22.0f, 801, "Clouds", "few clouds", "02d"),
+                createForecastWindow(forecastTime(0).plusDays(1), 30.0f, 1.0f, 40.0f, 800, "Clear", "clear sky", "01n")
+            )
+        )
+    }
+
+    private fun createForecastWindow(
+        timestamp: OffsetDateTime,
+        temp: Float,
+        tempMin: Float,
+        tempMax: Float,
+        weatherId: Int,
+        main: String,
+        description: String,
+        icon: String
+    ) = Weather(
+        dt = timestamp,
+        main = WeatherInfo(
+            temp = temp,
+            temp_min = tempMin,
+            temp_max = tempMax,
+            pressure = 1015f,
+            humidity = 65f
+        ),
+        weather = listOf(WeatherDescription(weatherId, main, description, icon)),
+        clouds = CloudDescription(all = 20),
+        wind = WindDescription(speed = 2.5, deg = 180.0)
+    )
 }
 
 // Mock classes
 class MockOpenWeatherFeed : WeatherFeed {
     private val weatherMap = mutableMapOf<String, CurrentWeatherResponse>()
+    private val forecastMap = mutableMapOf<String, ForecastWeatherResponse>()
     var currentCallCount = 0
+        private set
+    var forecastCallCount = 0
         private set
 
     fun setCurrentWeather(location: String, weather: CurrentWeatherResponse) {
         weatherMap[location] = weather
+    }
+
+    fun setForecastWeather(location: String, forecast: ForecastWeatherResponse) {
+        forecastMap[location] = forecast
     }
 
     override suspend fun current(location: String): CurrentWeatherResponse? {
@@ -116,7 +212,8 @@ class MockOpenWeatherFeed : WeatherFeed {
     }
 
     override suspend fun forecast(location: String): ForecastWeatherResponse? {
-        TODO("Not yet implemented")
+        forecastCallCount++
+        return forecastMap[location]
     }
 }
 
