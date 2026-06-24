@@ -100,16 +100,8 @@ fun Route.locationRoutes(repo: LocationRepo) {
                 this@get.setupCommonResponses()
             }
         }) {
-            val location = call.parameters["location"] ?: return@get call.respondText(
-                "Missing location",
-                status = HttpStatusCode.BadRequest
-            )
-            // convert city[,country] to city[ ,isoCountry]
-            val isoLocation = CountryUtil.iso(location)
-            val geoLocation = repo.getPosition(isoLocation) ?: return@get call.respondText(
-                "Unknown location $isoLocation",
-                status = HttpStatusCode.NotFound
-            )
+            val location = call.locationParameterOrNull() ?: return@get
+            val geoLocation = repo.getPosition(location.iso) ?: return@get call.respondUnknownLocation(location.iso)
             call.respond(geoLocation)
         }
     }
