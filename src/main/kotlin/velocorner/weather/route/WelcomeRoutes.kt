@@ -36,10 +36,11 @@ internal fun resolveBuildTime(classLoader: ClassLoader = Thread.currentThread().
         }
         ?: NOT_AVAILABLE
 
+private val buildTime = resolveBuildTime()
+
 fun Route.welcomeRoutes() {
     get("/") {
         val now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
-        val buildTime = resolveBuildTime()
         call.respondHtml(HttpStatusCode.OK) {
             head {
                 title("Weather Service")
