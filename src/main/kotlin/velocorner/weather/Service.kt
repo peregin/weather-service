@@ -61,6 +61,7 @@ fun main() {
 
         routing {
             staticResources("/", "static")
+            healthRoutes()
             welcomeRoutes()
             weatherRoutes(service)
             locationRoutes(locationRepo)

@@ -35,5 +35,9 @@ ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75" \
 
 EXPOSE 9015
 
+# Distroless has no shell or curl, so run the equivalent HTTP probe with the bundled JVM.
+HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 \
+  CMD ["/jre/bin/java", "-cp", "/app/service.jar", "velocorner.weather.HealthCheck"]
+
 # Use absolute path (no shell in Distroless; PATH lookup isn’t used by Docker exec)
 ENTRYPOINT ["/jre/bin/java", "-Duser.timezone=UTC", "-jar", "/app/service.jar"]
