@@ -91,6 +91,13 @@ tasks {
 
             if (colimaSocket != null) {
                 val dockerHost = "unix://${colimaSocket.absolutePath}"
+                val dockerHubImagePrefix = providers
+                    .environmentVariable("TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX")
+                    .orElse(providers.gradleProperty("testcontainersHubImageNamePrefix"))
+                    .orNull
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
+                    ?.let { prefix -> if (prefix.endsWith('/')) prefix else "$prefix/" }
 
                 environment("DOCKER_HOST", dockerHost)
                 environment("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
@@ -103,6 +110,25 @@ tasks {
 
                 logger.lifecycle("Using Colima Docker socket for tests: $dockerHost")
                 logger.lifecycle("Using Oracle database container for tests because Colima was detected")
+
+                if (dockerHubImagePrefix != null) {
+                    environment("TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX", dockerHubImagePrefix)
+                    logger.lifecycle("Using Testcontainers Docker Hub mirror: $dockerHubImagePrefix")
+                } else {
+                    val ryukDisabled = providers
+                        .environmentVariable("TESTCONTAINERS_RYUK_DISABLED")
+                        .getOrElse("true")
+                    val checksDisabled = providers
+                        .environmentVariable("TESTCONTAINERS_CHECKS_DISABLE")
+                        .getOrElse("true")
+
+                    environment("TESTCONTAINERS_RYUK_DISABLED", ryukDisabled)
+                    environment("TESTCONTAINERS_CHECKS_DISABLE", checksDisabled)
+                    logger.lifecycle(
+                        "No Testcontainers Docker Hub mirror configured; " +
+                            "Ryuk disabled=$ryukDisabled, startup checks disabled=$checksDisabled"
+                    )
+                }
             }
         }
     }

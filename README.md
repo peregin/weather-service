@@ -87,6 +87,36 @@ gradle wrapper
 ./gradlew cyclonedxBom
 ```
 
+### Testcontainers with Colima
+
+When the Gradle test task detects Colima, it uses the Colima Docker socket and
+the Oracle Database container. By default it also disables Testcontainers'
+Ryuk resource reaper and startup checks, avoiding their Docker Hub image pulls.
+Testcontainers still cleans up normally when the test JVM exits; after a forced
+JVM termination, remove any orphaned test containers manually.
+
+Run the tests with:
+
+```shell
+./gradlew test
+```
+
+The preferred long-term setup is to publish the required helper images to a
+team-owned Oracle Artifactory Docker repository that preserves Docker Hub image
+paths. To enable Ryuk and the startup checks through that mirror, set either the
+standard Testcontainers environment variable or the Gradle property:
+
+```shell
+TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX=team-docker-local.artifactory.oci.oraclecorp.com/ ./gradlew test
+./gradlew test -PtestcontainersHubImageNamePrefix=team-docker-local.artifactory.oci.oraclecorp.com/
+```
+
+Verify that the mirror contains every Docker Hub image used by the tests,
+including `testcontainers/ryuk` and the Testcontainers startup-check image.
+The generic `docker-remote.artifactory.oci.oraclecorp.com` proxy should only be
+used after a direct pull succeeds; it may expose a manifest while failing to
+serve its blobs.
+
 ## Docker
 ```shell
 docker build -t peregin/velocorner.weather:latest .
