@@ -13,7 +13,12 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 // it uses data from the cache/storage if was queried within the `refreshTimeout`
-class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val locationRepo: LocationRepo, val refreshTimeout: Duration = 60.minutes) {
+class WeatherService(
+    val feed: WeatherFeed,
+    val weatherRepo: WeatherRepo,
+    val locationRepo: LocationRepo,
+    val refreshTimeout: Duration = 60.minutes
+) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -22,45 +27,30 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
     suspend fun current(location: String): CurrentWeather? {
         val entry = weatherRepo.getCurrent(location)
         val now = clock()
-        val reply =
-            entry?.takeUnless {
-                val last = it.timestamp
-                logger.debug("checking current weather cache $now - $last")
-                val cacheHit = (now.toEpochSecond() - last.toEpochSecond())
-                    .seconds
-                    .compareTo(refreshTimeout)
-                cacheHit > 0
-            }.also {
-                logger.debug("retrieving cached data for current [$location]")
-            } ?: run {
-                // extract current weather from the forecast of today orr fall back to the current 3h window weather
-                val freshWeather = feed.forecast(location)
-                    .let { re -> convert(now, location, re) }
-                    ?: feed.current(location).let { re -> convert(location, re) }
-                freshWeather.also {
-                    logger.info("retrieving and store fresh data for current [$location]")
-                    it?.let {
-                        weatherRepo.storeCurrent(it)
-                        // store into the locations storage for suggestions and Windy
-                        val geoLocation = GeoPosition(latitude = it.coord.lat, longitude = it.coord.lon)
-                        locationRepo.store(location, geoLocation)
-                    }
+        val reply = entry?.takeUnless { isFresh(now, it.timestamp) }.also {
+            logger.debug("retrieving cached data for current [$location]")
+        } ?: run {
+            // extract current weather from the forecast of today or fall back to the current 3h window weather
+            val freshWeather = feed.forecast(location)
+                .let { re -> convert(now, location, re) }
+                ?: feed.current(location).let { re -> convert(location, re) }
+            freshWeather.also {
+                logger.info("retrieving and store fresh data for current [$location]")
+                it?.let {
+                    weatherRepo.storeCurrent(it)
+                    // store into the locations storage for suggestions and Windy
+                    val geoLocation = GeoPosition(latitude = it.coord.lat, longitude = it.coord.lon)
+                    locationRepo.store(location, geoLocation)
                 }
             }
+        }
         return reply
     }
 
     suspend fun forecast(location: String): List<ForecastWeather> {
         val entries = weatherRepo.listForecast(location) // takes 40 entries, latest is now
         val now = clock()
-        val last = entries.map { it.timestamp }.minOrNull()?.takeUnless {
-            logger.debug("checking forecast weather cache $now - $it")
-            val cacheHit = (now.toEpochSecond() - it.toEpochSecond())
-                .seconds
-                .compareTo(refreshTimeout)
-            cacheHit > 0
-        }
-
+        val last = entries.minOfOrNull { it.timestamp }?.takeUnless { isFresh(now, it) }
         val reply = last?.let { entries }.also {
             logger.debug("retrieving cached data for forecast [$location]")
         } ?: run {
@@ -72,6 +62,13 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
             }
         }
         return reply
+    }
+
+    private fun isFresh(now: OffsetDateTime, time: OffsetDateTime): Boolean {
+        val elapsed = (now.toEpochSecond() - time.toEpochSecond()).seconds
+        logger.debug("checking cache [$elapsed] $now - $time")
+        val cacheHit = elapsed.compareTo(refreshTimeout)
+        return cacheHit > 0
     }
 
     // current weather gives a window of 3 hours, hence the min and max temperature is misleading, it is not for the day
@@ -97,7 +94,7 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
     // convert the current for today from the forecast, list of 3h windows to have the proper min and max temperature
     internal fun convert(now: OffsetDateTime, location: String, reply: ForecastWeatherResponse?): CurrentWeather? {
         val city = reply?.city ?: return null
-        val coord = city.coord ?: return null
+        val coordinate = city.coord ?: return null
         val sunrise = city.sunrise ?: return null
         val sunset = city.sunset ?: return null
         val forecasts = reply.list?.takeIf { it.isNotEmpty() } ?: return null
@@ -124,7 +121,7 @@ class WeatherService(val feed: WeatherFeed, val weatherRepo: WeatherRepo, val lo
             current = current,
             info = info,
             sunriseSunset = SunriseSunsetInfo(sunrise = sunrise, sunset = sunset),
-            coord = coord
+            coord = coordinate
         )
     }
 
