@@ -7,11 +7,11 @@ import org.jetbrains.exposed.v1.core.vendors.OracleDialect
 import org.jetbrains.exposed.v1.core.vendors.PostgreSQLDialect
 import org.jetbrains.exposed.v1.datetime.datetime
 import org.jetbrains.exposed.v1.jdbc.Database
-import org.jetbrains.exposed.v1.jdbc.batchInsert
+import org.jetbrains.exposed.v1.jdbc.batchUpsert
 import org.jetbrains.exposed.v1.jdbc.insert
-import org.jetbrains.exposed.v1.jdbc.insertIgnore
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.update
+import org.jetbrains.exposed.v1.jdbc.upsert
 import org.jetbrains.exposed.v1.json.json
 import velocorner.weather.model.CurrentWeather
 import velocorner.weather.model.ForecastWeather
@@ -114,8 +114,12 @@ class WeatherRepoImpl : WeatherRepo {
                 }
             },
             postgres = {
-                // Batch insert (better performance)
-                PostgresqlForecastWeatherTable.batchInsert(forecast, ignore = true) { w ->
+                PostgresqlForecastWeatherTable.batchUpsert(
+                    forecast,
+                    PostgresqlForecastWeatherTable.location,
+                    PostgresqlForecastWeatherTable.updateTime,
+                    shouldReturnGeneratedValues = false
+                ) { w ->
                     this[PostgresqlForecastWeatherTable.location] = w.location
                     this[PostgresqlForecastWeatherTable.updateTime] =
                         w.timestamp.toLocalDateTime().toKotlinLocalDateTime()
@@ -163,7 +167,7 @@ class WeatherRepoImpl : WeatherRepo {
                 }
             },
             postgres = {
-                PostgresqlCurrentWeatherTable.insertIgnore {
+                PostgresqlCurrentWeatherTable.upsert(PostgresqlCurrentWeatherTable.location) {
                     it[location] = weather.location
                     it[data] = weather
                 }

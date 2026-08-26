@@ -62,8 +62,14 @@ internal class WeatherRepoTest {
         )
         repo.storeCurrent(weather)
         assertEquals(weather, repo.getCurrent(ZH_LOCATION))
-        // store it again, we should have only one entry
-        repo.storeCurrent(weather)
+
+        val updatedWeather = weather.copy(
+            timestamp = weather.timestamp.plusMinutes(30),
+            info = weather.info.copy(temp = weather.info.temp + 1)
+        )
+        repo.storeCurrent(updatedWeather)
+
+        assertEquals(updatedWeather, repo.getCurrent(ZH_LOCATION))
         val entries = TestDatabase.currentWeatherCount()
         assertEquals(1, entries)
     }
@@ -75,9 +81,8 @@ internal class WeatherRepoTest {
         assertEquals(0, entries.size)
     }
 
-    // idempotent
     @Test
-    fun `should handle forecast weather storage idempotent`() = runBlocking {
+    fun `should upsert forecast weather`() = runBlocking {
         val repo = WeatherRepoImpl()
         val forecastList = requireNotNull(forecastFixture.list) { "Forecast list should not be null" }
         assertEquals(40, forecastList.size)
@@ -93,10 +98,17 @@ internal class WeatherRepoTest {
         assertEquals(40, repo.listForecast(ZH_LOCATION).size)
         assertEquals(0, repo.listForecast(BP_LOCATION).size)
 
-        // storing entries are idempotent (upsert the same entries, we should have still 40 items in the storage)
         val first = forecastList.first()
-        repo.storeForecast(listOf(ForecastWeather(ZH_LOCATION, first.dt, first)))
-        assertEquals(40, repo.listForecast(ZH_LOCATION, limit = 50).size)
+        val updatedForecast = ForecastWeather(
+            location = ZH_LOCATION,
+            timestamp = first.dt,
+            forecast = first.copy(main = first.main.copy(temp = first.main.temp + 1))
+        )
+        repo.storeForecast(listOf(updatedForecast))
+
+        val storedForecasts = repo.listForecast(ZH_LOCATION, limit = 50)
+        assertEquals(40, storedForecasts.size)
+        assertEquals(updatedForecast, storedForecasts.single { it.timestamp == first.dt })
 
         // different location, same timestamp
         repo.storeForecast(listOf(ForecastWeather(BP_LOCATION, first.dt, first)))
