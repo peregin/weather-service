@@ -79,6 +79,7 @@ graalvmNative {
         buildArgs.addAll(
             "--initialize-at-build-time=kotlin",
             "--install-exit-handlers",
+            "--enable-url-protocols=https",
             "-H:+ReportExceptionStackTraces"
         )
     }
