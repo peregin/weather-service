@@ -15,7 +15,7 @@ import velocorner.weather.util.CountryUtil
 fun Route.locationRoutes(repo: LocationRepo) {
     route("location") {
         get("ip", {
-            description = "Determines the country and capital from IP address"
+            description = "Determines the country and city from IP address, when city is not available defaults to capital"
             tags = listOf("location")
             request {
                 queryParameter<String>("ip") {
@@ -112,8 +112,8 @@ private suspend fun RoutingCall.respondGeoLocation() {
         ?: request.queryParameters["ip"]
         ?: request.headers["X-Forwarded-For"]
         ?: request.origin.remoteAddress
-    val country = CountryFeed.country(ip)
-    val capital = CountryUtil.code2Capital[country]
-        ?: throw NotFoundException("country $country not found")
-    respond(GeoLocationResponse(city = capital, country = country))
+    val reply = CountryFeed.country(ip)
+    val country = reply.country
+    val city = reply.city ?: CountryUtil.code2Capital[country] ?: throw NotFoundException("country $country not found")
+    respond(GeoLocationResponse(city = city, country = country))
 }

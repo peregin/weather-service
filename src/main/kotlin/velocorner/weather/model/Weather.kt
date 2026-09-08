@@ -206,7 +206,8 @@ data class ForecastWeather(
 @Serializable
 data class CountryFeedResponse(
     val ip: String,
-    val country: String
+    val country: String,
+    val city: String?
 )
 
 @Serializable

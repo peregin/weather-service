@@ -11,11 +11,12 @@ object CountryFeed {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun country(ip: String): String {
+    suspend fun country(ip: String): CountryFeedResponse {
         HttpClient(Java).use {
-            val response = it.get("https://api.country.is/$ip")
-            return runCatching { json.decodeFromString<CountryFeedResponse>(response.bodyAsText()) }.getOrNull()?.country
-                ?: "CH"
+            val response = it.get("https://api.country.is/$ip?fields=city")
+            return runCatching { json.decodeFromString<CountryFeedResponse>(response.bodyAsText()) }.getOrDefault(
+                CountryFeedResponse(ip, "CH", "Bern")
+            )
         }
     }
 }
