@@ -6,9 +6,9 @@ import io.github.smiley4.ktorswaggerui.swaggerUI
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import io.ktor.server.http.content.*
-import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
@@ -23,7 +23,7 @@ import velocorner.weather.service.WeatherService
 private val DOC_PATHS = setOf("weather", "location")
 
 fun main() {
-    embeddedServer(Netty, port = 9015, host = "0.0.0.0") {
+    embeddedServer(CIO, port = 9015, host = "0.0.0.0") {
         log.info("starting weather service...")
 
         val feed = OpenWeatherFeed()

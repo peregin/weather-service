@@ -19,6 +19,7 @@ plugins {
     kotlin("jvm") version "2.4.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.4.10"
     id("io.ktor.plugin") version "3.5.2"
+    id("org.graalvm.buildtools.native") version "0.11.3"
     id("org.cyclonedx.bom") version "3.4.1"
 }
 
@@ -38,14 +39,18 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-java:$ktor_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-cio:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
-    implementation("io.github.smiley4:ktor-openapi:${openapi_version}")
-    implementation("io.github.smiley4:ktor-swagger-ui:${openapi_version}")
+    implementation("io.github.smiley4:ktor-openapi:${openapi_version}") {
+        exclude(group = "io.ktor", module = "ktor-server-netty-jvm")
+    }
+    implementation("io.github.smiley4:ktor-swagger-ui:${openapi_version}") {
+        exclude(group = "io.ktor", module = "ktor-server-netty-jvm")
+    }
 
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
@@ -65,6 +70,18 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:testcontainers-postgresql:$testcontainers_version")
+}
+
+graalvmNative {
+    binaries.named("main") {
+        imageName.set("weather-service")
+        resources.autodetect()
+        buildArgs.addAll(
+            "--initialize-at-build-time=kotlin",
+            "--install-exit-handlers",
+            "-H:+ReportExceptionStackTraces"
+        )
+    }
 }
 
 tasks {

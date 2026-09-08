@@ -8,8 +8,13 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 ```shell
 # build fat jar
 ./gradlew shadowJar
-# build native image with gradle got GraalVM
-./gradlew nativeCompile
+
+# Build a native executable. If JAVA_HOME does not already point to GraalVM,
+# set GRAALVM_HOME to a GraalVM JDK that contains native-image.
+GRAALVM_HOME=/path/to/graalvm ./gradlew nativeCompile
+
+# Run the platform-specific executable:
+./build/native/nativeCompile/weather-service
 ```
 
 ## Database
