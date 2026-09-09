@@ -1,0 +1,35 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\QMETA-INF/velocorner.weather_weather-service.kotlin_module\\E"
+      },
+      {
+        "pattern": "\\Qcapitals.json\\E"
+      },
+      {
+        "pattern": "\\Qcountries.json\\E"
+      },
+      {
+        "pattern": "\\Qlogback.xml\\E"
+      },
+      {
+        "pattern": "\\Qweather_codes.txt\\E"
+      },
+      {
+        "pattern": "^migration(/.*)?$"
+      },
+      {
+        "pattern": "^static(/.*)?$"
+      },
+      {
+        "pattern": "^META-INF/maven/org[.]webjars/swagger-ui/pom[.]properties$"
+      },
+      {
+        "pattern": "^META-INF/resources/webjars/swagger-ui(/.*)?$"
+      }
+    ],
+    "excludes": []
+  },
+  "bundles": []
+}

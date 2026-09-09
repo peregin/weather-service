@@ -1,0 +1,384 @@
+[
+  {
+    "name": "velocorner.weather.model.WeatherDescription",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.WeatherInfo",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.SunriseSunsetInfo",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.Coord",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.SnowDescription",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.RainDescription",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.CloudDescription",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.WindDescription",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.City",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.Weather",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.CurrentWeatherResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.CurrentWeather",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.ForecastWeatherResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.ForecastWeather",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.CountryFeedResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.CountryIso",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.GeoLocationResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.GeoPosition",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.SuggestionResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "velocorner.weather.model.WeatherDescription$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.WeatherInfo$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.SunriseSunsetInfo$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.Coord$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.SnowDescription$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.RainDescription$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.CloudDescription$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.WindDescription$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.City$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.Weather$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.CurrentWeatherResponse$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.CurrentWeather$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.ForecastWeatherResponse$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.ForecastWeather$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.CountryFeedResponse$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.CountryIso$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.GeoLocationResponse$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.GeoPosition$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "velocorner.weather.model.SuggestionResponse$Companion",
+    "methods": [
+      {
+        "name": "serializer",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.Components31Mixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.ExampleMixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.ExtensionsMixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.MediaTypeMixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.OpenAPI31Mixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.OperationMixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.Schema31Mixin",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.mixin.Schema31Mixin$TypeSerializer",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.Components",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.ExternalDocumentation",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.OpenAPI",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.Operation",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.PathItem",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.Paths"
+  },
+  {
+    "name": "io.swagger.v3.oas.models.examples.Example",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.info.Info",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.media.Content"
+  },
+  {
+    "name": "io.swagger.v3.oas.models.media.MediaType",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.media.Schema",
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.parameters.Parameter",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum"
+  },
+  {
+    "name": "io.swagger.v3.oas.models.responses.ApiResponse",
+    "allPublicMethods": true
+  },
+  {
+    "name": "io.swagger.v3.oas.models.responses.ApiResponses"
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.ApiResponsesSerializer",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.swagger.v3.core.jackson.PathsSerializer",
+    "allDeclaredConstructors": true
+  }
+]

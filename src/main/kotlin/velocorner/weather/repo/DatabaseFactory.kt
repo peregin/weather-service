@@ -45,6 +45,7 @@ object DatabaseFactory {
         Database.connect(dataSource)
         val flyway = Flyway.configure()
             .locations(specific.flywayLocation)
+            .resourceProvider(ClasspathMigrationResourceProvider(specific.flywayLocation))
             .validateMigrationNaming(false)
             .dataSource(dataSource)
             .load()

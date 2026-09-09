@@ -1,4 +1,5 @@
 import java.time.Instant
+import org.gradle.language.jvm.tasks.ProcessResources
 
 val ktor_version = project.property("ktor_version") as String
 val openapi_version = project.property("openapi_version") as String
@@ -24,7 +25,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 repositories {
@@ -72,6 +73,33 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-postgresql:$testcontainers_version")
 }
 
+val generatedMigrationResources = layout.buildDirectory.dir("generated/migration-resources")
+val generateMigrationIndex = tasks.register("generateMigrationIndex") {
+    val resourcesRoot = layout.projectDirectory.dir("src/main/resources")
+    val migrationFiles = fileTree(resourcesRoot.dir("migration")) {
+        include("**/*.sql")
+    }
+    val indexFile = generatedMigrationResources.map { it.file("migration/migrations.txt") }
+
+    inputs.files(migrationFiles)
+    outputs.file(indexFile)
+
+    doLast {
+        val index = indexFile.get().asFile
+        index.parentFile.mkdirs()
+        index.writeText(
+            migrationFiles.files
+                .map { it.relativeTo(resourcesRoot.asFile).invariantSeparatorsPath }
+                .sorted()
+                .joinToString(separator = "\n", postfix = "\n")
+        )
+    }
+}
+
+sourceSets.main {
+    resources.srcDir(generatedMigrationResources)
+}
+
 graalvmNative {
     binaries.named("main") {
         imageName.set("weather-service")
@@ -86,6 +114,27 @@ graalvmNative {
 }
 
 tasks {
+    named<ProcessResources>("processResources") {
+        dependsOn(generateMigrationIndex)
+    }
+
+    named<Test>("test") {
+        exclude("**/NativeImageSmokeTest.class")
+    }
+
+    register<Test>("nativeSmokeTest") {
+        description = "Runs the native server against a disposable database and checks its HTTP routes."
+        group = "verification"
+        dependsOn("nativeCompile")
+        shouldRunAfter("test")
+        testClassesDirs = sourceSets.test.get().output.classesDirs
+        classpath = sourceSets.test.get().runtimeClasspath
+        include("**/NativeImageSmokeTest.class")
+        systemProperty("weather.native.executable", layout.buildDirectory.file("native/nativeCompile/weather-service").get().asFile.absolutePath)
+        // The database and running executable are external to Gradle's up-to-date checks.
+        outputs.upToDateWhen { false }
+    }
+
     shadowJar {
         // Keep duplicate service descriptors so ServiceFileTransformer can merge them.
         duplicatesStrategy = DuplicatesStrategy.INCLUDE

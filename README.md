@@ -5,6 +5,12 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 
 
 ## Build
+
+The JVM build requires a Java 21 toolchain. Native builds additionally require
+a GraalVM JDK with `native-image` and the platform C toolchain (Xcode Command Line
+Tools on macOS). The native executable is specific to the build OS and architecture.
+Native build and smoke tests have been verified with Oracle GraalVM 25.0.4 on macOS ARM64.
+
 ```shell
 # build fat jar
 ./gradlew shadowJar
@@ -13,9 +19,42 @@ Available on [weather.velocorner.com](https://weather.velocorner.com)
 # set GRAALVM_HOME to a GraalVM JDK that contains native-image.
 GRAALVM_HOME=/path/to/graalvm ./gradlew nativeCompile
 
-# Run the platform-specific executable:
+# Run all JVM tests, then build and smoke-test the native executable.
+# Requires Docker and a free local port 9015; uses a disposable database.
+GRAALVM_HOME=/path/to/graalvm ./gradlew test nativeSmokeTest
+```
+
+### Run the native server
+
+Set `WEATHER_API_KEY` to an OpenWeather API key and `DB_PASSWORD` to the database
+password. `DB_DRIVER`, `DB_URL`, and `DB_USER` configure the database connection.
+For example, after provisioning the local Oracle database described below:
+
+```shell
+export WEATHER_API_KEY='your-api-key'
+export DB_DRIVER=oracle.jdbc.OracleDriver
+export DB_URL='jdbc:oracle:thin:@//localhost:1522/FREEPDB1'
+export DB_USER=weather
+export DB_PASSWORD='your-database-password'
 ./build/native/nativeCompile/weather-service
 ```
+
+The server listens on port 9015. Check `/health`, `/api.json`, and `/docs/`.
+The `nativeSmokeTest` task checks fresh database migrations, static/Swagger assets,
+OpenAPI schemas, location queries, and cached current/forecast weather responses.
+It uses fixture data and does not call the live weather provider. Its native server
+log is saved to `build/reports/tests/nativeSmokeTest/server.log`.
+
+Native reflection and resource metadata lives in
+`src/main/resources/META-INF/native-image/velocorner.weather/weather-service/`.
+It retains Kotlin API model reflection, Swagger's Jackson models/mixins/serializers,
+and application/Swagger resources. Update the metadata and rerun `nativeSmokeTest`
+when changing API models or upgrading those libraries.
+
+SQL migrations are indexed automatically by `generateMigrationIndex` during resource
+processing. `ClasspathMigrationResourceProvider` reads that index so Flyway can load
+migrations on both the JVM and Native Image without scanning embedded resource URLs.
+Add new migrations under `src/main/resources/migration/{oracle,psql}/` as usual.
 
 ## Database
 ### PostgreSQL
@@ -127,8 +166,6 @@ serve its blobs.
 docker build -t peregin/velocorner.weather:latest .
 # build ARM docker image
 docker buildx build --platform linux/arm64 -t peregin/velocorner.weather:latest --push .
-# build with native image
-docker build -t peregin/velocorner.weather:latest -f Dockerfile.graal .
 docker run -it --rm --env-file ./local.env --name weather -p 9015:9015 peregin/velocorner.weather:latest
 ```
 
