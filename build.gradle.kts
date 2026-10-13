@@ -17,11 +17,11 @@ version = "1.0.1-SNAPSHOT"
 
 plugins {
     application
-    kotlin("jvm") version "2.4.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.10"
-    id("io.ktor.plugin") version "3.5.2"
-    id("org.graalvm.buildtools.native") version "0.11.3"
-    id("org.cyclonedx.bom") version "3.4.1"
+    kotlin("jvm") version "2.4.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21"
+    id("io.ktor.plugin") version "3.6.0"
+    id("org.graalvm.buildtools.native") version "1.1.14"
+    id("org.cyclonedx.bom") version "3.5.1"
 }
 
 kotlin {
