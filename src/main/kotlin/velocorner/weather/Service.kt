@@ -13,6 +13,8 @@ import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
+import io.modelcontextprotocol.kotlin.sdk.types.McpJson
+import velocorner.weather.mcp.weatherMcp
 import velocorner.weather.repo.DatabaseFactory
 import velocorner.weather.repo.LocationRepoImpl
 import velocorner.weather.repo.WeatherRepoImpl
@@ -33,7 +35,7 @@ fun main() {
         val service = WeatherService(feed, weatherRepo, locationRepo)
 
         install(ContentNegotiation) {
-            json()
+            json(McpJson)
         }
         install(CallLogging)
         install(OpenApi) {
@@ -58,6 +60,11 @@ fun main() {
             anyHost()
             allowCredentials = true // to store cookies
         }
+
+        val mcpHosts = (System.getenv("MCP_ALLOWED_HOSTS")
+            ?: "localhost,127.0.0.1,[::1],weather.velocorner.com")
+            .split(',').map(String::trim).filter(String::isNotEmpty)
+        weatherMcp(service, allowedHosts = mcpHosts)
 
         routing {
             staticResources("/", "static")

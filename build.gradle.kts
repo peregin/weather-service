@@ -11,6 +11,7 @@ val hikari_version = project.property("hikari_version") as String
 val psql_version = project.property("psql_version") as String
 val oracle_version = project.property("oracle_version") as String
 val testcontainers_version = project.property("testcontainers_version") as String
+val mcp_version = project.property("mcp_version") as String
 
 group = "velocorner.weather"
 version = "1.0.1-SNAPSHOT"
@@ -46,6 +47,7 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("io.modelcontextprotocol:kotlin-sdk-server:$mcp_version")
     implementation("io.github.smiley4:ktor-openapi:${openapi_version}") {
         exclude(group = "io.ktor", module = "ktor-server-netty-jvm")
     }

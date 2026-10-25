@@ -3,6 +3,36 @@ Provides 5 days forecast, current weather conditions and suggestions for locatio
 
 Available on [weather.velocorner.com](https://weather.velocorner.com)
 
+## MCP
+
+The running service exposes a stateless Streamable HTTP MCP endpoint at `/mcp`
+(locally, `http://localhost:9015/mcp`). It provides two tools:
+
+| Tool | Arguments | Result |
+| --- | --- | --- |
+| `get_current_weather` | `{"location":"Zurich,CH"}` | Current weather as JSON |
+| `get_weather_forecast` | `{"location":"Zurich,CH"}` | JSON object containing a `forecast` array |
+
+Locations accept a city with an optional country code or country name, such as
+`Zurich,CH` or `Zurich,Switzerland`. Temperatures are Celsius, wind speeds are m/s,
+and timestamps are Unix seconds. Results include both structured JSON and a JSON
+text representation. Missing locations and provider failures return MCP tool errors.
+The tools reuse the same weather service and database cache as the REST routes.
+
+With the service running, launch the MCP Inspector:
+
+```shell
+npx -y @modelcontextprotocol/inspector
+```
+
+Select Streamable HTTP, connect to `http://localhost:9015/mcp`, then list or call
+the tools. GET and DELETE on `/mcp` return 405 because the endpoint is stateless.
+
+`MCP_ALLOWED_HOSTS` optionally overrides the comma-separated list of accepted host
+and origin hostnames. The default is `localhost,127.0.0.1,[::1],weather.velocorner.com`.
+Set this variable when serving through another hostname or reverse proxy. The
+existing database and `WEATHER_API_KEY` configuration is also required for MCP.
+
 
 ## Build
 
