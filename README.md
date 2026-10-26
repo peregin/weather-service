@@ -33,6 +33,104 @@ and origin hostnames. The default is `localhost,127.0.0.1,[::1],weather.velocorn
 Set this variable when serving through another hostname or reverse proxy. The
 existing database and `WEATHER_API_KEY` configuration is also required for MCP.
 
+### Client configuration
+
+Use `https://weather.velocorner.com/mcp` with the **Streamable HTTP** transport.
+The deployed weather MCP requires no client API key or OAuth login; the OpenWeather
+API key stays on the server. When editing a configuration file, merge the `weather`
+entry into its existing servers rather than replacing the file.
+
+For a locally running service, substitute `http://localhost:9015/mcp` in the CLI
+and editor examples below. Claude Desktop/web custom connectors need a publicly
+reachable URL, so use the deployed HTTPS endpoint there.
+
+#### Codex
+
+Register the server through the CLI:
+
+```shell
+codex mcp add weather --url https://weather.velocorner.com/mcp
+```
+
+Alternatively, add this to `~/.codex/config.toml` for all projects, or to
+`.codex/config.toml` for this trusted project:
+
+```toml
+[mcp_servers.weather]
+url = "https://weather.velocorner.com/mcp"
+```
+
+Start a new Codex session and use `/mcp` to check that `weather` is connected.
+See the [official OpenAI MCP documentation](https://developers.openai.com/codex/mcp).
+
+#### Google Antigravity
+
+In the IDE, open the agent panel's **… → MCP Servers → Manage MCP Servers →
+View raw config**. Add the following entry to `mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "serverUrl": "https://weather.velocorner.com/mcp"
+    }
+  }
+}
+```
+
+The configuration lives at `~/.gemini/config/mcp_config.json` for all projects,
+or `.agents/mcp_config.json` for one workspace. Refresh the MCP server list after
+saving; in Antigravity CLI, use `/mcp` to reload and check the connection.
+See the [Antigravity MCP documentation](https://www.antigravity.google/docs/mcp).
+
+#### Claude Code
+
+Add the server for your user across all projects:
+
+```shell
+claude mcp add --transport http --scope user weather https://weather.velocorner.com/mcp
+```
+
+Use `--scope project` instead of `--scope user` to save a shared project
+configuration in `.mcp.json`. Run `claude mcp get weather`, or use `/mcp` inside
+Claude Code, to check the connection.
+See the [Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
+
+#### Claude Desktop and Claude web
+
+Add a remote custom connector through the UI:
+
+1. Open **Customize → Connectors → Add → Custom → Web**.
+2. Enter **Weather** as the name and `https://weather.velocorner.com/mcp` as the
+   remote MCP server URL.
+3. Continue through setup, select **No sign in** for authentication, and add the
+   connector.
+4. Enable Weather in the conversation's connectors menu.
+
+See the [Claude connector documentation](https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities).
+
+#### Cursor
+
+Add this to `~/.cursor/mcp.json` for all projects, or `.cursor/mcp.json` for this
+project:
+
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "url": "https://weather.velocorner.com/mcp"
+    }
+  }
+}
+```
+
+Check that Weather is enabled and its tools are listed in Cursor's MCP settings.
+See the [Cursor MCP documentation](https://cursor.com/docs/mcp).
+
+Once connected, confirm that `get_current_weather` and `get_weather_forecast`
+are available. Try: **"Use the weather MCP to get the current weather and forecast
+for Zurich,CH."**
+
 
 ## Build
 
